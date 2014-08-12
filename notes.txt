@@ -1,0 +1,19 @@
+Team names:
+	Don't make me think
+	Chronos
+
+
+Product name:
+	first choice
+	top pick
+	wishful thinking
+	That was easy
+
+Favorite Button On / Off
+Fullscreen Button On / Off
+Promote Button On / Off
+
+* Pin button
+Move slide up bar to bottom
+Add drag and drop feature
+Add Rearrange items feature

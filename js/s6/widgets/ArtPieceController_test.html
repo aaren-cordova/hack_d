@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<!--
+Copyright 2006 The Closure Library Authors. All Rights Reserved.
+
+Use of this source code is governed by the Apache License, Version 2.0.
+See the COPYING file for details.
+-->
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Closure Unit Tests - goog.Timer</title>
+<script src="../../google/closure-library/closure/goog/base.js"></script>
+<script src="../../s6/deps.js"></script>
+<script>
+	goog.require('s6.widgets.ArtPieceModel');
+	goog.require('s6.widgets.ArtPieceController');
+	goog.require('goog.testing.jsunit');
+</script>
+</head>
+<body>
+<script>
+	var artPieceModel_;
+	var artPiectController_;
+
+	function setUp() {
+		artPieceModel_ = new s6.widgets.ArtPieceModel();
+		artPiectController_ = new s6.widgets.ArtPieceController();
+		artPiectController_.setArtPieceModel(artPieceModel_);
+	}
+
+	function tearDown() {
+		artPieceModel_.dispose();
+		artPieceModel_ = null;
+
+		//artPiectController_.dispose();
+		artPiectController_ = null;
+	}
+
+	function test_onPinButtonClick(){
+		artPiectController_.onPinButtonClick(null);
+		assertEquals('Toggled value correct.', artPieceModel_.getPinEnabled(), true);
+
+		artPiectController_.onPinButtonClick(null);
+		assertEquals('Toggled value correct.', artPieceModel_.getPinEnabled(), false);
+
+		artPiectController_.onPinButtonClick(null);
+		assertEquals('Toggled value correct.', artPieceModel_.getPinEnabled(), true);
+	}
+
+	function test_onFavoriteButtonClick(){
+		artPiectController_.onFavoriteButtonClick(null);
+		assertEquals('Toggled value correct.', artPieceModel_.getFavoritedEnabled(), true);
+
+		artPiectController_.onFavoriteButtonClick(null);
+		assertEquals('Toggled value correct.', artPieceModel_.getFavoritedEnabled(), false);
+
+		artPiectController_.onFavoriteButtonClick(null);
+		assertEquals('Toggled value correct.', artPieceModel_.getFavoritedEnabled(), true);
+	}
+
+	function test_onFullScreenButtonClick(){
+		artPiectController_.onFullScreenButtonClick(null);
+		assertEquals('Toggled value correct.', artPieceModel_.getFullScreenEnabled(), true);
+
+		artPiectController_.onFullScreenButtonClick(null);
+		assertEquals('Toggled value correct.', artPieceModel_.getFullScreenEnabled(), false);
+
+		artPiectController_.onFullScreenButtonClick(null);
+		assertEquals('Toggled value correct.', artPieceModel_.getFullScreenEnabled(), true);
+	}
+
+	function test_onLikeButtonClick(){
+		artPiectController_.onLikeButtonClick(null);
+		assertEquals('Toggled value correct.', artPieceModel_.getLikeEnabled(), true);
+		assertEquals('Toggled value correct.', artPieceModel_.getDislikeEnabled(), false);
+
+		artPiectController_.onLikeButtonClick(null);
+		assertEquals('Toggled value correct.', artPieceModel_.getLikeEnabled(), false);
+		assertEquals('Toggled value correct.', artPieceModel_.getDislikeEnabled(), false);
+
+		artPiectController_.onLikeButtonClick(null);
+		assertEquals('Toggled value correct.', artPieceModel_.getLikeEnabled(), true);
+		assertEquals('Toggled value correct.', artPieceModel_.getDislikeEnabled(), false);
+	}
+
+	function test_onDislikeButtonClick(){
+		artPiectController_.onDislikeButtonClick(null);
+		assertEquals('Toggled value correct.', artPieceModel_.getDislikeEnabled(), true);
+		assertEquals('Toggled value correct.', artPieceModel_.getLikeEnabled(), false);
+
+		artPiectController_.onDislikeButtonClick(null);
+		assertEquals('Toggled value correct.', artPieceModel_.getDislikeEnabled(), false);
+		assertEquals('Toggled value correct.', artPieceModel_.getLikeEnabled(), false);
+
+		artPiectController_.onDislikeButtonClick(null);
+		assertEquals('Toggled value correct.', artPieceModel_.getDislikeEnabled(), true);
+		assertEquals('Toggled value correct.', artPieceModel_.getLikeEnabled(), false);
+
+	}
+
+	function test_onPromoteButtonClick(){
+		artPiectController_.onPromoteButtonClick(null);
+	}
+	function test_onPromoteButtonClick(){
+		artPiectController_.onPromoteButtonClick(null);
+	}
+</script>
+</body>
+</html>

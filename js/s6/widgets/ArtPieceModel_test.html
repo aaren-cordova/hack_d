@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<!--
+Copyright 2006 The Closure Library Authors. All Rights Reserved.
+
+Use of this source code is governed by the Apache License, Version 2.0.
+See the COPYING file for details.
+-->
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Closure Unit Tests - goog.Timer</title>
+<script src="../../google/closure-library/closure/goog/base.js"></script>
+<script src="../../s6/deps.js"></script>
+<script>
+	goog.require('goog.events.EventTarget');
+	goog.require('s6.widgets.ArtPieceModel');
+	goog.require('s6.widgets.ArtType');
+	goog.require('s6.widgets.ArtPieceModel.EventType');
+	goog.require('goog.testing.jsunit');
+</script>
+</head>
+<body>
+<script>
+	var model_;
+	var hasFiredPropertyChange_;
+
+	var EventType = s6.widgets.ArtPieceModel.EventType
+
+	function setUp() {
+		console.log('setUp')
+		model_ = new s6.widgets.ArtPieceModel();
+	}
+
+	function tearDown() {
+		console.log('tearDown')
+		model_.dispose();
+		model_ = null;
+	}
+
+	function initialValueTest(propertyName, initialValue, currentValue){
+		console.log('initialValueTest')
+		assertEquals('Initial value for ' + propertyName + ':', initialValue, currentValue);
+	}
+	// Run a test for 60s and see how many counts we get
+	function mutatorTest(propertyName, getterName, setterName, mutatedValues) {
+		console.log('mutatorTest')
+		for(var i = 0; i < mutatedValues.length; ++i){
+			var newValue = mutatedValues[i];
+			model_[setterName](newValue);
+
+			assertEquals(
+				'Mutated value (' + newValue + ') correct after call (' + setterName + '):', 
+				newValue, model_[getterName]()
+			);
+		}
+	};
+
+	function propertyChangeTest(propertyName, getterName, setterName, mutatedValuesVector) {
+		console.log('propertyChangeTest');
+
+		goog.events.listen(model_, propertyName, onPropertyChange);
+		for(var i = 0; i < mutatedValuesVector.length; ++i){
+
+			var mutatedValues = mutatedValuesVector[i];
+			var oldValue = mutatedValues[0];
+			var newValue = mutatedValues[1];
+
+			model_[setterName](oldValue);
+			hasFiredPropertyChange_ = false;
+			model_[setterName](newValue);
+			if(oldValue === newValue){
+				assertEquals('Property change event didn\'t fire.', hasFiredPropertyChange_, false)
+			}
+			else{
+				assertEquals('Property change event fired.', hasFiredPropertyChange_, true)
+			}
+		}
+		goog.events.unlisten(model_, propertyName, onPropertyChange);
+	}
+
+	function onPropertyChange(event){
+		hasFiredPropertyChange_ = true;
+	}
+	
+	/*
+	function testProductTypeMutator() {
+		mutatorTest('getProperty', 'setProperty', undefined, ['random_property', 'blanket', 'portrait'])
+	}
+	*/
+
+	function testProductType() {
+		initialValueTest('productType', s6.widgets.ArtType.DEFAULT_PRODUCT_TYPE, model_.getProductType());
+
+		mutatorTest('productType', 'getProductType', 'setProductType', [
+			s6.widgets.ArtType.ART_PRINT,
+			s6.widgets.ArtType.DUVET,
+			s6.widgets.ArtType.CUP
+		]);
+
+		propertyChangeTest('productType', 'getProductType', 'setProductType', [
+			[s6.widgets.ArtType.ART_PRINT, s6.widgets.ArtType.ART_PRINT],
+			[s6.widgets.ArtType.DUVET, s6.widgets.ArtType.DUVET],
+			[s6.widgets.ArtType.CUP, s6.widgets.ArtType.CUP],
+			[s6.widgets.ArtType.ART_PRINT, s6.widgets.ArtType.DUVET],
+			[s6.widgets.ArtType.CUP, s6.widgets.ArtType.DUVET],
+			[s6.widgets.ArtType.CUP, s6.widgets.ArtType.ART_PRINT]
+		]);
+	}
+
+
+	function testHideEnabled() {
+		initialValueTest('hideEnabled', false, model_.getHideEnabled());
+		mutatorTest('hideEnabled', 'getHideEnabled', 'setHideEnabled', [true, false, false, true]);
+
+		propertyChangeTest(
+			EventType.HIDE_ENABLED, 
+			'getHideEnabled', 
+			'setHideEnabled', [
+				[false, false],
+				[true, true],
+				[false, true],
+				[true, false]
+			]
+		);
+	}
+
+	function testPinEnabled() {
+		initialValueTest('pinEnabled', false, model_.getPinEnabled());
+		mutatorTest('pinEnabled', 'getPinEnabled', 'setPinEnabled', [true, false, false, true]);
+		propertyChangeTest(
+			EventType.PIN_ENABLED, 
+			'getPinEnabled', 
+			'setPinEnabled', [
+				[false, false],
+				[true, true],
+				[false, true],
+				[true, false]
+			]
+		);
+	}
+
+	function testFavoritedEnabled() {
+		initialValueTest('favoritedEnabled', false, model_.getFavoritedEnabled());
+		mutatorTest('favoritedEnabled', 'getFavoritedEnabled', 'setFavoritedEnabled', [true, false, false, true]);
+
+		propertyChangeTest(
+			EventType.FAVORITED_ENABLED, 
+			'getFavoritedEnabled', 
+			'setFavoritedEnabled', [
+				[false, false],
+				[true, true],
+				[false, true],
+				[true, false]
+			]
+		);
+	}
+
+	function testFullScreenEnabled() {
+		initialValueTest('fullscreenEnabled', false, model_.getFullScreenEnabled());
+		mutatorTest('fullscreenEnabled', 'getFullScreenEnabled', 'setFullScreenEnabled', [true, false, false, true]);
+		propertyChangeTest(
+			EventType.FULLSCREEN_ENABLED,
+			'getFullScreenEnabled', 
+			'setFullScreenEnabled', [
+				[false, false],
+				[true, true],
+				[false, true],
+				[true, false]
+			]
+		);
+	}
+
+	function testLikeEnabled() {
+		initialValueTest('likeEnabled', false, model_.getLikeEnabled());
+		mutatorTest('likeEnabled', 'getLikeEnabled', 'setLikeEnabled', [true, false, false, true]);
+		propertyChangeTest(
+			EventType.LIKE_ENABLED, 
+			'getLikeEnabled', 
+			'setLikeEnabled', [
+				[false, false],
+				[true, true],
+				[false, true],
+				[true, false]
+			]
+		);
+	}
+
+	function testDislikeEnabled() {
+		initialValueTest('dislikeEnabled', false, model_.getDislikeEnabled());
+		mutatorTest('dislikeEnabled', 'getDislikeEnabled', 'setDislikeEnabled', [true, false, false, true]);
+		propertyChangeTest(
+			EventType.DISLIKE_ENABLED, 
+			'getDislikeEnabled', 
+			'setDislikeEnabled', [
+				[false, false],
+				[true, true],
+				[false, true],
+				[true, false]
+			]
+		);
+	}
+
+	function testFeaturedEnabled() {
+		initialValueTest('featuredEnabled', false, model_.getFeaturedEnabled());
+		mutatorTest('featuredEnabled', 'getFeaturedEnabled', 'setFeaturedEnabled', false, [true, false, false, true]);
+		propertyChangeTest(
+			EventType.FEATURED_ENABLED, 
+			'getFeaturedEnabled', 
+			'setFeaturedEnabled', [
+				[false, false],
+				[true, true],
+				[false, true],
+				[true, false]
+			]
+		);
+	}
+
+	function testPromoteEnabled() {
+		initialValueTest('promoteEnabled', false, model_.getPromoteEnabled());
+		mutatorTest('promoteEnabled', 'getPromoteEnabled', 'setPromoteEnabled', false, [true, false, false, true]);
+		propertyChangeTest(
+			EventType.PROMOTE_ENABLED, 
+			'getPromoteEnabled', 
+			'setPromoteEnabled', [
+				[false, false],
+				[true, true],
+				[false, true],
+				[true, false]
+			]
+		);
+	}
+
+	function testControlsEnabled() {
+		initialValueTest('controlsEnabled', false, model_.getControlsEnabled());
+		mutatorTest('controlsEnabled', 'getControlsEnabled', 'setControlsEnabled', false, [true, false, false, true]);
+		propertyChangeTest(
+			'controlsEnabled', 
+			'getControlsEnabled', 
+			'setControlsEnabled', [
+				[false, false],
+				[true, true],
+				[false, true],
+				[true, false]
+			]
+		);
+	}
+
+	/*
+	function testAniamtion(){
+		var testDelay = 300;
+		var time = 0;
+		var main = s6.Main.getInstance();
+		var model = main.getModel();
+		//enable buttons
+		setTimeout(goog.bind(model.setPinEnabled, model, true), time += testDelay);
+		setTimeout(goog.bind(model.setFavoritedEnabled, model, true), time += testDelay);
+		setTimeout(goog.bind(model.setFeaturedEnable, model, true), time += testDelay);
+		setTimeout(goog.bind(model.setDislikeEnabled, model, true), time += testDelay);
+		setTimeout(goog.bind(model.setLikeEnabled, model, true), time += testDelay);
+		setTimeout(goog.bind(model.setFullScreenEnabled, model, true), time += testDelay);
+
+		//disable buttons
+		setTimeout(goog.bind(model.setPinEnabled, model, false), time += testDelay);
+		setTimeout(goog.bind(model.setFavoritedEnabled, model, false), time += testDelay);
+		setTimeout(goog.bind(model.setFeaturedEnable, model, false), time += testDelay);
+		setTimeout(goog.bind(model.setDislikeEnabled, model, false), time += testDelay);
+		setTimeout(goog.bind(model.setLikeEnabled, model, false), time += testDelay);
+		setTimeout(goog.bind(model.setFullScreenEnabled, model, false), time += testDelay);
+	}
+	*/
+
+</script>
+</body>
+</html>
