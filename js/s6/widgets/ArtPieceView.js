@@ -19,7 +19,6 @@ goog.scope(function(){
 	 */
 	s6.widgets.ArtPieceView = function(opt_domHelper){
 		Component.call(this, opt_domHelper);
-		this.render(document.body);
 	};
 	goog.inherits(s6.widgets.ArtPieceView, Component);
 
@@ -84,6 +83,9 @@ goog.scope(function(){
 		this.onLikeEnabledChanged_(null);
 		this.onDislikeEnabledChanged_(null);
 		this.onFeaturedEnabledChanged_(null);
+		this.onShoppingCartEnabledChanged_(null);
+
+
 	};
 
 	/** @inheritDoc */
@@ -114,17 +116,19 @@ goog.scope(function(){
 						this.toolContainer = dom.createDom(
 							'div',
 							{'class' : 'tool-container'},
-							this.pinButton = dom.createDom(
+							this.shoppingCartButton = dom.createDom(
 								'div',
-								{'class' : 'pin-button'}
-							), 
+								{'class' : 'shopping-cart-button'}
+							),
+
 							this.favoriteButton = dom.createDom(
 								'div',
 								{'class' : 'favorite-button'}
 							),
-							this.featuredIcon = dom.createDom(
+
+							this.pinButton = dom.createDom(
 								'div',
-								{'class' : 'featured-icon'}
+								{'class' : 'pin-button'}
 							),
 							this.dislikeButton = dom.createDom(
 								'div',
@@ -133,6 +137,10 @@ goog.scope(function(){
 							this.likeButton = dom.createDom(
 								'div',
 								{'class' : 'like-button'}
+							),
+							this.featuredIcon = dom.createDom(
+								'div',
+								{'class' : 'featured-icon'}
 							),
 							this.fullscreenButton = dom.createDom(
 								'div',
@@ -144,9 +152,24 @@ goog.scope(function(){
 			)
 		;
 
+		this.addButtonListeners();
+		function addButtonListeners(){
+			goog.events.listen(this.artContainer, 'click', this.artPieceController_.onArtContainerClick);
+			goog.events.listen(this.toolContainer, 'click', this.artPieceController_.onToolContainerClick);
+			goog.events.listen(this.shoppingCartButton, 'click', this.artPieceController_.onShoppingCartButtonClick);
+			goog.events.listen(this.favoriteButton, 'click', this.artPieceController_.onFavoriteButtonClick);
+			goog.events.listen(this.pinButton, 'click', this.artPieceController_.onPinButtonClick);
+			goog.events.listen(this.dislikeButton, 'click', this.artPieceController_.onDislikeButtonClick);
+			goog.events.listen(this.likeButton, 'click', this.artPieceController_.onLikeButtonClick);
+			goog.events.listen(this.featuredIcon, 'click', this.artPieceController_.onFeaturedIconClick);
+			goog.events.listen(this.fullscreenButton, 'click', this.artPieceController_.onFullscreenButtonClick);
+		}
+
 		this.setElementInternal(artViewRoot);
 		this.invalidate();
 	};
+
+
 
 	/** @inheritDoc */
 	s6.widgets.ArtPieceView.prototype.enterDocument = function(){
@@ -161,72 +184,79 @@ goog.scope(function(){
 		goog.events.listen(artPieceModel, ArtPieceModel_EventType.LIKE_ENABLED, this.onLikeEnabledChanged_, false, this);
 		goog.events.listen(artPieceModel, ArtPieceModel_EventType.DISLIKE_ENABLED, this.onDislikeEnabledChanged_, false, this);
 		goog.events.listen(artPieceModel, ArtPieceModel_EventType.FEATURED_ENABLED, this.onFeaturedEnabledChanged_, false, this);
+		goog.events.listen(artPieceModel, ArtPieceModel_EventType.SHOPPING_CART_ENABLED, this.onShoppingCartEnabledChanged_, false, this);
+
 		this.invalidate();
 	};
 
 	s6.widgets.ArtPieceView.prototype.onProductTypeChanged_ = function(event){
-		goog.dom.setProperty(
+		var dataAttributeName = 'data-' + goog.string.toSelectorCase(ArtPieceModel_EventType.PRODUCT_TYPE);
+		var dataAttributes = {};
+		dataAttributes[dataAttributeName] = this.artPieceModel_.getProductType();
+		
+		goog.dom.setProperties(
 			this.getContentElement(),
-			'data-' + goog.string.toSelectorCase(ArtPieceModel_EventType.PRODUCT_TYPE),
-			this.artPieceModel_.getProductType()
+			dataAttributes
 		);
 	};
 
 	s6.widgets.ArtPieceView.prototype.onHideEnabledChanged_ = function(event){
-		goog.dom.setProperty(
+		var dataAttributeName = 'data-' + goog.string.toSelectorCase(ArtPieceModel_EventType.HIDE_ENABLED);
+		var dataAttributes = {};
+		dataAttributes[dataAttributeName] = this.artPieceModel_.getHideEnabled();
+
+		goog.dom.setProperties(
 			this.getContentElement(),
-			'data-' + goog.string.toSelectorCase(ArtPieceModel_EventType.HIDE_ENABLED),
-			this.artPieceModel_.getHideEnabled()
+			dataAttributes
 		);
 	};
 
 	s6.widgets.ArtPieceView.prototype.onPinEnabledChanged_ = function(event){
-		goog.dom.setProperty(
+		goog.dom.setProperties(
 			this.pinButton,
-			'data-enabled',
-			this.artPieceModel_.getPinEnabled()
+			{'data-enabled': this.artPieceModel_.getPinEnabled()}
 		);
 	};
 
 	s6.widgets.ArtPieceView.prototype.onFavoritedEnabledChanged_ = function(event){
-		goog.dom.setProperty(
+		goog.dom.setProperties(
 			this.favoriteButton,
-			'data-enabled',
-			this.artPieceModel_.getFavoritedEnabled()
+			{'data-enabled' : this.artPieceModel_.getFavoritedEnabled()}
 		);
 	};
 
 	s6.widgets.ArtPieceView.prototype.onFullscreenEnabledChanged_ = function(event){
-		goog.dom.setProperty(
+		goog.dom.setProperties(
 			this.fullscreenButton,
-			'data-enabled',
-			this.artPieceModel_.getFullScreenEnabled()
+			{'data-enabled': this.artPieceModel_.getFullScreenEnabled()}
 		);
 	};
 
 	s6.widgets.ArtPieceView.prototype.onLikeEnabledChanged_ = function(event){
-		goog.dom.setProperty(
+		goog.dom.setProperties(
 			this.likeButton,
-			'data-enabled',
-			this.artPieceModel_.getLikeEnabled()
+			{'data-enabled': this.artPieceModel_.getLikeEnabled()}
 		);
 	};
 
 	s6.widgets.ArtPieceView.prototype.onDislikeEnabledChanged_ = function(event){
-		goog.dom.setProperty(
+		goog.dom.setProperties(
 			this.dislikeButton,
-			'data-enabled',
-			this.artPieceModel_.getDislikeEnabled()
+			{'data-enabled': this.artPieceModel_.getDislikeEnabled()}
 		);
 	};
 
 	s6.widgets.ArtPieceView.prototype.onFeaturedEnabledChanged_ = function(event){
-		goog.dom.setProperty(
+		goog.dom.setProperties(
 			this.featuredIcon,
-			'data-enabled',
-			this.artPieceModel_.getFeaturedEnabled()
+			{'data-enabled': this.artPieceModel_.getFeaturedEnabled()}
 		);
 	};
 
-	s6.widgets.ArtPieceView.prototype.logger_ = Logger.getLogger('s6.widgets.ArtPieceView');
+	s6.widgets.ArtPieceView.prototype.onShoppingCartEnabledChanged_ = function(event){
+		goog.dom.setProperties(
+			this.shoppingCartButton,
+			{'data-enabled': this.artPieceModel_.getShoppingCartEnabled()}
+		);
+	};
 });

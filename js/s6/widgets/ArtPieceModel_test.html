@@ -27,23 +27,19 @@ See the COPYING file for details.
 	var EventType = s6.widgets.ArtPieceModel.EventType
 
 	function setUp() {
-		console.log('setUp')
 		model_ = new s6.widgets.ArtPieceModel();
 	}
 
 	function tearDown() {
-		console.log('tearDown')
 		model_.dispose();
 		model_ = null;
 	}
 
 	function initialValueTest(propertyName, initialValue, currentValue){
-		console.log('initialValueTest')
 		assertEquals('Initial value for ' + propertyName + ':', initialValue, currentValue);
 	}
 	// Run a test for 60s and see how many counts we get
 	function mutatorTest(propertyName, getterName, setterName, mutatedValues) {
-		console.log('mutatorTest')
 		for(var i = 0; i < mutatedValues.length; ++i){
 			var newValue = mutatedValues[i];
 			model_[setterName](newValue);
@@ -56,8 +52,6 @@ See the COPYING file for details.
 	};
 
 	function propertyChangeTest(propertyName, getterName, setterName, mutatedValuesVector) {
-		console.log('propertyChangeTest');
-
 		goog.events.listen(model_, propertyName, onPropertyChange);
 		for(var i = 0; i < mutatedValuesVector.length; ++i){
 

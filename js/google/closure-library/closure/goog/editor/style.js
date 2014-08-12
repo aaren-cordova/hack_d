@@ -150,7 +150,7 @@ goog.editor.style.makeUnselectable = function(element, eventHandler) {
         goog.editor.style.cancelMouseDownHelper_, true);
   }
 
-  goog.style.          Unselectable(element, true);
+  goog.style.setUnselectable(element, true);
 
   // Make inputs and text areas selectable.
   var inputs = element.getElementsByTagName(goog.dom.TagName.INPUT);

@@ -162,6 +162,7 @@ See the COPYING file for details.
     goog.userAgent.WINDOWS = true;
     goog.userAgent.LINUX = false;
     goog.userAgent.IE = true;
+    goog.userAgent.DOCUMENT_MODE = 7;
     goog.userAgent.GECKO = false;
     goog.userAgent.WEBKIT = false;
     goog.events.KeyHandler.USES_KEYDOWN_ = true;
@@ -661,6 +662,23 @@ See the COPYING file for details.
     assertFalse(inputHandler.separatorCheck_.test(''));
     assertFalse(inputHandler.separatorCheck_.test('x'));
     assertTrue(inputHandler.separatorCheck_.test(','));
+  }
+
+  function testMultipleSeparatorUsesEmptyDefaults() {
+    var inputHandler = new goog.ui.ac.InputHandler(',\n', null, true);
+    inputHandler.setWhitespaceWrapEntries(false);
+    inputHandler.setSeparators(',\n', '');
+
+    // Set up our input handler with the necessary mocks
+    var mockAutoCompleter = new MockAutoCompleter();
+    inputHandler.ac_ = mockAutoCompleter;
+    inputHandler.activeElement_ = mockElement;
+    mockElement.value = 'bob,wal';
+    inputHandler.setCursorPosition(8);
+
+    inputHandler.setTokenText('waldo', true /* multi-row */);
+
+    assertEquals('bob,waldo', mockElement.value);
   }
 
 </script>

@@ -10,6 +10,16 @@ goog.scope(function(){
 	*/
 	s6.widgets.IArtPieceModel = function(){};
 
+
+	/** @return {Node} */
+	s6.widgets.IArtPieceModel.prototype.getArtPieceNode = function(){};
+
+	/** 
+	 * @param {Node} artPieceNode
+	 * @return {s6.widgets.IArtPieceModel}
+	 */
+	s6.widgets.IArtPieceModel.prototype.setArtPieceNode = function(artPieceNode){};
+
 	/** 
 	 * @param {string} name
 	 * @param {*} opt_value
@@ -114,4 +124,13 @@ goog.scope(function(){
 	 * @return {s6.widgets.IArtPieceModel}
 	 */
 	s6.widgets.IArtPieceModel.prototype.setControlsEnabled = function(isEnabled){};
+
+	/** @return {boolean} */
+	s6.widgets.IArtPieceModel.prototype.getShoppingCartEnabled = function(){};
+
+	/** 
+	 * @param {boolean} isEnabled
+	 * @return {s6.widgets.IArtPieceModel}
+	 */
+	s6.widgets.IArtPieceModel.prototype.setShoppingCartEnabled = function(isEnabled){};
 });

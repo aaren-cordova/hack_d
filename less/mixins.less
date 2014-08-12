@@ -1,10 +1,4 @@
-//
-// Mixins
-// --------------------------------------------------
-
-
-// Utilities
-// --------------------------------------------------
+@import "variables.less";
 
 // Clearfix
 .clearfix {
@@ -36,6 +30,7 @@
 	left:50%;
 	top:50%;
 }
+
 .center-horizontal(@width, @position:relative){
 	position:@position;
 	margin-left:-@width / 2;
@@ -48,7 +43,7 @@
 	top:50%;
 }
 
-.content-width-only{
+.content-width-only(){
 	margin-left:0;
 	margin-right:0;
 
@@ -59,7 +54,7 @@
 	border-right:0;
 }
 
-.content-height-only{
+.content-height-only(){
 	margin-top:0;
 	margin-bottom:0;
 
@@ -70,7 +65,7 @@
 	border-bottom:0;
 }
 
-.content-size-only{
+.content-size-only(){
 	margin:0;
 	padding:0;
 	border:0;
@@ -194,7 +189,7 @@
 		}
 	}
 
-	#fontello:{
+	#fontello{
 		.s6(){
 			.font-family(){
 				font-family: "fontello";
@@ -240,69 +235,5 @@
 		border-top: @width solid @color;
 		border-left: @width solid @bg;
 		border-right: @width solid @bg;
-	}
-}
-
-#ribbon {
-	.defaultRibbonEnd(@size: 15px) {
-		content: '';
-		border-top: @size solid rgba(0, 0, 0, 0);
-		border-bottom: @size solid rgba(0, 0, 0, 0);
-		position: absolute;
-		top: -2px;
-	}
-	.background(@fontSize: 14px; @padding: 5px 15px 4px 7px) {
-		background: @topaz;
-		color: @white;
-		padding: @padding;
-		text-transform: uppercase;
-		font-size: @fontSize; // overriding .Heading#
-		position: relative;
-		letter-spacing: 1px;
-
-	}
-	.left(@width: 10px) {
-		#ribbon > .defaultRibbonEnd();
-		border-left: @width solid @white;
-		left: -2px;
-	}
-	.right(@width: 10px; @size: 15px) {
-		#ribbon > .defaultRibbonEnd(@size);
-		border-right: @width solid @white;
-		right: -2px;
-	}
-}
-
-#slide_tab {
-	.defaultTab(@width: 38px; @height: 60px; @bgcolor: @slate) {
-		.size(@width, @height);
-		display: block;
-		z-index: 2;
-		background-color: @bgcolor;
-		border: 2px solid #ffffff;
-	}
-
-	.defaultFont(@size: 34px;) {
-		color: white;
-		font-size: @size;
-		text-align: center;
-	}
-
-	.prev(@radius: 5px;) {
-		#slide_tab > .defaultTab();
-		#slide_tab > .defaultFont();
-		left: 0px;
-		.border-right-radius(@radius);
-		border-left: 0px;
-		.center-vertical(80px ,absolute);
-	}
-
-	.next(@radius: 5px;)	{
-		#slide_tab > .defaultTab();
-		#slide_tab > .defaultFont();
-		right: 0px;
-		.border-left-radius(@radius);
-		border-right: 0px;
-		.center-vertical(80px ,absolute);
 	}
 }

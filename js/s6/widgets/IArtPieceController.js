@@ -14,11 +14,29 @@ goog.scope(function(){
 
 	s6.widgets.IArtPieceController.prototype.onFavoriteButtonClick = function(event){};
 
-	s6.widgets.IArtPieceController.prototype.onFullScreenButtonClick = function(event){};
+	s6.widgets.IArtPieceController.prototype.onFullscreenButtonClick = function(event){};
 
 	s6.widgets.IArtPieceController.prototype.onLikeButtonClick = function(event){};
 
 	s6.widgets.IArtPieceController.prototype.onDislikeButtonClick = function(event){};
 
 	s6.widgets.IArtPieceController.prototype.onPromoteButtonClick = function(event){};
+
+	s6.widgets.IArtPieceController.prototype.onArtContainerClick = function(event){};
+
+	s6.widgets.IArtPieceController.prototype.onShoppingCartButtonClick = function(event){};
+
+	s6.widgets.IArtPieceController.prototype.onFeaturedIconClick = function(event){};
+	
+	s6.widgets.IArtPieceController.prototype.onToolContainerClick = function(event){};
 });
+
+
+
+
+
+
+
+
+
+

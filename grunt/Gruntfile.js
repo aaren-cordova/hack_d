@@ -24,6 +24,8 @@ module.exports = function (grunt) {
 				},
 				files: {
 					// target.css file: source.less file
+					"../bin/css/variables.css": "../less/variables.less",
+					"../bin/css/mixins.css": "../less/mixins.less",
 					"../bin/css/main.css": "../less/main.less"
 				}
 			}
@@ -79,10 +81,10 @@ module.exports = function (grunt) {
 
 			s6: {
 				src: [
-					//'../bin/js/dev_closureBuilder.js'
+					'../bin/js/dev_closureBuilder.js'
 				],
 
-				dest: '../js/bin/dev.js'
+				dest: '../bin/js/dev.js'
 			},
 
 			css:{
@@ -152,8 +154,7 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('dev', [
 		'jshint',
-		'closureDepsWriter:s6',
-		//'closureLint'//,
+		//'closureDepsWriter:s6',
 		'closureBuilder:s6',
 		'less:s6',
 		'concat:s6'

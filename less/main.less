@@ -1,11 +1,71 @@
-.show(){
-	display:block;
-}
-
-.hide(){
-	display:none;
-}
+@import "mixins.less";
 
 body{
-	.hide();
+	@ART_PIECE-WIDTH:100px;
+	@ART_PIECE-HEIGHT:100px;
+	
+	@ART_PIECE-ART_CONTAINER-WIDTH:90px;
+	@ART_PIECE-ART_CONTAINER-HEIGHT:90px;
+	@ART_PIECE-ART_CONTAINER-TOOL_CONTAINER-HORIZONTAL_MARGIN:10px;
+
+	.art-piece{
+		.size(@ART_PIECE-WIDTH, @ART_PIECE-HEIGHT);
+		.content-size-only();
+		
+		display:inline;
+
+		.art-container{
+			.size(@ART_PIECE-ART_CONTAINER-WIDTH, @ART_PIECE-ART_CONTAINER-HEIGHT);
+			.content-size-only();
+			
+			display:inline;
+
+			.tool-container{
+				display:inline;
+				margin-left:@ART_PIECE-ART_CONTAINER-TOOL_CONTAINER-HORIZONTAL_MARGIN;
+
+				.pin-button,
+				.favorite-button,
+				.featured-icon,
+				.dislike-button,
+				.like-button,
+				.fullscreen-button{
+				}
+
+				.pin-button{
+					display:none;
+				}
+
+				.shopping-cart-button{
+					display:inline;
+					left:0px;
+					top:0px;
+				}
+
+				.favorite-button{
+					display:inline;
+					right:0px;
+					top:0px;
+				}
+
+				.dislike-button{
+					display:none;
+				}
+
+				.like-button{
+					display:none;
+				}
+				.featured-icon{
+					display:inline;
+					left:0px;
+					bottom:0px;
+				}
+				.fullscreen-button{
+					display:inline;
+					right:0px;
+					bottom:0px;
+				}
+			}
+		}
+	}
 }

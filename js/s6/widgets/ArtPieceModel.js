@@ -44,6 +44,19 @@ goog.scope(function(){
 		return this;
 	};
 
+	/** @return {Node} */
+	s6.widgets.ArtPieceModel.prototype.getArtPieceNode = function(){
+		return this.getProperty("artPieceNode", null);
+	};
+
+	/** 
+	 * @param {Node} artPieceNode
+	 * @return {s6.widgets.IArtPieceModel}
+	 */
+	s6.widgets.ArtPieceModel.prototype.setArtPieceNode = function(artPieceNode){
+		return this.setProperty("artPieceNode", artPieceNode);
+	};
+
 	/** @return {string} */
 	s6.widgets.ArtPieceModel.prototype.getProductType = function(){
 		return this.getProperty("productType", "");

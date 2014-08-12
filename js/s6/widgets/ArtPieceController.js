@@ -1,8 +1,11 @@
 goog.require('s6.widgets.IArtPieceController');
 goog.require('s6.widgets.IArtPieceModel');
+goog.require('s6.widgets.ArtPieceModel.EventType');
 
 goog.provide('s6.widgets.ArtPieceController');
 goog.scope(function(){
+	var ArtPieceModel_EventType = s6.widgets.ArtPieceModel.EventType;
+
 	/**
 	 * @constructor
 	 * @implements {s6.widgets.IArtPieceController}
@@ -15,6 +18,33 @@ goog.scope(function(){
 	 */
 	s6.widgets.ArtPieceController.prototype.setArtPieceModel = function(artPieceModel){
 		this.artPieceModel_ = artPieceModel;
+
+		goog.events.listen(artPieceModel, ArtPieceModel_EventType.FULLSCREEN_ENABLED, this.onFullscreenEnabledChanged_, false, this);
+		goog.events.listen(artPieceModel, ArtPieceModel_EventType.SHOPPING_CART_ENABLED, this.onShoppingCartEnabledChanged_, false, this);
+	};
+	
+
+	s6.widgets.ArtPiectController.prototype.onFullscreenEnabledChanged_ = function(event){
+		// TODO - show site stunt
+	};
+
+	s6.widgets.ArtPiectController.prototype.onShoppingCartEnabledChanged_ = function(event){
+		if(this.artPieceModel_.getShoppingCartEnabled()){
+			this.addToShoppingCart_();
+		}
+		else{
+			this.removeFromShoppingCart_();
+		}
+	};
+
+	/** @private */
+	s6.widgets.ArtPieceController.prototype.addToShoppingCart_ = function(){
+		// TODO
+	};
+
+	/** @private */
+	s6.widgets.ArtPieceController.prototype.removeFromShoppingCart_ = function(){
+		// TODO
 	};
 
 	s6.widgets.ArtPieceController.prototype.onPinButtonClick = function(event){
@@ -41,6 +71,23 @@ goog.scope(function(){
 
 	s6.widgets.ArtPieceController.prototype.onPromoteButtonClick = function(event){
 		this.artPieceModel_.setPromoteEnabled(!this.artPieceModel_.getPromoteEnabled());
+	};
+
+	s6.widgets.ArtPieceController.prototype.onArtContainerClick = function(event){
+		// Do nothing
+	};
+
+	s6.widgets.ArtPieceController.prototype.onShoppingCartButtonClick = function(event){
+		this.artPieceModel_.setShoppingCartEnabled(!this.artPieceModel_.getShoppingCartEnabled());
+
+	};
+
+	s6.widgets.ArtPieceController.prototype.onFeaturedIconClick = function(event){
+		// Do nothing
+	};
+
+	s6.widgets.ArtPieceController.prototype.onToolContainerClick = function(event){
+		// Do nothing
 	};
 
 	goog.exportProperty(s6.widgets.ArtPieceController.prototype, 'onPinButtonClick', s6.widgets.ArtPieceController.prototype.onPinButtonClick);
