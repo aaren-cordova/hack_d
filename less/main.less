@@ -1,12 +1,18 @@
-@import "mixins.less";
+@import "../less/mixins.less";
 
 body{
-	@ART_PIECE-WIDTH:100px;
-	@ART_PIECE-HEIGHT:100px;
+	@ART_PIECE-WIDTH:192px;
+	@ART_PIECE-HEIGHT:192px;
 	
-	@ART_PIECE-ART_CONTAINER-WIDTH:90px;
-	@ART_PIECE-ART_CONTAINER-HEIGHT:90px;
-	@ART_PIECE-ART_CONTAINER-TOOL_CONTAINER-HORIZONTAL_MARGIN:10px;
+	@DEFAULT_ANIMATION_TIME:"300ms";
+
+
+	@ART_PIECE-TOOL_CONTAINER-WIDTH:100%;
+	@ART_PIECE-TOOL_CONTAINER-HEIGHT:30px;
+	@ART_PIECE-TOOL_CONTAINER-PADDING_LEFT:10px;
+	@ART_PIECE-TOOL_CONTAINER-PADDING_RIGHT:@ART_PIECE-TOOL_CONTAINER-PADDING_LEFT;
+	@ART_PIECE-TOOL_CONTAINER-BUTTON-WIDTH:16px;
+	@ART_PIECE-TOOL_CONTAINER-BUTTON-HEIGHT:16px;
 
 	.art-piece{
 		.size(@ART_PIECE-WIDTH, @ART_PIECE-HEIGHT);
@@ -15,57 +21,60 @@ body{
 		display:inline;
 
 		.art-container{
-			.size(@ART_PIECE-ART_CONTAINER-WIDTH, @ART_PIECE-ART_CONTAINER-HEIGHT);
-			.content-size-only();
-			
-			display:inline;
+			&:hover .tool-container{
+				opacity: 1;
+			}
 
 			.tool-container{
-				display:inline;
-				margin-left:@ART_PIECE-ART_CONTAINER-TOOL_CONTAINER-HORIZONTAL_MARGIN;
+				.size(
+					@ART_PIECE-TOOL_CONTAINER-WIDTH,
+					@ART_PIECE-TOOL_CONTAINER-HEIGHT
+				);
+				.transition("opacity @{DEFAULT_ANIMATION_TIME}");
 
-				.pin-button,
-				.favorite-button,
-				.featured-icon,
-				.dislike-button,
-				.like-button,
-				.fullscreen-button{
-				}
+				opacity: 0;
+				position:absolute;
+				background-color: #AAAAAA;
+				cursor:pointer;
+				left:0px;
+				top:@ART_PIECE-HEIGHT - @ART_PIECE-TOOL_CONTAINER-HEIGHT;
 
-				.pin-button{
-					display:none;
-				}
+				[class*="-button"]{
+					.size(@ART_PIECE-TOOL_CONTAINER-BUTTON-WIDTH, @ART_PIECE-TOOL_CONTAINER-BUTTON-HEIGHT);
+					.center-vertical(@ART_PIECE-TOOL_CONTAINER-BUTTON-HEIGHT);
+					.transition("opacity @{DEFAULT_ANIMATION_TIME}");
 
-				.shopping-cart-button{
-					display:inline;
-					left:0px;
-					top:0px;
+					display:block;
+					position:absolute;
+
+
+					&[data-enabled="false"]{
+						opacity: .5;
+					}
+
+					&[data-enabled="true"]{
+						opacity: 1;
+					}
 				}
 
 				.favorite-button{
-					display:inline;
-					right:0px;
-					top:0px;
+					display:block;
+					left:@ART_PIECE-TOOL_CONTAINER-PADDING_LEFT;
+					background-color: #FFFF00;
 				}
 
-				.dislike-button{
-					display:none;
-				}
-
-				.like-button{
-					display:none;
-				}
-				.featured-icon{
-					display:inline;
-					left:0px;
-					bottom:0px;
+				.promote-button{
+					display:block;
+					left:@ART_PIECE-WIDTH / 2 - (@ART_PIECE-TOOL_CONTAINER-HEIGHT / 2);
+					background-color: #FF0000;
 				}
 				.fullscreen-button{
-					display:inline;
-					right:0px;
-					bottom:0px;
+					display:block;
+					right:@ART_PIECE-TOOL_CONTAINER-PADDING_RIGHT;
+					background-color: #111111;
 				}
 			}
+
 		}
 	}
 }

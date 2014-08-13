@@ -32,7 +32,6 @@ goog.scope(function(){
 			this.models.push(model);
 
 			model.setArtPieceNode(itemWrap);
-			view.render(jQuery(itemWrap).parent());
 		}
 	};
 
