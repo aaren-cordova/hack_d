@@ -176,9 +176,24 @@ goog.scope(function(){
 	};
 
 	/** @return {boolean} */
+	s6.widgets.ArtPieceModel.prototype.getShoppingCartEnabled = function(){
+		return this.getProperty("shoppingCartEnabled", false);
+	};
+
+	/** 
+	 * @param {boolean} isEnabled
+	 * @return {s6.widgets.IArtPieceModel}
+	 */
+	s6.widgets.ArtPieceModel.prototype.setShoppingCartEnabled = function(isEnabled){
+		goog.asserts.assertBoolean(isEnabled);
+		return this.setProperty("shoppingCartEnabled", isEnabled);
+	};
+
+	/** @return {boolean} */
 	s6.widgets.ArtPieceModel.prototype.getControlsEnabled = function(){
 		return this.getProperty("controlsEnabled", false);
 	};
+
 
 	/** 
 	 * @param {boolean} isEnabled
@@ -310,10 +325,12 @@ goog.scope(function(){
 
 	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "getControlsEnabled", s6.widgets.ArtPieceModel.prototype.getControlsEnabled);
 	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "setControlsEnabled", s6.widgets.ArtPieceModel.prototype.setControlsEnabled);
+
+	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "getShoppingCartEnabled", s6.widgets.ArtPieceModel.prototype.getShoppingCartEnabled);
+	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "setShoppingCartEnabled", s6.widgets.ArtPieceModel.prototype.setShoppingCartEnabled);
 });
 
 goog.provide("s6.widgets.ArtPieceModel.EventType");
-
 goog.scope(function(){
 	/** @enum {string} */
 	s6.widgets.ArtPieceModel.EventType = {
@@ -325,6 +342,8 @@ goog.scope(function(){
 		LIKE_ENABLED: "likeEnabled",
 		DISLIKE_ENABLED: "dislikeEnabled",
 		FEATURED_ENABLED: "featuredEnabled",
+		SHOPPING_CART_ENABLED: "shoppingCartEnabled",
+		ART_PIECE_NODE: "artPieceNode",
 		PROMOTE_ENABLED: "promoteEnabled"
 	};
 

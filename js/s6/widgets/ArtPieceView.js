@@ -3,11 +3,15 @@ goog.require('s6.widgets.IArtPieceController');
 goog.require('s6.widgets.ArtPieceModel.EventType');
 goog.require('goog.dom.DomHelper');
 goog.require('goog.ui.Component');
+goog.require('goog.asserts');
 goog.require('goog.debug.Logger');
 goog.require('goog.dom');
 
 goog.provide('s6.widgets.ArtPieceView');
 goog.scope(function(){
+	var events = goog.events;
+	var EventType = goog.events.EventType;
+
 	var ArtPieceModel_EventType = s6.widgets.ArtPieceModel.EventType;
 	var Logger = goog.debug.Logger;
 	var Component = goog.ui.Component;
@@ -28,6 +32,18 @@ goog.scope(function(){
 	 */
 	s6.widgets.ArtPieceView.prototype.setArtPieceModel = function(artPieceModel){
 		this.artPieceModel_ = artPieceModel;
+
+		events.listen(artPieceModel, ArtPieceModel_EventType.ART_PIECE_NODE, this.onArtPieceNodeChanged_, false, this);
+		events.listen(artPieceModel, ArtPieceModel_EventType.PRODUCT_TYPE, this.onProductTypeChanged_, false, this);
+		events.listen(artPieceModel, ArtPieceModel_EventType.HIDE_ENABLED, this.onHideEnabledChanged_, false, this);
+		events.listen(artPieceModel, ArtPieceModel_EventType.PIN_ENABLED, this.onPinEnabledChanged_, false, this);
+		events.listen(artPieceModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_, false, this);
+		events.listen(artPieceModel, ArtPieceModel_EventType.FULLSCREEN_ENABLED, this.onFullscreenEnabledChanged_, false, this);
+		events.listen(artPieceModel, ArtPieceModel_EventType.LIKE_ENABLED, this.onLikeEnabledChanged_, false, this);
+		events.listen(artPieceModel, ArtPieceModel_EventType.DISLIKE_ENABLED, this.onDislikeEnabledChanged_, false, this);
+		events.listen(artPieceModel, ArtPieceModel_EventType.FEATURED_ENABLED, this.onFeaturedEnabledChanged_, false, this);
+		events.listen(artPieceModel, ArtPieceModel_EventType.SHOPPING_CART_ENABLED, this.onShoppingCartEnabledChanged_, false, this);
+
 		return this;
 	};
 
@@ -40,41 +56,10 @@ goog.scope(function(){
 		return this;
 	};
 
-	// TODO remove
-	s6.widgets.ArtPieceView.prototype.getS6Item = function (){
-		var dom = this.dom_;
-		return dom.createDom(
-			'div',
-			{'class':'item_wrap', 'data-dmc':'prod-item-wrap'},
-			dom.createDom(
-				'div', 
-				{'class':'image_wrap'},
-				dom.createDom(
-					'a',
-					{'href': '', 'data-dmc': 'prod-image'},
-					dom.createDom(
-						'img',
-						{'class': 'photo size-j', 'width': 200, 'height': 200, 'alt': '', 'src': 'http://a1.s6img.com/cdn/0010/p/2583372_7359597-prn01_j.jpg'}
-					)
-				),
-				dom.createDom(
-					'h2',
-					undefined,
-					dom.createDom(
-						'a',
-						{'href': '', 'data-dmc': 'prod-title'},
-						'Reassurance'
-					)
-				)
-			),
-			dom.createDom(
-				'span',
-				{'class': 'fr', 'data-dmc': 'prod-price'},
-				'$15.00'
-			)
-		);
-	};
+	
+
 	s6.widgets.ArtPieceView.prototype.invalidate = function(){
+		this.onArtPieceNodeChanged_(null);
 		this.onProductTypeChanged_(null);
 		this.onHideEnabledChanged_(null);
 		this.onPinEnabledChanged_(null);
@@ -84,31 +69,17 @@ goog.scope(function(){
 		this.onDislikeEnabledChanged_(null);
 		this.onFeaturedEnabledChanged_(null);
 		this.onShoppingCartEnabledChanged_(null);
-
-
 	};
 
 	/** @inheritDoc */
 	s6.widgets.ArtPieceView.prototype.createDom = function(){
-		var id = this.makeId('art-piece');
-		//var element = dom.createDom('div');
-		// TODO REMOVE
-		var element = this.getS6Item();
-
-		this.decorateInternal(element);
-	};
-
-
-	/** @inheritDoc */
-	s6.widgets.ArtPieceView.prototype.decorateInternal = function(element){
 		var dom = this.dom_;
 		var artViewRoot = dom.createDom(
 				'div',
-				undefined,
-				element, 
+				{'id': this.makeId('art-piece'), 'class' : 'art-piece'},
 				dom.createDom(
 					'div',
-					{'id': this.makeId('art-piece'), 'class' : 'art-piece'},
+					undefined,
 					this.artContainer = dom.createDom(
 						'div',
 						{'class' : 'art-container'},
@@ -152,41 +123,37 @@ goog.scope(function(){
 			)
 		;
 
-		this.addButtonListeners();
-		function addButtonListeners(){
-			goog.events.listen(this.artContainer, 'click', this.artPieceController_.onArtContainerClick);
-			goog.events.listen(this.toolContainer, 'click', this.artPieceController_.onToolContainerClick);
-			goog.events.listen(this.shoppingCartButton, 'click', this.artPieceController_.onShoppingCartButtonClick);
-			goog.events.listen(this.favoriteButton, 'click', this.artPieceController_.onFavoriteButtonClick);
-			goog.events.listen(this.pinButton, 'click', this.artPieceController_.onPinButtonClick);
-			goog.events.listen(this.dislikeButton, 'click', this.artPieceController_.onDislikeButtonClick);
-			goog.events.listen(this.likeButton, 'click', this.artPieceController_.onLikeButtonClick);
-			goog.events.listen(this.featuredIcon, 'click', this.artPieceController_.onFeaturedIconClick);
-			goog.events.listen(this.fullscreenButton, 'click', this.artPieceController_.onFullscreenButtonClick);
-		}
-
-		this.setElementInternal(artViewRoot);
-		this.invalidate();
+		this.addButtonListeners_();
+		this.decorateInternal(artViewRoot);
 	};
 
+	/** @inheritDoc */
+	s6.widgets.ArtPieceView.prototype.decorateInternal = function(element){
+		this.setElementInternal(element);
+	};
 
+	/** @private */
+	s6.widgets.ArtPieceView.prototype.addButtonListeners_ = function (){
+		goog.asserts.assert(this.artPieceController_, 'Controller required before rendering');
+
+		events.listen(this.artContainer, EventType.CLICK, this.artPieceController_.onArtContainerClick);
+		events.listen(this.toolContainer, EventType.CLICK, this.artPieceController_.onToolContainerClick);
+		events.listen(this.shoppingCartButton, EventType.CLICK, this.artPieceController_.onShoppingCartButtonClick);
+		events.listen(this.favoriteButton, EventType.CLICK, this.artPieceController_.onFavoriteButtonClick);
+		events.listen(this.pinButton, EventType.CLICK, this.artPieceController_.onPinButtonClick);
+		events.listen(this.dislikeButton, EventType.CLICK, this.artPieceController_.onDislikeButtonClick);
+		events.listen(this.likeButton, EventType.CLICK, this.artPieceController_.onLikeButtonClick);
+		events.listen(this.featuredIcon, EventType.CLICK, this.artPieceController_.onFeaturedIconClick);
+		events.listen(this.fullscreenButton, EventType.CLICK, this.artPieceController_.onFullscreenButtonClick);
+	};
 
 	/** @inheritDoc */
 	s6.widgets.ArtPieceView.prototype.enterDocument = function(){
 		goog.base(this, 'enterDocument');
+	};
 
-		var artPieceModel = this.artPieceModel_;
-		goog.events.listen(artPieceModel, ArtPieceModel_EventType.PRODUCT_TYPE, this.onProductTypeChanged_, false, this);
-		goog.events.listen(artPieceModel, ArtPieceModel_EventType.HIDE_ENABLED, this.onHideEnabledChanged_, false, this);
-		goog.events.listen(artPieceModel, ArtPieceModel_EventType.PIN_ENABLED, this.onPinEnabledChanged_, false, this);
-		goog.events.listen(artPieceModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_, false, this);
-		goog.events.listen(artPieceModel, ArtPieceModel_EventType.FULLSCREEN_ENABLED, this.onFullscreenEnabledChanged_, false, this);
-		goog.events.listen(artPieceModel, ArtPieceModel_EventType.LIKE_ENABLED, this.onLikeEnabledChanged_, false, this);
-		goog.events.listen(artPieceModel, ArtPieceModel_EventType.DISLIKE_ENABLED, this.onDislikeEnabledChanged_, false, this);
-		goog.events.listen(artPieceModel, ArtPieceModel_EventType.FEATURED_ENABLED, this.onFeaturedEnabledChanged_, false, this);
-		goog.events.listen(artPieceModel, ArtPieceModel_EventType.SHOPPING_CART_ENABLED, this.onShoppingCartEnabledChanged_, false, this);
-
-		this.invalidate();
+	s6.widgets.ArtPieceView.prototype.onArtPieceNodeChanged_ = function(event){
+		// TODO
 	};
 
 	s6.widgets.ArtPieceView.prototype.onProductTypeChanged_ = function(event){

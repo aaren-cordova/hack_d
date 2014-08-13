@@ -153,8 +153,8 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('dev', [
-		'jshint',
-		//'closureDepsWriter:s6',
+		//'jshint',
+		'closureDepsWriter:s6',
 		'closureBuilder:s6',
 		'less:s6',
 		'concat:s6'

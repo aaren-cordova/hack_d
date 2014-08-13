@@ -1,10 +1,11 @@
 goog.require('s6.widgets.ArtPieceModel');
 goog.require('s6.widgets.ArtPieceController');
 goog.require('s6.widgets.ArtPieceView');
+goog.require('goog.events.EventType');
 
 goog.provide('s6.Main');
 goog.scope(function(){
-
+	var EventType = goog.events.EventType;
 	var ArtPieceModel = s6.widgets.ArtPieceModel;
 	var ArtPieceController = s6.widgets.ArtPieceController;
 	var ArtPieceView = s6.widgets.ArtPieceView;
@@ -12,10 +13,10 @@ goog.scope(function(){
 	/** @constructor */
 	s6.Main = function(){
 		this.models = [];
-		jQuery(document).ready(this.onDocumentReady);
+		goog.events.listenOnce(document, EventType.READYSTATECHANGE, this.onDocumentReady_, false, this);
 	};
 
-	s6.Main.prototype.onDocumentReady = function(){
+	s6.Main.prototype.onDocumentReady_ = function(event){
 		var i, itemWrap, model, controller, view, wrappedItemNodes;
 
 		wrappedItemNodes = jQuery('.item_wrap');
@@ -27,11 +28,11 @@ goog.scope(function(){
 			view = new ArtPieceView();
 			view.setArtPieceModel(model);
 			view.setArtPieceController(controller);
-			model.setArtPieceNode(itemWrap);
 
 			this.models.push(model);
 
-			view.render();
+			model.setArtPieceNode(itemWrap);
+			view.render(jQuery(itemWrap).parent());
 		}
 	};
 

@@ -23,7 +23,7 @@
 			"goog.DEBUG=false"
 		],
 
-		"warning_level": "VERBOSE", /*"QUIET | DEFAULT | VERBOSE"*/
+		"warning_level": "QUIET", /*"QUIET | DEFAULT | VERBOSE"*/
 		"jscomp_off": [],
 
 		"jscomp_error": [

@@ -24,11 +24,11 @@ goog.scope(function(){
 	};
 	
 
-	s6.widgets.ArtPiectController.prototype.onFullscreenEnabledChanged_ = function(event){
+	s6.widgets.ArtPieceController.prototype.onFullscreenEnabledChanged_ = function(event){
 		// TODO - show site stunt
 	};
 
-	s6.widgets.ArtPiectController.prototype.onShoppingCartEnabledChanged_ = function(event){
+	s6.widgets.ArtPieceController.prototype.onShoppingCartEnabledChanged_ = function(event){
 		if(this.artPieceModel_.getShoppingCartEnabled()){
 			this.addToShoppingCart_();
 		}
@@ -55,7 +55,7 @@ goog.scope(function(){
 		this.artPieceModel_.setFavoritedEnabled(!this.artPieceModel_.getFavoritedEnabled());
 	};
 	
-	s6.widgets.ArtPieceController.prototype.onFullScreenButtonClick = function(event){
+	s6.widgets.ArtPieceController.prototype.onFullscreenButtonClick = function(event){
 		this.artPieceModel_.setFullScreenEnabled(!this.artPieceModel_.getFullScreenEnabled());
 	};
 
@@ -92,7 +92,7 @@ goog.scope(function(){
 
 	goog.exportProperty(s6.widgets.ArtPieceController.prototype, 'onPinButtonClick', s6.widgets.ArtPieceController.prototype.onPinButtonClick);
 	goog.exportProperty(s6.widgets.ArtPieceController.prototype, 'onFavoriteButtonClick', s6.widgets.ArtPieceController.prototype.onFavoriteButtonClick);
-	goog.exportProperty(s6.widgets.ArtPieceController.prototype, 'onFullScreenButtonClick', s6.widgets.ArtPieceController.prototype.onFullScreenButtonClick);
+	goog.exportProperty(s6.widgets.ArtPieceController.prototype, 'onFullscreenButtonClick', s6.widgets.ArtPieceController.prototype.onFullscreenButtonClick);
 	goog.exportProperty(s6.widgets.ArtPieceController.prototype, 'onLikeButtonClick', s6.widgets.ArtPieceController.prototype.onLikeButtonClick);
 	goog.exportProperty(s6.widgets.ArtPieceController.prototype, 'onDislikeButtonClick', s6.widgets.ArtPieceController.prototype.onDislikeButtonClick);
 	goog.exportProperty(s6.widgets.ArtPieceController.prototype, 'onPromoteButtonClick', s6.widgets.ArtPieceController.prototype.onPromoteButtonClick);

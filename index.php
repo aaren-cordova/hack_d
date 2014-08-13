@@ -1,4 +1,5 @@
 <?php
+	header('Content-type: text/html');
 	require_once 'config.php';
 
 	$site = isset($config->site) ? $config->site : FALSE;
@@ -49,9 +50,10 @@
 		return $contents;
 	}
 
-	function getDevJSInvokerCode($requirePath, $initializer){
+	function getDevInvokerCode($requirePath, $initializer){
 		global $baseUrl;
 		return (
+			'<link rel="stylesheet" type="text/css" href="http://' . $baseUrl . '/' . basename(realpath(".")) . '/bin/css/main.css" media="all"/>' .
 			'<script type="text/javascript" src="http://' . $baseUrl . '/' . basename(realpath(".")) . '/js/google/closure-library/closure/goog/base.js"></script>' .
 			'<script type="text/javascript" src="http://' . $baseUrl . '/' . basename(realpath(".")) . '/js/s6/deps.js"></script>' .
 			'<script type="text/javascript">' .
@@ -98,7 +100,7 @@
 		$invokerTag;
 
 		if($config->mode === 'dev'){
-			$invokerTag = getDevJSInvokerCode($config->requirePath, $config->initializer);
+			$invokerTag = getDevInvokerCode($config->requirePath, $config->initializer);
 		}
 		else{
 			$invokerTag = getJSInvokerCode($invoker);

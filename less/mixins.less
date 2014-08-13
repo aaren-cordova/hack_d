@@ -1,7 +1,7 @@
 @import "variables.less";
 
 // Clearfix
-.clearfix {
+.clearfix(){
 	*zoom: 1;
 	&:before,
 	&:after {
@@ -190,50 +190,20 @@
 	}
 
 	#fontello{
-		.s6(){
-			.font-family(){
-				font-family: "fontello";
+		.s6() {
+			@font-face {
+				font-family: 'fontello';
+				src: url('/ui/fonts/fontello/font/fontello.eot?34209749');
+				src: url('/ui/fonts/fontello/font/fontello.eot?34209749#iefix') format('embedded-opentype'),
+						 url('/ui/fonts/fontello/font/fontello.woff?34209749') format('woff'),
+						 url('/ui/fonts/fontello/font/fontello.ttf?34209749') format('truetype'),
+						 url('/ui/fonts/fontello/font/fontello.svg?34209749#fontello') format('svg');
+				font-weight: normal;
+				font-style: normal;
 			}
 
-			.face(){
-				@font-face {
-					font-family: 'fontello';
-					src: url('/ui/fonts/fontello/font/fontello.eot?34209749');
-					src: url('/ui/fonts/fontello/font/fontello.eot?34209749#iefix') format('embedded-opentype'),
-							 url('/ui/fonts/fontello/font/fontello.woff?34209749') format('woff'),
-							 url('/ui/fonts/fontello/font/fontello.ttf?34209749') format('truetype'),
-							 url('/ui/fonts/fontello/font/fontello.svg?34209749#fontello') format('svg');
-					font-weight: normal;
-					font-style: normal;
-				}
-			}
+			font-family: "fontello";
+
 		}
-	}
-	
-}
-
-
-// Misc
-// --------------------------------------------------
-#triangle {
-	.left(@width; @color; @bg) {
-		border-right: @width solid @color;
-		border-top: @width solid @bg;
-		border-bottom: @width solid @bg;
-	}
-	.right(@width; @color; @bg) {
-		border-left: @width solid @color;
-		border-top: @width solid @bg;
-		border-bottom: @width solid @bg;
-	}
-	.top(@width; @color; @bg) {
-		border-bottom: @width solid @color;
-		border-left: @width solid @bg;
-		border-right: @width solid @bg;
-	}
-	.bottom(@width; @color; @bg) {
-		border-top: @width solid @color;
-		border-left: @width solid @bg;
-		border-right: @width solid @bg;
 	}
 }
