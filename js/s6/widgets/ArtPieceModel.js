@@ -3,10 +3,14 @@ goog.require("goog.asserts");
 goog.require("goog.object");
 goog.require("s6.widgets.IArtPieceModel");
 goog.require("s6.widgets.ArtType");
+goog.require("s6.widgets.WishlistStateType");
 
 goog.provide("s6.widgets.ArtPieceModel");
+goog.provide("s6.widgets.ArtPieceModel.EventType");
 
 goog.scope(function(){
+	var WishlistStateType = s6.widgets.WishlistStateType;
+
 	/**
 	 * @constructor
 	 * @implements {s6.widgets.IArtPieceModel}
@@ -16,6 +20,26 @@ goog.scope(function(){
 		goog.events.EventTarget.call(this);
 	};
 	goog.inherits(s6.widgets.ArtPieceModel, goog.events.EventTarget);
+
+	/** @enum {string} */
+	s6.widgets.ArtPieceModel.EventType = {
+		"PRODUCT_TYPE": "productType",
+		"HIDE_ENABLED": "hideEnabled",
+		"PIN_ENABLED": "pinEnabled",
+		"FAVORITED_ENABLED": "favoritedEnabled",
+		"FULLSCREEN_ENABLED": "fullscreenEnabled",
+		"LIKE_ENABLED": "likeEnabled",
+		"DISLIKE_ENABLED": "dislikeEnabled",
+		"FEATURED_ENABLED": "featuredEnabled",
+		"SHOPPING_CART_ENABLED": "shoppingCartEnabled",
+		"ART_PIECE_NODE": "artPieceNode",
+		"PROMOTE_ENABLED": "promoteEnabled",
+		"CONTROLS_ENABLED":"controlsEnabled",
+		"ART_PIECE_ID":"artPieceId",
+		"WISHLIST_STATE": "wishlistState"
+	};
+
+	goog.exportSymbol("s6.widgets.ArtPieceModel.EventType", s6.widgets.ArtPieceModel.EventType);
 
 	/** 
 	 * @param {string} name
@@ -46,7 +70,7 @@ goog.scope(function(){
 
 	/** @return {Node} */
 	s6.widgets.ArtPieceModel.prototype.getArtPieceNode = function(){
-		return this.getProperty("artPieceNode", null);
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.ART_PIECE_NODE, null);
 	};
 
 	/** 
@@ -54,12 +78,13 @@ goog.scope(function(){
 	 * @return {s6.widgets.IArtPieceModel}
 	 */
 	s6.widgets.ArtPieceModel.prototype.setArtPieceNode = function(artPieceNode){
-		return this.setProperty("artPieceNode", artPieceNode);
+		goog.asserts.assert(artPieceNode instanceof Node);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.ART_PIECE_NODE, artPieceNode);
 	};
 
 	/** @return {string} */
 	s6.widgets.ArtPieceModel.prototype.getProductType = function(){
-		return this.getProperty("productType", "");
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.PRODUCT_TYPE, "");
 	};
 
 	/** 
@@ -68,12 +93,12 @@ goog.scope(function(){
 	 */
 	s6.widgets.ArtPieceModel.prototype.setProductType = function(productType){
 		goog.asserts.assertString(productType);
-		return this.setProperty("productType", productType);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.PRODUCT_TYPE, productType);
 	};
 
 	/** @return {boolean} */
 	s6.widgets.ArtPieceModel.prototype.getHideEnabled = function(){
-		return this.getProperty("hideEnabled", false);
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.HIDE_ENABLED, false);
 	};
 
 	/** 
@@ -82,12 +107,12 @@ goog.scope(function(){
 	 */
 	s6.widgets.ArtPieceModel.prototype.setHideEnabled = function(isEnabled){
 		goog.asserts.assertBoolean(isEnabled);
-		return this.setProperty("hideEnabled", isEnabled);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.HIDE_ENABLED, isEnabled);
 	};
 
 	/** @return {boolean} */
 	s6.widgets.ArtPieceModel.prototype.getPinEnabled = function(){
-		return this.getProperty("pinEnabled", false);
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.PIN_ENABLED, false);
 	};
 
 	/** 
@@ -96,12 +121,12 @@ goog.scope(function(){
 	 */
 	s6.widgets.ArtPieceModel.prototype.setPinEnabled = function(isEnabled){
 		goog.asserts.assertBoolean(isEnabled);
-		return this.setProperty("pinEnabled", isEnabled);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.PIN_ENABLED, isEnabled);
 	};
 
 	/** @return {boolean} */
 	s6.widgets.ArtPieceModel.prototype.getFavoritedEnabled = function(){
-		return this.getProperty("favoritedEnabled", false);
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.FAVORITED_ENABLED, false);
 	};
 
 	/** 
@@ -110,12 +135,12 @@ goog.scope(function(){
 	 */
 	s6.widgets.ArtPieceModel.prototype.setFavoritedEnabled = function(isEnabled){
 		goog.asserts.assertBoolean(isEnabled);
-		return this.setProperty("favoritedEnabled", isEnabled);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.FAVORITED_ENABLED, isEnabled);
 	};
 
 	/** @return {boolean} */
 	s6.widgets.ArtPieceModel.prototype.getFullScreenEnabled = function(){
-		return this.getProperty("fullscreenEnabled", false);
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.FULLSCREEN_ENABLED, false);
 	};
 
 	/** 
@@ -124,12 +149,12 @@ goog.scope(function(){
 	 */
 	s6.widgets.ArtPieceModel.prototype.setFullScreenEnabled = function(isEnabled){
 		goog.asserts.assertBoolean(isEnabled);
-		return this.setProperty("fullscreenEnabled", isEnabled);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.FULLSCREEN_ENABLED, isEnabled);
 	};
 
 	/** @return {boolean} */
 	s6.widgets.ArtPieceModel.prototype.getLikeEnabled = function(){
-		return this.getProperty("likeEnabled", false);
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.LIKE_ENABLED, false);
 	};
 
 	/** 
@@ -138,32 +163,32 @@ goog.scope(function(){
 	 */
 	s6.widgets.ArtPieceModel.prototype.setLikeEnabled = function(isEnabled){
 		goog.asserts.assertBoolean(isEnabled);
-		return this.setProperty("likeEnabled", isEnabled);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.LIKE_ENABLED, isEnabled);
 	};
 
 	/** @return {boolean} */
 	s6.widgets.ArtPieceModel.prototype.getDislikeEnabled = function(){
-		return this.getProperty("dislikeEnabled", false);
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.DISLIKE_ENABLED, false);
 	};
 
 	s6.widgets.ArtPieceModel.prototype.setDislikeEnabled = function(isEnabled){
 		goog.asserts.assertBoolean(isEnabled);
-		return this.setProperty("dislikeEnabled", isEnabled);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.DISLIKE_ENABLED, isEnabled);
 	};
 
 	/** @return {boolean} */
 	s6.widgets.ArtPieceModel.prototype.getFeaturedEnabled = function(){
-		return this.getProperty("featuredEnabled", false);
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.FEATURED_ENABLED, false);
 	};
 
 	s6.widgets.ArtPieceModel.prototype.setFeaturedEnabled = function(isEnabled){
 		goog.asserts.assertBoolean(isEnabled);
-		return this.setProperty("featuredEnabled", isEnabled);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.FEATURED_ENABLED, isEnabled);
 	};
 
 	/** @return {boolean} */
 	s6.widgets.ArtPieceModel.prototype.getPromoteEnabled = function(){
-		return this.getProperty("promoteEnabled", false);
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.PROMOTE_ENABLED, false);
 	};
 
 	/** 
@@ -172,12 +197,12 @@ goog.scope(function(){
 	 */
 	s6.widgets.ArtPieceModel.prototype.setPromoteEnabled = function(isEnabled){
 		goog.asserts.assertBoolean(isEnabled);
-		return this.setProperty("promoteEnabled", isEnabled);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.PROMOTE_ENABLED, isEnabled);
 	};
 
 	/** @return {boolean} */
 	s6.widgets.ArtPieceModel.prototype.getShoppingCartEnabled = function(){
-		return this.getProperty("shoppingCartEnabled", false);
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.SHOPPING_CART_ENABLED, false);
 	};
 
 	/** 
@@ -186,14 +211,13 @@ goog.scope(function(){
 	 */
 	s6.widgets.ArtPieceModel.prototype.setShoppingCartEnabled = function(isEnabled){
 		goog.asserts.assertBoolean(isEnabled);
-		return this.setProperty("shoppingCartEnabled", isEnabled);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.SHOPPING_CART_ENABLED, isEnabled);
 	};
 
 	/** @return {boolean} */
 	s6.widgets.ArtPieceModel.prototype.getControlsEnabled = function(){
-		return this.getProperty("controlsEnabled", false);
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.CONTROLS_ENABLED, false);
 	};
-
 
 	/** 
 	 * @param {boolean} isEnabled
@@ -201,23 +225,55 @@ goog.scope(function(){
 	 */
 	s6.widgets.ArtPieceModel.prototype.setControlsEnabled = function(isEnabled){
 		goog.asserts.assertBoolean(isEnabled);
-		return this.setProperty("controlsEnabled", isEnabled);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.CONTROLS_ENABLED, isEnabled);
+	};
+
+	/** @return {int} */
+	s6.widgets.ArtPieceModel.prototype.getArtPieceID = function(){
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.ART_PIECE_ID, 0);
+	};
+
+	/** 
+	 * @param {int} id
+	 * @return {s6.widgets.IArtPieceModel}
+	 */
+	s6.widgets.ArtPieceModel.prototype.setArtPieceID = function(id){
+		goog.asserts.assertNumber(id);
+		goog.asserts.assert(id > 0);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.ART_PIECE_ID, id);
+	};
+
+	s6.widgets.ArtPieceModel.prototype.getWishlistState = function(){
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.WISHLIST_STATE, 0);
+	}
+
+	/**
+	* @private 
+	* @param {number} mode
+	*/
+	s6.widgets.ArtPieceModel.prototype.setWishlistState = function(mode){
+		goog.asserts.assertNumber(mode);
+		goog.asserts.assert(mode in WishlistStateType);
+
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.WISHLIST_STATE, mode);
 	};
 
 	/** @return {!Object} */
 	s6.widgets.ArtPieceModel.prototype.toJSON = function(){
 		return {
-			'__class__': 's6.widgets.ArtPieceModel',
-			'productType': this.getProductType(),
-			'hideEnabled': this.getHideEnabled(),
-			'pinEnabled': this.getPinEnabled(),
-			'favoritedEnabled': this.getFavoritedEnabled(),
-			'fullScreenEnabled': this.getFullScreenEnabled(),
-			'likeEnabled': this.getLikeEnabled(),
-			'dislikeEnabled': this.getDislikeEnabled(),
-			'featuredEnabled': this.getFeaturedEnabled(),
-			'promoteEnabled': this.getPromoteEnabled(),
-			'controlsEnabled': this.getControlsEnabled()
+			"__class__": "s6.widgets.ArtPieceModel",
+			"productType": this.getProductType(),
+			"hideEnabled": this.getHideEnabled(),
+			"pinEnabled": this.getPinEnabled(),
+			"favoritedEnabled": this.getFavoritedEnabled(),
+			"fullScreenEnabled": this.getFullScreenEnabled(),
+			"likeEnabled": this.getLikeEnabled(),
+			"dislikeEnabled": this.getDislikeEnabled(),
+			"featuredEnabled": this.getFeaturedEnabled(),
+			"promoteEnabled": this.getPromoteEnabled(),
+			"controlsEnabled": this.getControlsEnabled(),
+			"artPieceId": this.getArtPieceID(),
+			"wishlistState": this.getWishlistState()
 		};
 	};
 
@@ -226,17 +282,29 @@ goog.scope(function(){
 	 * @return {!s6.widgets.IArtPieceModel}
 	 */
 	s6.widgets.ArtPieceModel.prototype.fromJSON = function(json){
-		this.setProductType(json['productType']);
-		this.setHideEnabled(json['hideEnabled']);
-		this.setPinEnabled(json['pinEnabled']);
-		this.setFavoritedEnabled(json['favoritedEnabled']);
-		this.setFullScreenEnabled(json['fullScreenEnabled']);
-		this.setLikeEnabled(json['likeEnabled']);
-		this.setDislikeEnabled(json['dislikeEnabled']);
-		this.setFeaturedEnabled(json['featuredEnabled']);
-		this.setPromoteEnabled(json['promoteEnabled']);
-		this.setControlsEnabled(json['controlsEnabled']);
+		this.setProductType(json["productType"]);
+		this.setHideEnabled(json["hideEnabled"]);
+		this.setPinEnabled(json["pinEnabled"]);
+		this.setFavoritedEnabled(json["favoritedEnabled"]);
+		this.setFullScreenEnabled(json["fullScreenEnabled"]);
+		this.setLikeEnabled(json["likeEnabled"]);
+		this.setDislikeEnabled(json["dislikeEnabled"]);
+		this.setFeaturedEnabled(json["featuredEnabled"]);
+		this.setPromoteEnabled(json["promoteEnabled"]);
+		this.setControlsEnabled(json["controlsEnabled"]);
+		this.setArtPieceID(json["artPieceId"]);
+		this.setWishlistState(json["wishlistState"]);
+
 		return this;
+	};
+
+	/** 
+	 * @param  {!Object} json
+	 * @return {!s6.widgets.IArtPieceModel}
+	 */
+	s6.widgets.ArtPieceModel.fromJSON = function(json){
+		var artPieceModel = new s6.widgets.ArtPieceModel();
+		return artPieceModel.fromJSON(json);
 	};
 
 	/**
@@ -249,6 +317,7 @@ goog.scope(function(){
 	 * @type {boolean} 
 	 */
 	s6.widgets.ArtPieceModel.prototype.hideEnabled = false;
+
 	/**
 	 * @private
 	 * @type {boolean} 
@@ -280,16 +349,7 @@ goog.scope(function(){
 	 */
 	s6.widgets.ArtPieceModel.prototype.featuredEnabled = false;
 
-	/** 
-	 * @param  {!Object} json
-	 * @return {!s6.widgets.IArtPieceModel}
-	 */
-	s6.widgets.ArtPieceModel.fromJSON = function(json){
-		var artPieceModel = new s6.widgets.ArtPieceModel();
-		return artPieceModel.fromJSON(json);
-	};
-
-	goog.exportSymbol('s6.widgets.ArtPieceModel', s6.widgets.ArtPieceModel);
+	goog.exportSymbol("s6.widgets.ArtPieceModel", s6.widgets.ArtPieceModel);
 
 	goog.exportProperty(s6.widgets.ArtPieceModel, "fromJSON", s6.widgets.ArtPieceModel.fromJSON);
 
@@ -328,24 +388,7 @@ goog.scope(function(){
 
 	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "getShoppingCartEnabled", s6.widgets.ArtPieceModel.prototype.getShoppingCartEnabled);
 	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "setShoppingCartEnabled", s6.widgets.ArtPieceModel.prototype.setShoppingCartEnabled);
-});
 
-goog.provide("s6.widgets.ArtPieceModel.EventType");
-goog.scope(function(){
-	/** @enum {string} */
-	s6.widgets.ArtPieceModel.EventType = {
-		PRODUCT_TYPE: "productType",
-		HIDE_ENABLED: "hideEnabled",
-		PIN_ENABLED: "pinEnabled",
-		FAVORITED_ENABLED: "favoritedEnabled",
-		FULLSCREEN_ENABLED: "fullscreenEnabled",
-		LIKE_ENABLED: "likeEnabled",
-		DISLIKE_ENABLED: "dislikeEnabled",
-		FEATURED_ENABLED: "featuredEnabled",
-		SHOPPING_CART_ENABLED: "shoppingCartEnabled",
-		ART_PIECE_NODE: "artPieceNode",
-		PROMOTE_ENABLED: "promoteEnabled"
-	};
-
-	goog.exportSymbol('s6.widgets.ArtPieceModel.EventType', s6.widgets.ArtPieceModel.EventType);
+	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "getWishlistState", s6.widgets.ArtPieceModel.prototype.getWishlistState);
+	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "setWishlistState", s6.widgets.ArtPieceModel.prototype.setWishlistState);
 });

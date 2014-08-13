@@ -2,6 +2,8 @@ goog.require('s6.widgets.ArtPieceModel');
 goog.require('s6.widgets.ArtPieceController');
 goog.require('s6.widgets.ArtPieceView');
 goog.require('goog.events.EventType');
+goog.require('goog.json');
+goog.require('goog.array');
 
 goog.provide('s6.Main');
 goog.scope(function(){
@@ -16,8 +18,18 @@ goog.scope(function(){
 		goog.events.listenOnce(document, EventType.READYSTATECHANGE, this.onDocumentReady_, false, this);
 	};
 
+	s6.Main.prototype.getProdcutIDList = function(){
+		var list = goog.json.parse(window['google_tag_params']['ecomm_prodid']);
+		goog.array.forEach(list, function(value, index, array){
+			array[index] = value.replace(/\D/g, '') | 0;
+		});
+		return list;
+	};
+
 	s6.Main.prototype.onDocumentReady_ = function(event){
-		var i, itemWrap, model, controller, view, wrappedItemNodes;
+		var i, itemWrap, model, controller, view, wrappedItemNodes, productIdList;
+
+		productIdList = this.getProdcutIDList();
 
 		wrappedItemNodes = jQuery('.item_wrap');
 		for(i = 0; i < wrappedItemNodes.length; ++i){
@@ -31,6 +43,7 @@ goog.scope(function(){
 
 			this.models.push(model);
 
+			model.setArtPieceID(productIdList[i]);
 			model.setArtPieceNode(itemWrap);
 		}
 	};

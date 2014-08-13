@@ -133,4 +133,17 @@ goog.scope(function(){
 	 * @return {s6.widgets.IArtPieceModel}
 	 */
 	s6.widgets.IArtPieceModel.prototype.setShoppingCartEnabled = function(isEnabled){};
+
+	/** @return {int} */
+	s6.widgets.IArtPieceModel.prototype.getArtPieceID = function(){};
+
+	/** 
+	 * @param {int} id
+	 * @return {s6.widgets.IArtPieceModel}
+	 */
+	s6.widgets.IArtPieceModel.prototype.setArtPieceID = function(id){};
+
+
+
+	
 });

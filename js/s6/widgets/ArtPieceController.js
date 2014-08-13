@@ -1,10 +1,13 @@
+goog.require('goog.asserts');
 goog.require('s6.widgets.IArtPieceController');
 goog.require('s6.widgets.IArtPieceModel');
 goog.require('s6.widgets.ArtPieceModel.EventType');
+goog.require('s6.widgets.WishlistStateType');
 
 goog.provide('s6.widgets.ArtPieceController');
 goog.scope(function(){
 	var ArtPieceModel_EventType = s6.widgets.ArtPieceModel.EventType;
+	var WishlistStateType = s6.widgets.WishlistStateType;
 
 	/**
 	 * @constructor
@@ -21,11 +24,22 @@ goog.scope(function(){
 
 		goog.events.listen(artPieceModel, ArtPieceModel_EventType.FULLSCREEN_ENABLED, this.onFullscreenEnabledChanged_, false, this);
 		goog.events.listen(artPieceModel, ArtPieceModel_EventType.SHOPPING_CART_ENABLED, this.onShoppingCartEnabledChanged_, false, this);
+		goog.events.listen(artPieceModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_, false, this);
+
+		this.artPieceModel_.setFavoritedEnabled(!this.artPieceModel_.getFavoritedEnabled());
 	};
 	
 
 	s6.widgets.ArtPieceController.prototype.onFullscreenEnabledChanged_ = function(event){
-		// TODO - show site stunt
+	};
+
+	s6.widgets.ArtPieceController.prototype.onFavoritedEnabledChanged_ = function(event){
+		var artPieceModel = this.artPieceModel_;
+
+		if(artPieceModel.getWishlistState() === WishlistStateType.CLOSE){
+			goog.events.unlisten(artPieceModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_);
+			artPieceModel.setWishlistState(WishlistStateType.PENCIL)
+		}
 	};
 
 	s6.widgets.ArtPieceController.prototype.onShoppingCartEnabledChanged_ = function(event){
@@ -37,6 +51,9 @@ goog.scope(function(){
 		}
 	};
 
+
+	
+
 	/** @private */
 	s6.widgets.ArtPieceController.prototype.addToShoppingCart_ = function(){
 		// TODO
@@ -47,13 +64,14 @@ goog.scope(function(){
 		// TODO
 	};
 
+	s6.widgets.ArtPieceController.prototype.onFavoriteButtonClick = function(event){
+		this.artPieceModel_.setFavoritedEnabled(!this.artPieceModel_.getFavoritedEnabled());
+	};
+
 	s6.widgets.ArtPieceController.prototype.onPinButtonClick = function(event){
 		this.artPieceModel_.setPinEnabled(!this.artPieceModel_.getPinEnabled());
 	};
 	
-	s6.widgets.ArtPieceController.prototype.onFavoriteButtonClick = function(event){
-		this.artPieceModel_.setFavoritedEnabled(!this.artPieceModel_.getFavoritedEnabled());
-	};
 	
 	s6.widgets.ArtPieceController.prototype.onFullscreenButtonClick = function(event){
 		this.artPieceModel_.setFullScreenEnabled(!this.artPieceModel_.getFullScreenEnabled());
@@ -89,6 +107,8 @@ goog.scope(function(){
 	s6.widgets.ArtPieceController.prototype.onToolContainerClick = function(event){
 		// Do nothing
 	};
+
+
 
 	goog.exportProperty(s6.widgets.ArtPieceController.prototype, 'onPinButtonClick', s6.widgets.ArtPieceController.prototype.onPinButtonClick);
 	goog.exportProperty(s6.widgets.ArtPieceController.prototype, 'onFavoriteButtonClick', s6.widgets.ArtPieceController.prototype.onFavoriteButtonClick);

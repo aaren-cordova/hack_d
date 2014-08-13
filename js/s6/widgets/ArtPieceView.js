@@ -1,6 +1,6 @@
 goog.require('s6.widgets.IArtPieceModel');
-goog.require('s6.widgets.IArtPieceController');
 goog.require('s6.widgets.ArtPieceModel.EventType');
+goog.require('s6.widgets.WishlistStateType');
 goog.require('goog.dom.DomHelper');
 goog.require('goog.ui.Component');
 goog.require('goog.asserts');
@@ -11,6 +11,7 @@ goog.provide('s6.widgets.ArtPieceView');
 goog.scope(function(){
 	var events = goog.events;
 	var EventType = goog.events.EventType;
+	var WishlistStateType = s6.widgets.WishlistStateType;
 
 	var ArtPieceModel_EventType = s6.widgets.ArtPieceModel.EventType;
 	var Logger = goog.debug.Logger;
@@ -44,9 +45,7 @@ goog.scope(function(){
 		events.listen(artPieceModel, ArtPieceModel_EventType.FEATURED_ENABLED, this.onFeaturedEnabledChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.SHOPPING_CART_ENABLED, this.onShoppingCartEnabledChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.PROMOTE_ENABLED, this.onPromoteEnabledChanged_, false, this);
-
-
-
+		events.listen(artPieceModel, ArtPieceModel_EventType.WISHLIST_STATE, this.onWishlistStateChanged_, false, this);
 
 		return this;
 	};
@@ -74,6 +73,7 @@ goog.scope(function(){
 		this.onFeaturedEnabledChanged_(null);
 		this.onShoppingCartEnabledChanged_(null);
 		this.onPromoteEnabledChanged_(null);
+		this.onWishlistStateChanged_(null);
 	};
 
 	/** @inheritDoc */
@@ -286,6 +286,28 @@ goog.scope(function(){
 		}
 	};
 
-
-	
+	s6.widgets.ArtPieceView.prototype.onWishlistStateChanged_ = function(event){
+		var wishlistState = this.artPieceModel_.getWishlistState();
+		switch(wishlistState){
+			case WishlistStateType.CLOSE:
+				jQuery('#Wishlist').removeClass("open");
+				jQuery('#Wishlist').removeAttr("data-state");
+				break;
+			case WishlistStateType.PENCIL:
+				jQuery('#Wishlist').addClass("open");
+				jQuery('#Wishlist').addAttr("data-state", 'pencil');
+				break;
+			case WishlistStateType.LIST:
+				jQuery('#Wishlist').addClass("open");
+				jQuery('#Wishlist').addAttr("data-state", 'list');
+				break;
+			case WishlistStateType.FULL:
+				jQuery('#Wishlist').addClass("open");
+				jQuery('#Wishlist').addAttr("data-state", 'full');
+				break;
+			default:
+				goog.asserts.fail("Unknown wishlist state: " + wishlistState);
+				return;
+		}
+	};
 });
