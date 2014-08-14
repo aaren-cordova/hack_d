@@ -45,7 +45,6 @@ goog.scope(function(){
 		events.listen(artPieceModel, ArtPieceModel_EventType.FEATURED_ENABLED, this.onFeaturedEnabledChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.SHOPPING_CART_ENABLED, this.onShoppingCartEnabledChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.PROMOTE_ENABLED, this.onPromoteEnabledChanged_, false, this);
-		events.listen(artPieceModel, ArtPieceModel_EventType.WISHLIST_STATE, this.onWishlistStateChanged_, false, this);
 
 		return this;
 	};
@@ -73,7 +72,6 @@ goog.scope(function(){
 		this.onFeaturedEnabledChanged_(null);
 		this.onShoppingCartEnabledChanged_(null);
 		this.onPromoteEnabledChanged_(null);
-		this.onWishlistStateChanged_(null);
 	};
 
 	/** @inheritDoc */

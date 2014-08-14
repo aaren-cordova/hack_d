@@ -3,11 +3,13 @@ goog.require('s6.widgets.IArtPieceController');
 goog.require('s6.widgets.IArtPieceModel');
 goog.require('s6.widgets.ArtPieceModel.EventType');
 goog.require('s6.widgets.WishlistStateType');
+goog.require('s6.widgets.WishlistModel');
 
 goog.provide('s6.widgets.ArtPieceController');
 goog.scope(function(){
 	var ArtPieceModel_EventType = s6.widgets.ArtPieceModel.EventType;
 	var WishlistStateType = s6.widgets.WishlistStateType;
+	var WishlistModel = s6.widgets.WishlistModel;
 
 	/**
 	 * @constructor
@@ -32,11 +34,14 @@ goog.scope(function(){
 	};
 
 	s6.widgets.ArtPieceController.prototype.onFavoritedEnabledChanged_ = function(event){
-		var artPieceModel = this.artPieceModel_;
+		var wishlistModel = WishlistModel.getInstance();
 
-		if(artPieceModel.getWishlistState() === WishlistStateType.CLOSE){
-			goog.events.unlisten(artPieceModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_);
-			artPieceModel.setWishlistState(WishlistStateType.PENCIL)
+		if(wishlistModel.getWishlistState() === WishlistStateType.CLOSE){
+			goog.events.unlisten(wishlistModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_);
+			wishlistModel.setWishlistState(WishlistStateType.PENCIL);
+		}
+		else{
+			wishlistModel.invalidateWislistItems();
 		}
 	};
 

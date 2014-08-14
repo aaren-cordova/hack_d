@@ -2,6 +2,7 @@ goog.require('goog.asserts');
 goog.require('goog.object');
 goog.require('goog.events.EventTarget');
 goog.require('s6.widgets.WishlistStateType');
+goog.require('s6.widgets.IWishlistModel');
 
 goog.provide('s6.widgets.WishlistModel');
 goog.provide('s6.widgets.WishlistModel.EventType');
@@ -10,18 +11,23 @@ goog.scope(function(){
 
 	/** 
 	 * @constructor
-	 * @implements
+	 * @implements{s6.widgets.IWishlistModel}
 	 * @extends {goog.events.EventTarget}
 	 */
 	s6.widgets.WishlistModel = function(){
 		goog.events.EventTarget.call(this);
+
+		this.items_ = [];
 	}
 	goog.inherits(s6.widgets.WishlistModel, goog.events.EventTarget);
 	goog.addSingletonGetter(s6.widgets.WishlistModel);
 
 	/** @enum {string} */
 	s6.widgets.WishlistModel.EventType = {
-		"WISHLIST_STATE": "wishlistState"
+		"WISHLIST_STATE": "wishlistState",
+		"WISHLIST_NODE": 'wishlistNode',
+		"ITEMS": 'items',
+		"NUM_ITEMS": 'numItems'
 	};
 
 	/** 
@@ -82,5 +88,41 @@ goog.scope(function(){
 		return this.setProperty(s6.widgets.WishlistModel.EventType.WISHLIST_NODE, wishlistModelNode);
 	};
 
-	
+	/** 
+	* @return {number}
+	*/
+	s6.widgets.WishlistModel.prototype.getNumItems = function(){
+		return this.items_.length;
+	};
+
+	/** 
+	 * @param {Object} item
+	 * @return {s6.widgets.IWishlistModel}
+	 */
+	s6.widgets.WishlistModel.prototype.addItem = function(item){
+		return this.addItemAt(item, this.getNumItems());
+	};
+
+	/** 
+	 * @param {Object} item
+	 * @param {number} index
+	 * @return {s6.widgets.IWishlistModel}
+	 */
+	s6.widgets.WishlistModel.prototype.addItemAt = function(item, index){
+		goog.asserts.assertNumber(index);
+		goog.asserts.assert(index > 0 && index < this.getNumItems(), 'Index out of bounds.');
+
+		var oldvalue = this.items_[index];
+		if(oldvalue !== item){
+			var dispatchLenghtChangeEvent = index != this.getNumItems();
+			goog.object.set(this.items_, index, item);
+			this.dispatchEvent(s6.widgets.WishlistModel.EventType.ITEMS);
+			
+			if(dispatchLenghtChangeEvent){
+			this.dispatchEvent(s6.widgets.WishlistModel.EventType.NUM_ITEMS);
+			}
+		}
+
+		return this;
+	};
 })

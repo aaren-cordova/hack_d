@@ -55,7 +55,6 @@ goog.scope(function(){
 			model.setArtPieceNode(itemWrap);
 		}
 
-
 		var wishlistModel = WishlistModel.getInstance();
 		var wishlistController = WishlistController.getInstance();
 		wishlistController.setWishlistModel(wishlistModel);
@@ -64,10 +63,12 @@ goog.scope(function(){
 		var wishlistView = WishlistView.getInstance();
 		wishlistView.setWishlistModel(wishlistModel);
 		wishlistView.setWishlistController(wishlistController);
+
+
+		wishlistModel.setWishlistNode(jQuery("#Wishlist")[0]);
+
 	};
-
 	goog.addSingletonGetter(s6.Main);
-
 
 	goog.exportSymbol('s6.Main', s6.Main);
 	goog.exportProperty(s6.Main, 'getInstance', s6.Main.getInstance);
