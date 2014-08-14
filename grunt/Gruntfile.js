@@ -155,9 +155,9 @@ module.exports = function (grunt) {
 
 	var dev_ = [];
 	//dev_.push('jshint');
-	//dev_.push('closureDepsWriter:s6');
-	//dev_.push('closureBuilder:s6');
-	dev_.push('less:s6');
+	dev_.push('closureDepsWriter:s6');
+	dev_.push('closureBuilder:s6');
+	//dev_.push('less:s6');
 	//dev_.push('concat:s6');
 
 	grunt.registerTask('dev', dev_);

@@ -1,5 +1,6 @@
 goog.require("goog.events.EventTarget");
 goog.require("goog.asserts");
+goog.require("goog.json");
 goog.require("goog.object");
 goog.require("s6.widgets.IArtPieceModel");
 goog.require("s6.widgets.ArtType");
@@ -33,7 +34,8 @@ goog.scope(function(){
 		"NODE": "node",
 		"PROMOTE_ENABLED": "promoteEnabled",
 		"CONTROLS_ENABLED":"controlsEnabled",
-		"ART_PIECE_ID":"artPieceId"
+		"ART_PIECE_ID":"artPieceId",
+		"POST_JSON": "post_json"
 	};
 
 	goog.exportSymbol("s6.widgets.ArtPieceModel.EventType", s6.widgets.ArtPieceModel.EventType);
@@ -229,6 +231,21 @@ goog.scope(function(){
 		return this.setProperty(s6.widgets.ArtPieceModel.EventType.SHOPPING_CART_ENABLED, isEnabled);
 	};
 
+
+	/** @return {Object} */
+	s6.widgets.ArtPieceModel.prototype.getPostJSON = function(){
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.POST_JSON, false);
+	};
+
+	/** 
+	 * @param {Object} json
+	 * @return {s6.widgets.IArtPieceModel}
+	 */
+	s6.widgets.ArtPieceModel.prototype.setPostJSON = function(json){
+		goog.asserts.assert(json);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.POST_JSON, json);
+	};
+
 	/** @return {boolean} */
 	s6.widgets.ArtPieceModel.prototype.getControlsEnabled = function(){
 		return this.getProperty(s6.widgets.ArtPieceModel.EventType.CONTROLS_ENABLED, false);
@@ -255,10 +272,14 @@ goog.scope(function(){
 	s6.widgets.ArtPieceModel.prototype.setArtPieceID = function(id){
 		goog.asserts.assertNumber(id);
 		goog.asserts.assert(id > 0);
+
 		return this.setProperty(s6.widgets.ArtPieceModel.EventType.ART_PIECE_ID, id);
 	};
 
-	
+	/** @return {s6.widgets.IArtPieceModel} */
+	s6.widgets.ArtPieceModel.prototype.clone = function(){
+		return s6.widgets.ArtPieceModel.fromJSON(this.toJSON());
+	};
 
 	/** @return {!Object} */
 	s6.widgets.ArtPieceModel.prototype.toJSON = function(){
@@ -268,15 +289,20 @@ goog.scope(function(){
 			"hideEnabled": this.getHideEnabled(),
 			"pinEnabled": this.getPinEnabled(),
 			"favoritedEnabled": this.getFavoritedEnabled(),
-			"fullScreenEnabled": this.getFullScreenEnabled(),
+			"fullscreenEnabled": this.getFullScreenEnabled(),
 			"likeEnabled": this.getLikeEnabled(),
 			"dislikeEnabled": this.getDislikeEnabled(),
 			"featuredEnabled": this.getFeaturedEnabled(),
 			"promoteEnabled": this.getPromoteEnabled(),
+			"numPromoted": this.getNumPromoted(),
+			"shoppingCartEnabled": this.getShoppingCartEnabled(),
+			"node": this.getNode(),
 			"controlsEnabled": this.getControlsEnabled(),
-			"artPieceId": this.getArtPieceID()
+			"artPieceId": this.getArtPieceID(), 
+			"post_json": goog.json.parse(goog.json.serialize(this.getPostJSON()))
 		};
 	};
+
 
 	/** 
 	 * @param  {!Object} json
@@ -287,13 +313,17 @@ goog.scope(function(){
 		this.setHideEnabled(json["hideEnabled"]);
 		this.setPinEnabled(json["pinEnabled"]);
 		this.setFavoritedEnabled(json["favoritedEnabled"]);
-		this.setFullScreenEnabled(json["fullScreenEnabled"]);
+		this.setFullScreenEnabled(json["fullscreenEnabled"]);
 		this.setLikeEnabled(json["likeEnabled"]);
 		this.setDislikeEnabled(json["dislikeEnabled"]);
 		this.setFeaturedEnabled(json["featuredEnabled"]);
 		this.setPromoteEnabled(json["promoteEnabled"]);
+		this.setNumPromoted(json["numPromoted"]);
+		this.setShoppingCartEnabled(json["shoppingCartEnabled"]);
+		this.setNode(json["node"]);
 		this.setControlsEnabled(json["controlsEnabled"]);
-		this.setArtPieceID(json["artPieceId"]);
+		this.setNode(json["artPieceId"]);
+		this.setPostJSON(goog.json.parse(goog.json.serialize(json["post_json"])));
 
 		return this;
 	};

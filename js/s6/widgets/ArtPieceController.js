@@ -37,10 +37,10 @@ goog.scope(function(){
 		var wishlistModel = WishlistModel.getInstance();
 
 		if(this.artPieceModel_.getFavoritedEnabled()){
-			wishlistModel.addItem(this.artPieceModel_.getArtPieceID());
+			wishlistModel.addItem(this.artPieceModel_);
 		}
 		else{
-			wishlistModel.removeItem(this.artPieceModel_.getArtPieceID());
+			wishlistModel.removeItem(this.artPieceModel_);
 		}
 	};
 

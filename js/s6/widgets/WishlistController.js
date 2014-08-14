@@ -1,11 +1,13 @@
 goog.require('goog.asserts');
+goog.require('goog.Disposable');
+
 goog.require('s6.net.PersistentDataModel');
 goog.require('s6.widgets.IWishlistController');
 goog.require('s6.widgets.IWishlistModel');
 goog.require('s6.widgets.WishlistModel.EventType');
 goog.require('s6.widgets.WishlistStateType');
-
 goog.provide('s6.widgets.WishlistController');
+
 goog.scope(function(){
 	var PersistentDataModel = s6.net.PersistentDataModel;
 	var WishlistModel_EventType = s6.widgets.WishlistModel.EventType;
@@ -14,11 +16,18 @@ goog.scope(function(){
 	/**
 	 * @constructor
 	 * @implements {s6.widgets.IWishlistController}
+	 * @extends {s6.widgets.Disposable }
 	 */
 	s6.widgets.WishlistController = function(){
+		goog.Disposable.call(this);
+
 		this.persistentDataModel_ = new PersistentDataModel();
 	};
+	goog.inherits(s6.widgets.WishlistController, goog.Disposable);
+	
 	goog.addSingletonGetter(s6.widgets.WishlistController);
+
+
 
 	/**
 	 * @param {s6.widgets.IWishlistModel} wishlistModel
@@ -102,18 +111,27 @@ goog.scope(function(){
 		}
 	};
 
-
-
 	s6.widgets.WishlistController.prototype.onNumItemsChanged_ = function(event){
-		console.log('onNumItemsChanged_');
-		console.log('getNumItems', this.wishlistModel_.getNumItems());
-		console.log('getIndexOfWishlistState', this.wishlistModel_.getIndexOfWishlistState(WishlistStateType.CLOSE));
 
 		if(this.wishlistModel_.getNumItems() == 0) {
 			this.wishlistModel_.setWishlistState(WishlistStateType.CLOSE);
 		}
 		else if(!s6.widgets.WishlistController.hardClose) {
-			this.wishlistModel_.setWishlistState(WishlistStateType.PENCIL)
+			var wishlistState = this.wishlistModel_.getWishlistState();
+			switch(wishlistState){
+				case WishlistStateType.CLOSE:
+					this.wishlistModel_.setWishlistState(WishlistStateType.PENCIL)
+					break;
+				case WishlistStateType.PENCIL:
+				case WishlistStateType.LIST:
+				case WishlistStateType.FULL:
+					// Do nothing
+					break;
+				default:
+					goog.asserts.fail("Unknown wishlist state: " + wishlistState);
+					return;
+			}
+
 		}
 	};
 });

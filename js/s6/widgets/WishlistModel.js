@@ -23,11 +23,18 @@ goog.scope(function(){
 	goog.addSingletonGetter(s6.widgets.WishlistModel);
 
 	/** @enum {string} */
-	s6.widgets.WishlistModel.EventType = {
-		"WISHLIST_STATE": "wishlistState",
-		"NODE": 'node',
-		"ITEMS": 'items',
-		"NUM_ITEMS": 'numItems'
+	s6.widgets.WishlistModel.EventType = function(){}
+	s6.widgets.WishlistModel.EventType["WISHLIST_STATE"] = "wishlistState";
+	s6.widgets.WishlistModel.EventType["NODE"] = 'node';
+	s6.widgets.WishlistModel.EventType["ITEMS"] = 'items';
+	s6.widgets.WishlistModel.EventType["NUM_ITEMS"] = 'numItems';
+
+	/**
+	* @param {number}
+	* @return {string}
+	*/
+	s6.widgets.WishlistModel.EventType.getItemIndexEvent = function(index){
+		return s6.widgets.WishlistModel.EventType.ITEMS + '_' + index
 	};
 
 	/** 
@@ -105,8 +112,19 @@ goog.scope(function(){
 		return this.items_.length;
 	};
 
+	/** 
+	* @param {number} index
+	* @return {s6.widgets.IArtPieceModel}
+	*/
+	s6.widgets.WishlistModel.prototype.getItemAt = function(index){
+		goog.asserts.assertNumber(index);
+		goog.asserts.assert(index >= 0 && index < this.getNumItems(), 'Index out of bounds');
+
+		return this.items_[index | 0];
+	};
+
 	/**
-	 * @param {number} item
+	 * @param {!s6.widgets.IArtPieceModel} item
 	 * @return {s6.widgets.IWishlistModel}
 	 */
 	s6.widgets.WishlistModel.prototype.addItem = function(item){
@@ -114,12 +132,11 @@ goog.scope(function(){
 	};
 
 	/** 
-	 * @param {number} item
+	 * @param {!s6.widgets.IArtPieceModel} item
 	 * @param {number} index
 	 * @return {s6.widgets.IWishlistModel}
 	 */
 	s6.widgets.WishlistModel.prototype.addItemAt = function(item, index){
-		window.love = this;
 		goog.asserts.assertNumber(index);
 		goog.asserts.assert(index >= 0 && index <= this.getNumItems(), 'Index (' + index + ')out of bounds.');
 
@@ -128,6 +145,7 @@ goog.scope(function(){
 			var dispatchLenghtChangeEvent = index >= this.getNumItems();
 			goog.object.set(this.items_, index, item);
 			this.dispatchEvent(s6.widgets.WishlistModel.EventType.ITEMS);
+			this.dispatchEvent(s6.widgets.WishlistModel.EventType.ITEMS + '_' + index);
 			
 			if(dispatchLenghtChangeEvent){
 				this.dispatchEvent(s6.widgets.WishlistModel.EventType.NUM_ITEMS);
@@ -137,8 +155,16 @@ goog.scope(function(){
 		return this;
 	};
 
-		/**
-	 * @param {number} index
+	/**
+	 * @param {!s6.widgets.IArtPieceModel} item
+	 * @return {s6.widgets.IWishlistModel}
+	 */
+	s6.widgets.WishlistModel.prototype.removeItem = function(item){
+		return this.removeItemAt(this.indexOfItem(item));
+	};
+
+	/**
+	 * @param {!s6.widgets.IArtPieceModel} index
 	 * @return {number}
 	 */
 	s6.widgets.WishlistModel.prototype.removeItemAt = function(index){
@@ -152,16 +178,7 @@ goog.scope(function(){
 		return removedItem[0];
 	};
 
-	/**
-	 * @param {number} item
-	 * @return {s6.widgets.IWishlistModel}
-	 */
-	s6.widgets.WishlistModel.prototype.removeItem = function(item){
-		return this.removeItemAt(this.indexOfItem(item));
-	};
-
 	s6.widgets.WishlistModel.prototype.indexOfItem = function(item){
 		return this.items_.indexOf(item);
-	}
-
+	};
 })

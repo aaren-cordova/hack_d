@@ -1,6 +1,6 @@
 html body{
 	@WISHLIST-WIDTH:100%;
-	@WISHLIST-HEIGHT:100%;
+	@WISHLIST-HEIGHT:50%;
 	
 	@DEFAULT_ANIMATION_TIME:"300ms";
 
@@ -22,11 +22,42 @@ html body{
 		bottom:0;
 		overflow: hidden;
 		
+
+			
+
 		#wishlist-container{
 			height:100%;
 			.s6-widgets-wishlist-view-node{
 				margin-top: 0px;
 				height:100%;
+
+				.wrapper{
+					.noItems{
+						display:none;
+					}
+					.close{
+						display:none;
+					}
+					.slider{
+						display:block;
+
+						.window{
+							.container{
+								.wishlist-view-item-node{
+									background-color: #ff0000;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			.s6-widgets-wishlist-view-node[data-count="0"]{
+				.wrapper{
+					.noItems{
+						display:block;
+					}
+				}
 			}
 		}
 
