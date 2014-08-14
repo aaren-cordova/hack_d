@@ -32,9 +32,10 @@ goog.scope(function(){
 	 * @return {s6.widgets.ArtPieceView}
 	 */
 	s6.widgets.ArtPieceView.prototype.setArtPieceModel = function(artPieceModel){
+		
 		this.artPieceModel_ = artPieceModel;
 
-		events.listen(artPieceModel, ArtPieceModel_EventType.ART_PIECE_NODE, this.onArtPieceNodeChanged_, false, this);
+		events.listen(artPieceModel, ArtPieceModel_EventType.NODE, this.onNodeChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.PRODUCT_TYPE, this.onProductTypeChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.HIDE_ENABLED, this.onHideEnabledChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.PIN_ENABLED, this.onPinEnabledChanged_, false, this);
@@ -45,7 +46,9 @@ goog.scope(function(){
 		events.listen(artPieceModel, ArtPieceModel_EventType.FEATURED_ENABLED, this.onFeaturedEnabledChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.SHOPPING_CART_ENABLED, this.onShoppingCartEnabledChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.PROMOTE_ENABLED, this.onPromoteEnabledChanged_, false, this);
+		events.listen(artPieceModel, ArtPieceModel_EventType.NUM_PROMOTED, this.onNumPromotedChanged_, false, this);
 
+		this.invalidate();
 		return this;
 	};
 
@@ -58,10 +61,7 @@ goog.scope(function(){
 		return this;
 	};
 
-	
-
 	s6.widgets.ArtPieceView.prototype.invalidate = function(){
-		this.onArtPieceNodeChanged_(null);
 		this.onProductTypeChanged_(null);
 		this.onHideEnabledChanged_(null);
 		this.onPinEnabledChanged_(null);
@@ -72,6 +72,8 @@ goog.scope(function(){
 		this.onFeaturedEnabledChanged_(null);
 		this.onShoppingCartEnabledChanged_(null);
 		this.onPromoteEnabledChanged_(null);
+		this.onNumPromotedChanged_(null);
+
 	};
 
 	/** @inheritDoc */
@@ -113,27 +115,33 @@ goog.scope(function(){
 					*/
 					this.favoriteButton = dom.createDom(
 						'div',
-						{'class' : 'favorite-button'}
+						{'class' : 'favorite-button', 'title': 'Add to Wishlist'}
 					),
 					this.promoteButton = dom.createDom(
 						'div',
-						{'class' : 'promote-button'}
+						{'class' : 'promote-button', 'title': 'Promote this Piece'}
 					),
+
+					this.promotedCount = dom.createDom(
+						'span',
+						{'class' : 'promoted-count'}
+					),
+
 					this.fullscreenButton = dom.createDom(
 						'div',
-						{'class' : 'fullscreen-button'}
+						{'class' : 'fullscreen-button', 'title': 'Preview'}
 					)
 				)
 			)
 		;
 
-		this.addButtonListeners_();
 		this.decorateInternal(artViewRoot);
 	};
 
 	/** @inheritDoc */
 	s6.widgets.ArtPieceView.prototype.decorateInternal = function(element){
 		this.setElementInternal(element);
+		this.addButtonListeners_();
 		this.invalidate();
 	};
 
@@ -179,18 +187,25 @@ goog.scope(function(){
 		goog.base(this, 'enterDocument');
 	};
 
-	s6.widgets.ArtPieceView.prototype.onArtPieceNodeChanged_ = function(event){
-		var artPieceNode = this.artPieceModel_.getArtPieceNode();
-		var parent = jQuery(artPieceNode).parent()[0];
+	s6.widgets.ArtPieceView.prototype.onNodeChanged_ = function(event){
+		var node = this.artPieceModel_.getNode();
+
+
+		jQuery(node).addClass('s6_widgets_art_piece_view_node')
+
+		var parent = jQuery(node).parent()[0];
 		this.render(parent);
 
-		goog.dom.appendChild(this.artContainer, artPieceNode);
+		goog.dom.appendChild(this.artContainer, node);
 
-		var imageWrap = jQuery(artPieceNode).find('.image_wrap')[0];
+		var imageWrap = jQuery(node).find('.image_wrap')[0];
 		goog.dom.appendChild(imageWrap, this.toolContainer);
 	};
 
 	s6.widgets.ArtPieceView.prototype.onProductTypeChanged_ = function(event){
+		if(!this.getContentElement()){
+			return;
+		}
 		var dataAttributeName = 'data-' + goog.string.toSelectorCase(ArtPieceModel_EventType.PRODUCT_TYPE);
 		var dataAttributes = {};
 		dataAttributes[dataAttributeName] = this.artPieceModel_.getProductType();
@@ -202,6 +217,10 @@ goog.scope(function(){
 	};
 
 	s6.widgets.ArtPieceView.prototype.onHideEnabledChanged_ = function(event){
+		if(!this.getContentElement()){
+			return;
+		}
+
 		var dataAttributeName = 'data-' + goog.string.toSelectorCase(ArtPieceModel_EventType.HIDE_ENABLED);
 		var dataAttributes = {};
 		dataAttributes[dataAttributeName] = this.artPieceModel_.getHideEnabled();
@@ -281,6 +300,12 @@ goog.scope(function(){
 				this.promoteButton,
 				{'data-enabled': this.artPieceModel_.getPromoteEnabled()}
 			);
+		}
+	};
+
+	s6.widgets.ArtPieceView.prototype.onNumPromotedChanged_ = function(event){
+		if(this.promotedCount){
+			jQuery(this.promotedCount).text(this.artPieceModel_.getNumPromoted());
 		}
 	};
 });

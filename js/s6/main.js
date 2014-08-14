@@ -52,20 +52,32 @@ goog.scope(function(){
 			this.models.push(model);
 
 			model.setArtPieceID(productIdList[i]);
-			model.setArtPieceNode(itemWrap);
+			model.setNode(itemWrap);
+			model.setNumPromoted((Math.random() * 2000 ) | 0); 
 		}
 
 		var wishlistModel = WishlistModel.getInstance();
 		var wishlistController = WishlistController.getInstance();
 		wishlistController.setWishlistModel(wishlistModel);
 
-
 		var wishlistView = WishlistView.getInstance();
 		wishlistView.setWishlistModel(wishlistModel);
 		wishlistView.setWishlistController(wishlistController);
 
+		wishlistModel.setNode(jQuery("#Wishlist")[0]);
 
-		wishlistModel.setWishlistNode(jQuery("#Wishlist")[0]);
+		// TODO remove
+		var interval = setInterval(function(){
+			if(!window['wL']){
+				return;
+			}
+
+			clearInterval(interval);
+			window['wL']['toggle'] = function(){
+				s6.widgets.WishlistController.getInstance().togglWishlist();
+			};
+		}, 100);
+
 
 	};
 	goog.addSingletonGetter(s6.Main);

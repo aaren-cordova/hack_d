@@ -36,12 +36,11 @@ goog.scope(function(){
 	s6.widgets.ArtPieceController.prototype.onFavoritedEnabledChanged_ = function(event){
 		var wishlistModel = WishlistModel.getInstance();
 
-		if(wishlistModel.getWishlistState() === WishlistStateType.CLOSE){
-			goog.events.unlisten(wishlistModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_);
-			wishlistModel.setWishlistState(WishlistStateType.PENCIL);
+		if(this.artPieceModel_.getFavoritedEnabled()){
+			wishlistModel.addItem(this.artPieceModel_.getArtPieceID());
 		}
 		else{
-			wishlistModel.invalidateWislistItems();
+			wishlistModel.removeItem(this.artPieceModel_.getArtPieceID());
 		}
 	};
 
@@ -91,7 +90,19 @@ goog.scope(function(){
 	};
 
 	s6.widgets.ArtPieceController.prototype.onPromoteButtonClick = function(event){
-		this.artPieceModel_.setPromoteEnabled(!this.artPieceModel_.getPromoteEnabled());
+		if(!this.artPieceModel_.getPromoteEnabled()){
+			this.artPieceModel_.setNumPromoted(this.artPieceModel_.getNumPromoted() + 1);
+			this.artPieceModel_.setPromoteEnabled(true);
+		}
+		/*
+		else{
+			if(this.artPieceModel_.getNumPromoted() >= 0){
+				this.artPieceModel_.setNumPromoted(this.artPieceModel_.getNumPromoted() -1);
+			}
+			
+			this.artPieceModel_.setPromoteEnabled(false);
+		}
+		*/
 	};
 
 	s6.widgets.ArtPieceController.prototype.onArtContainerClick = function(event){

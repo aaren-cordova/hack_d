@@ -8,7 +8,6 @@ goog.require('goog.dom');
 
 goog.provide('s6.widgets.WishlistView');
 goog.scope(function(){
-	var events = goog.events;
 	var EventType = goog.events.EventType;
 	var WishlistStateType = s6.widgets.WishlistStateType;
 
@@ -34,11 +33,9 @@ goog.scope(function(){
 	s6.widgets.WishlistView.prototype.setWishlistModel = function(wishlistModel){
 		this.wishlistModel_ = wishlistModel;
 
-		events.listen(wishlistModel, WishlistModel_EventType.WISHLIST_NODE, this.onWishlistNodeChanged_, false, this);
-		events.listen(wishlistModel, WishlistModel_EventType.WISHLIST_STATE, this.onWishlistStateChanged_, false, this);
-		events.listen(wishlistModel, WishlistModel_EventType.NUM_ITEMS, this.onNumItemsChanged_, false, this);
-
-
+		goog.events.listen(wishlistModel, WishlistModel_EventType.NODE, this.onNodeChanged_, false, this);
+		goog.events.listen(wishlistModel, WishlistModel_EventType.WISHLIST_STATE, this.onWishlistStateChanged_, false, this);
+		goog.events.listen(wishlistModel, WishlistModel_EventType.NUM_ITEMS, this.onNumItemsChanged_, false, this);
 
 		return this;
 	};
@@ -60,71 +57,97 @@ goog.scope(function(){
 	/** @inheritDoc */
 	s6.widgets.WishlistView.prototype.createDom = function(){
 		var dom = this.dom_;
+		
+		this.openButton = jQuery('a[data-dmc="head-wishlist"]')[0];
+
 		var artViewRoot = dom.createDom(
 				'div',
-				{'id': this.makeId('wishlist'), 'class' : 'art-piece'},
-				
-				this.wishlistContainer = dom.createDom(
-					'div',
-					{'class' : 'wishlist-container'}
-				),
+				{'id': 's6-widgets-wishlist-view-root', 'class' : 'wishlist'},
+
 				this.toolContainer = dom.createDom(
 					'div',
-					{'class' : 'tool-container'},
-					this.directionIcon = dom.createDom(
-						'div',
-						{'class' : 'direction-icon'}
-					),
-					this.pencilButton = dom.createDom(
-						'div',
-						{'class' : 'pencil-button'}
-					),
-					this.listButton = dom.createDom(
-						'div',
-						{'class' : 'list-button'}
-					),
-					this.fullButton = dom.createDom(
-						'div',
-						{'class' : 'full-button'}
-					),
-					this.closeButton = dom.createDom(
-						'div',
-						{'class' : 'close-button'}
+					{'class': 'tool-container'},
+					this.buttonList = dom.createDom(
+						'ul',
+						{'class' : 'list'},
+						dom.createDom(
+							'li',
+							{'class': 'list-item'},
+							this.pencilButton = dom.createDom(
+								'div',
+								{'class' : 'pencil-button', 'title': 'Pencil View'}
+							)
+						),
+						dom.createDom(
+							'li',
+							{'class': 'list-item'},
+							this.listButton = dom.createDom(
+								'div',
+								{'class' : 'list-button', 'title': 'List View'}
+							)
+						),
+						dom.createDom(
+							'li',
+							{'class': 'list-item'},
+							this.fullButton = dom.createDom(
+								'div',
+								{'class' : 'full-button', 'title': 'Full View'}
+							)
+						),
+						dom.createDom(
+							'li',
+							{'class': 'list-item'},
+							this.closeButton = dom.createDom(
+								'div',
+								{'class' : 'close-button', 'title': 'Close Wishlist'}
+							)
+						)
 					)
+				),
+				this.wishlistContainer = dom.createDom(
+					'div',
+					{'id' : 'wishlist-container'}
 				)
 			)
 		;
 
-		this.addButtonListeners_();
 		this.decorateInternal(artViewRoot);
 	};
 
 	/** @inheritDoc */
 	s6.widgets.WishlistView.prototype.decorateInternal = function(element){
 		this.setElementInternal(element);
+		this.addButtonListeners_();
 		this.invalidate();
 	};
 
 	/** @private */
 	s6.widgets.WishlistView.prototype.addButtonListeners_ = function (){
 		goog.asserts.assert(this.wishlistController_, 'Controller required before rendering');
+		goog.asserts.assert(this.getElement(), 'Root element required before rendering');
 
 		var wishlistController = this.wishlistController_;
 		
+		goog.events.listen(this.getElement(), EventType.CLICK, wishlistController.onNodeClick, false, wishlistController);
+
 		if(this.closeButton){
-			events.listen(this.closeButton, EventType.CLICK, wishlistController.onCloseButtonClick, false, wishlistController);
+			goog.events.listen(this.closeButton, EventType.CLICK, wishlistController.onCloseButtonClick, false, wishlistController);
 		}
 
 		if(this.pencilButton){
-			events.listen(this.pencilButton, EventType.CLICK, wishlistController.onPencilButtonClick, false, wishlistController);
+			goog.events.listen(this.pencilButton, EventType.CLICK, wishlistController.onPencilButtonClick, false, wishlistController);
 		}
 
 		if(this.listButton){
-			events.listen(this.listButton, EventType.CLICK, wishlistController.onListButtonClick, false, wishlistController);
+			goog.events.listen(this.listButton, EventType.CLICK, wishlistController.onListButtonClick, false, wishlistController);
 		}
 
 		if(this.fullButton){
-			events.listen(this.fullButton, EventType.CLICK, wishlistController.onFullButtonClick, false, wishlistController);
+			goog.events.listen(this.fullButton, EventType.CLICK, wishlistController.onFullButtonClick, false, wishlistController);
+		}
+
+		if(this.openButton){
+			goog.events.listen(this.openButton, EventType.CLICK, wishlistController.onOpenButtonClick, false, wishlistController);
 		}
 	};
 
@@ -133,40 +156,57 @@ goog.scope(function(){
 		goog.base(this, 'enterDocument');
 	};
 
-	s6.widgets.WishlistView.prototype.onWishlistNodeChanged_ = function(event){
-		var wishlistNode = this.wishlistModel_.getWishlistNode();
-		var parent = jQuery(wishlistNode).parent()[0];
-		this.render(parent);
-		console.log('wishlistNode', wishlistNode);
-		goog.dom.appendChild(this.wishlistContainer, wishlistNode);
+	s6.widgets.WishlistView.prototype.onNodeChanged_ = function(event){
+		var node = this.wishlistModel_.getNode();
+		goog.asserts.assert(node, 'Node cannot be set to null');
+		var wishlistController = this.wishlistController_;
+		goog.asserts.assert(wishlistController, 'Controller must exist');
 
-		var imageWrap = jQuery(wishlistNode).find('.wrapper')[0];
-		goog.dom.appendChild(imageWrap, this.toolContainer);
+		jQuery(node).addClass('s6-widgets-wishlist-view-node');
+		var parent = jQuery(node).parent()[0];
+		this.render(parent);
+
+
+		goog.dom.appendChild(this.wishlistContainer, node);
+		
+		jQuery(node).find('.close').hide();
 	};
 
 	
 	s6.widgets.WishlistView.prototype.onWishlistStateChanged_ = function(event){
 		var wishlistState = this.wishlistModel_.getWishlistState();
+		jQuery(this.getElement()).css('height', '');
+
 		switch(wishlistState){
 			case WishlistStateType.CLOSE:
-				jQuery(this.wishlistContainer).attr('data-state', 'close');
+				jQuery(this.getElement()).attr('data-state', 'close');
 				break;
 			case WishlistStateType.PENCIL:
-				jQuery(this.wishlistContainer).attr('data-state', 'pencil');
+				jQuery(this.getElement()).attr('data-state', 'pencil');
 				break;
 			case WishlistStateType.LIST:
-				jQuery(this.wishlistContainer).attr('data-state', 'list');
+				jQuery(this.getElement()).attr('data-state', 'list');
 				break;
 			case WishlistStateType.FULL:
-				jQuery(this.wishlistContainer).attr('data-state', 'full');
+				jQuery(this.getElement()).attr('data-state', 'full');
 				break;
 			default:
 				goog.asserts.fail("Unknown wishlist state: " + wishlistState);
 				return;
 		}
 	};
-	s6.widgets.WishlistView.prototype.onNumItemsChanged_ = function(event){
-		// TODO
-	};
 
+
+	s6.widgets.WishlistView.prototype.onNumItemsChanged_ = function(event){
+		var node = this.wishlistModel_.getNode();
+
+		var numItems = this.wishlistModel_.getNumItems()
+		jQuery(node).attr('data-count', numItems);
+		
+		jQuery('#wl-count, [data-dmc="head-wishlist"] .count').each(function(){
+			var text = jQuery(this).text() || '';
+			text = text.replace(/\d+/, numItems);
+			jQuery(this).text(text);
+		});
+	};
 });

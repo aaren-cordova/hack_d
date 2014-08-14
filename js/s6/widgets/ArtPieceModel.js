@@ -28,8 +28,9 @@ goog.scope(function(){
 		"LIKE_ENABLED": "likeEnabled",
 		"DISLIKE_ENABLED": "dislikeEnabled",
 		"FEATURED_ENABLED": "featuredEnabled",
+		"NUM_PROMOTED": "numPromoted",
 		"SHOPPING_CART_ENABLED": "shoppingCartEnabled",
-		"ART_PIECE_NODE": "artPieceNode",
+		"NODE": "node",
 		"PROMOTE_ENABLED": "promoteEnabled",
 		"CONTROLS_ENABLED":"controlsEnabled",
 		"ART_PIECE_ID":"artPieceId"
@@ -65,17 +66,17 @@ goog.scope(function(){
 	};
 
 	/** @return {Node} */
-	s6.widgets.ArtPieceModel.prototype.getArtPieceNode = function(){
-		return this.getProperty(s6.widgets.ArtPieceModel.EventType.ART_PIECE_NODE, null);
+	s6.widgets.ArtPieceModel.prototype.getNode = function(){
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.NODE, null);
 	};
 
 	/** 
-	 * @param {Node} artPieceNode
+	 * @param {Node} node
 	 * @return {s6.widgets.IArtPieceModel}
 	 */
-	s6.widgets.ArtPieceModel.prototype.setArtPieceNode = function(artPieceNode){
-		goog.asserts.assert(artPieceNode instanceof Node);
-		return this.setProperty(s6.widgets.ArtPieceModel.EventType.ART_PIECE_NODE, artPieceNode);
+	s6.widgets.ArtPieceModel.prototype.setNode = function(node){
+		goog.asserts.assert(node instanceof Node);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.NODE, node);
 	};
 
 	/** @return {string} */
@@ -167,9 +168,27 @@ goog.scope(function(){
 		return this.getProperty(s6.widgets.ArtPieceModel.EventType.DISLIKE_ENABLED, false);
 	};
 
+	/** 
+	 * @param {boolean} isEnabled
+	 * @return {s6.widgets.IArtPieceModel}
+	 */
 	s6.widgets.ArtPieceModel.prototype.setDislikeEnabled = function(isEnabled){
 		goog.asserts.assertBoolean(isEnabled);
 		return this.setProperty(s6.widgets.ArtPieceModel.EventType.DISLIKE_ENABLED, isEnabled);
+	};
+
+	/** @return {boolean} */
+	s6.widgets.ArtPieceModel.prototype.getNumPromoted = function(){
+		return this.getProperty(s6.widgets.ArtPieceModel.EventType.NUM_PROMOTED, 0);
+	};
+
+	/** 
+	 * @param {boolean} numFeatured
+	 * @return {s6.widgets.IArtPieceModel}
+	 */
+	s6.widgets.ArtPieceModel.prototype.setNumPromoted = function(numFeatured){
+		goog.asserts.assertNumber(numFeatured);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.NUM_PROMOTED, numFeatured);
 	};
 
 	/** @return {boolean} */

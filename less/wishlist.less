@@ -1,9 +1,8 @@
 html body{
-	@WISHLIST-WIDTH:192px;
-	@WISHLIST-HEIGHT:192px;
+	@WISHLIST-WIDTH:100%;
+	@WISHLIST-HEIGHT:100%;
 	
 	@DEFAULT_ANIMATION_TIME:"300ms";
-
 
 	@WISHLIST-TOOL_CONTAINER-WIDTH:100%;
 	@WISHLIST-TOOL_CONTAINER-HEIGHT:30px;
@@ -12,59 +11,102 @@ html body{
 	@WISHLIST-TOOL_CONTAINER-BUTTON-WIDTH:16px;
 	@WISHLIST-TOOL_CONTAINER-BUTTON-HEIGHT:16px;
 
-	.wishlist{
+	#s6-widgets-wishlist-view-root{
 		.size(@WISHLIST-WIDTH, @WISHLIST-HEIGHT);
 		.content-size-only();
-		
-		display:inline;
+		.transition("height @{DEFAULT_ANIMATION_TIME}");
 
-		.wishlist-container{
-			&:hover .tool-container{
-				opacity: 1;
+		z-index: 2147483647;
+		display:block;
+		position:fixed;
+		bottom:0;
+		overflow: hidden;
+		
+		#wishlist-container{
+			height:100%;
+			.s6-widgets-wishlist-view-node{
+				margin-top: 0px;
+				height:100%;
+			}
+		}
+
+		&[data-state="close"] {
+			height: 0;
+		}
+
+		&[data-state="pencil"] {
+			height: 30px;
+
+			.tool-container .list .list-item .pencil-button{
+				display: none;
+			}
+		}
+
+		&[data-state="list"] {
+			height: 220px;
+
+			.tool-container .list .list-item .list-button{
+				display: none;
+			}
+		}
+
+		&[data-state="full"] {
+			.tool-container .list .list-item .full-button{
+				display: none;
+			}
+		}
+
+		.tool-container{
+			.size(
+				@WISHLIST-TOOL_CONTAINER-WIDTH,
+				@WISHLIST-TOOL_CONTAINER-HEIGHT
+			);
+			.transition("opacity @{DEFAULT_ANIMATION_TIME}");
+			
+			position:absolute;
+			background-color: #AAAAAA;
+			left:0px;
+			top:0px;
+			
+			.list{
+				list-style: none;
+				position:absolute;
+				right: 15px;
+
+				.list-item{
+					display:inline-block;
+				}
 			}
 
-			.tool-container{
-				.size(
-					@WISHLIST-TOOL_CONTAINER-WIDTH,
-					@WISHLIST-TOOL_CONTAINER-HEIGHT
-				);
-				.transition("opacity @{DEFAULT_ANIMATION_TIME}");
-
-				opacity: 0;
-				position:absolute;
-				background-color: #AAAAAA;
+			[class*="-button"]{
+				.size(@WISHLIST-TOOL_CONTAINER-BUTTON-WIDTH, @WISHLIST-TOOL_CONTAINER-BUTTON-HEIGHT);
+				
+				display:block;
 				cursor:pointer;
-				left:0px;
-				top:@WISHLIST-HEIGHT - @WISHLIST-TOOL_CONTAINER-HEIGHT;
 
-				[class*="-button"]{
-					.size(@WISHLIST-TOOL_CONTAINER-BUTTON-WIDTH, @WISHLIST-TOOL_CONTAINER-BUTTON-HEIGHT);
-					.center-vertical(@WISHLIST-TOOL_CONTAINER-BUTTON-HEIGHT);
-					.transition("opacity @{DEFAULT_ANIMATION_TIME}");
-
-					display:block;
-					position:absolute;
-
-					&[data-enabled="false"]{
-						opacity: .5;
-					}
-
-					&[data-enabled="true"]{
-						opacity: 1;
-					}
+				&[data-enabled="false"]{
+					opacity: .5;
 				}
 
-				.expand-button{
-					display:block;
-					left:@WISHLIST-TOOL_CONTAINER-PADDING_LEFT;
-					background-color: #FFFF00;
+				&[data-enabled="true"]{
+					opacity: 1;
 				}
+			}
+			
+			.pencil-button{
+				background-color: #FF00FF;
+			}
 
-				.close-button{
-					display:block;
-					left:@WISHLIST-WIDTH / 2 - (@WISHLIST-TOOL_CONTAINER-HEIGHT / 2);
-					background-color: #FF0000;
-				}
+			.list-button{
+				background-color: #0000FF;
+			}
+
+			.full-button{
+				background-color: #00FF00;
+			}
+
+			.close-button{
+				background-color: #000000;
 			}
 		}
 	}

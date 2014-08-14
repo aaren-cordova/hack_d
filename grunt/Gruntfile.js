@@ -152,15 +152,15 @@ module.exports = function (grunt) {
 		'closureDepsWriter:s6'
 	]);
 
-	grunt.registerTask('dev', [
-		//'jshint',
-		'closureDepsWriter:s6',
-		'closureBuilder:s6',
-		'less:s6',
-		'concat:s6'
-	]);
 
+	var dev_ = [];
+	//dev_.push('jshint');
+	//dev_.push('closureDepsWriter:s6');
+	//dev_.push('closureBuilder:s6');
+	dev_.push('less:s6');
+	//dev_.push('concat:s6');
 
+	grunt.registerTask('dev', dev_);
 
 	grunt.registerTask('css', [
 		'concat:css',

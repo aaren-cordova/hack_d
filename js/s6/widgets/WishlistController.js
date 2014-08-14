@@ -16,13 +16,60 @@ goog.scope(function(){
 	 * @implements {s6.widgets.IWishlistController}
 	 */
 	s6.widgets.WishlistController = function(){
+		this.persistentDataModel_ = new PersistentDataModel();
 	};
 	goog.addSingletonGetter(s6.widgets.WishlistController);
 
-	s6.widgets.WishlistController.prototype.onCloseButtonClick = function(event){
-		var persistentDataModel = PersistentDataModel.getInstance();
-		persistentDataModel.setProperty('s6.widgets.Wishlist.hasClosed', true);
+	/**
+	 * @param {s6.widgets.IWishlistModel} wishlistModel
+	 */
+	s6.widgets.WishlistController.prototype.setWishlistModel = function(wishlistModel){
+		this.wishlistModel_ = wishlistModel;
 
+		goog.events.listen(wishlistModel, WishlistModel_EventType.NUM_ITEMS, this.onNumItemsChanged_, false, this);
+	};
+
+
+	s6.widgets.WishlistController.prototype.onNodeClick = function(event){
+		/*
+		var wishlistState = this.wishlistModel_.getWishlistState();
+		switch(wishlistState){
+			case WishlistStateType.FULL:
+				this.wishlistModel_.setWishlistState(WishlistStateType.PENCIL);
+				break;
+			case WishlistStateType.PENCIL:
+				this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
+				break;
+			case WishlistStateType.LIST:
+				this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+				break;
+			default:
+				goog.asserts.fail("Clicked on unsupported wishlist state: " + wishlistState);
+				return;
+		}
+		*/
+	};
+
+	s6.widgets.WishlistController.prototype.onOpenButtonClick = function(event){
+		s6.widgets.WishlistController.hardClose = false;
+
+		var wishlistState = this.wishlistModel_.getWishlistState();
+		switch(wishlistState){
+			case WishlistStateType.CLOSE:
+			case WishlistStateType.PENCIL:
+				this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
+				break;
+			case WishlistStateType.LIST:
+				this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+				break;
+		}
+		
+		event.preventDefault();
+		return false;
+	};
+
+	s6.widgets.WishlistController.prototype.onCloseButtonClick = function(event){
+		s6.widgets.WishlistController.hardClose = true;
 		this.wishlistModel_.setWishlistState(WishlistStateType.CLOSE);
 	};
 
@@ -36,15 +83,6 @@ goog.scope(function(){
 
 	s6.widgets.WishlistController.prototype.onFullButtonClick = function(event){
 		this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
-	};
-
-	/**
-	 * @param {s6.widgets.IWishlistModel} wishlistModel
-	 */
-	s6.widgets.WishlistController.prototype.setWishlistModel = function(wishlistModel){
-		this.wishlistModel_ = wishlistModel;
-
-		//goog.events.listen(wishlistModel, WishlistModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_, false, this);
 	};
 
 	s6.widgets.WishlistController.prototype.togglWishlist = function(){
@@ -63,24 +101,19 @@ goog.scope(function(){
 				return;
 		}
 	};
-	/*
-	window['wL']['toggle'] = function(){
-		s6.widgets.WishlistController.getInstance().togglWishlist();
-	};
 
-	*/
+
 
 	s6.widgets.WishlistController.prototype.onNumItemsChanged_ = function(event){
-		var persistentDataModel = PersistentDataModel.getInstance();
+		console.log('onNumItemsChanged_');
+		console.log('getNumItems', this.wishlistModel_.getNumItems());
+		console.log('getIndexOfWishlistState', this.wishlistModel_.getIndexOfWishlistState(WishlistStateType.CLOSE));
 
-		if(!persistentDataModel.getProperty('s6.widgets.Wishlist.hasClosed', false)){
-			if(this.wishlistModel_.getNumItems() == 0){
-				this.wishlistModel_.setWishlistState(WishlistStateType.CLOSE);
-			}
+		if(this.wishlistModel_.getNumItems() == 0) {
+			this.wishlistModel_.setWishlistState(WishlistStateType.CLOSE);
 		}
-	};
-
-	s6.widgets.WishlistController.prototype.onWishlistClosed_ = function(event){
-		events.unlisten(this.wishlistModel_, WishlistModel_EventType.NUM_ITEMS, this.onNumItemsChanged_, false);
+		else if(!s6.widgets.WishlistController.hardClose) {
+			this.wishlistModel_.setWishlistState(WishlistStateType.PENCIL)
+		}
 	};
 });

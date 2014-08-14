@@ -12,13 +12,13 @@ goog.scope(function(){
 
 
 	/** @return {Node} */
-	s6.widgets.IArtPieceModel.prototype.getArtPieceNode = function(){};
+	s6.widgets.IArtPieceModel.prototype.getNode = function(){};
 
 	/** 
-	 * @param {Node} artPieceNode
+	 * @param {Node} node
 	 * @return {s6.widgets.IArtPieceModel}
 	 */
-	s6.widgets.IArtPieceModel.prototype.setArtPieceNode = function(artPieceNode){};
+	s6.widgets.IArtPieceModel.prototype.setNode = function(node){};
 
 	/** 
 	 * @param {string} name

@@ -31,9 +31,4 @@ goog.scope(function(){
 	* @return {s6.widgets.IWishlistModel} [description]
 	*/
 	s6.widgets.IWishlistModel.prototype.setWishlistState = function(mode){};
-
-	/**
-	* @return {s6.widgets.IWishlistModel}
-	*/
-	s6.widgets.IWishlistModel.prototype.invalidateWislistItems = function(){};
 });
