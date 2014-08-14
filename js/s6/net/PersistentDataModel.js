@@ -1,5 +1,11 @@
-goog.require('goog.object');
+goog.require('goog.asserts');
+goog.require('goog.net.Cookies');
 goog.require('goog.events.EventTarget');
+goog.require('s6.net.IPersistentDataModel');
+
+// TODO - remove
+goog.require('s6.net.Cookies');
+
 goog.provide('s6.net.PersistentDataModel');
 
 goog.scope(function(){
@@ -7,37 +13,106 @@ goog.scope(function(){
 	/**
 	* @constructor
 	* @extends {goog.events.EventTarget}
+	* @implements {s6.net.IPersistentDataModel}
 	*/
 	s6.net.PersistentDataModel = function(){
 		goog.events.EventTarget.call(this);
+
+		this.dataMutators_ = [];
+
+		// TODO - req in args
+		this.dataMutators_.push(new s6.net.Cookies(document));
 	};
 	goog.inherits(s6.net.PersistentDataModel, goog.events.EventTarget);
 
-	/** 
-	 * @param {string} name
-	 * @param {*} opt_value
-	 * @return {?}
-	 */
-	s6.widgets.WishlistModel.prototype.getProperty = function(name, opt_value){
-		return goog.object.get(this, name, opt_value);
+	/** @return {boolean} */
+	s6.net.PersistentDataModel.prototype.isEnabled = function(){
+		for(var i = 0; i < this.dataMutators_.length; i++){
+			var dataMutator = this.dataMutators_[i];
+			if(dataMutator.isEnabled()){
+				return true;
+			}
+		}
+
+		return false;
 	};
 
 	/** 
 	 * @param {string} name
-	 * @param {*} value
-	 * @return {s6.widgets.IWishlistModel}
+	 * @param {*=} opt_value
+	 * @return {?}
 	 */
-	s6.widgets.WishlistModel.prototype.setProperty = function(name, value){
+	s6.widgets.PersistentDataModel.prototype.getProperty = function(name, opt_value){
+		goog.asserts.assertString(name);
+
+		for(var i = 0; i < this.dataMutators_.length; i++){
+			var dataMutator = this.dataMutators_[i];
+			if(dataMutator.isEnabled()){
+				return dataMutator.getProperty(name);
+			}
+		}
+
+		return opt_value;
+	};
+
+	/** 
+	 * @param {string} name
+	 * @return {s6.widgets.IPersistentDataModel}
+	 */
+	s6.widgets.PersistentDataModel.prototype.setProperty = function(name, value){
 		goog.asserts.assertString(name);
 		goog.asserts.assert(goog.isDef(value));
 
-		var oldvalue = this[name];
-		if(oldvalue !== value){
-			goog.object.set(this, name, value);
-			this.dispatchEvent(name);
+		for(var i = 0; i < this.dataMutators_.length; i++){
+			var dataMutator = this.dataMutators_[i];
+			if(dataMutator.isEnabled()){
+				return dataMutator.setProperty(name);
+			}
 		}
 
 		return this;
 	};
 
+	/** 
+	 * @param {string} name
+	 * @return {boolean}
+	 */
+	s6.net.PersistentDataModel.prototype.hasProperty = function(name){
+		goog.asserts.assertString(name);
+
+		for(var i = 0; i < this.dataMutators_.length; i++){
+			var dataMutator = this.dataMutators_[i];
+			if(dataMutator.isEnabled()){
+				return dataMutator.hasProperty(name);
+			}
+		}
+
+		return false;
+	};
+
+	/**
+	* @param {string} name
+	* @param {string=} opt_path
+	* @param {string=} opt_domain
+	* @return {boolean}
+	*/
+	s6.net.PersistentDataModel.prototype.deleteProperty = function(name, opt_path, opt_domain){
+		goog.asserts.assertString(name);
+
+		for(var i = 0; i < this.dataMutators_.length; i++){
+			var dataMutator = this.dataMutators_[i];
+			if(dataMutator.isEnabled()){
+				return dataMutator.deleteProperty(name, opt_path, opt_domain);
+			}
+		}
+
+		return false;
+	};
+
+
+	/**
+	 * @private
+	 * @type {Array.<s6.net.IPersistentDataModel>}
+	 */
+	s6.net.PersistentDataModel.prototype.dataMutators_ = null;
 });

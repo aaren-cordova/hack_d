@@ -2,6 +2,9 @@
 // Please do not edit.
 goog.addDependency('../../../../s6/base.js', ['s6'], []);
 goog.addDependency('../../../../s6/main.js', ['s6.Main'], ['goog.array', 'goog.events.EventType', 'goog.json', 's6.widgets.ArtPieceController', 's6.widgets.ArtPieceModel', 's6.widgets.ArtPieceView', 's6.widgets.WishlistController', 's6.widgets.WishlistModel', 's6.widgets.WishlistView']);
+goog.addDependency('../../../../s6/net/CookieModel.js', ['s6.net.CookieModel'], ['goog.asserts', 'goog.events.EventTarget', 'goog.net.Cookies', 'goog.object']);
+goog.addDependency('../../../../s6/net/IPersistentDataModel.js', ['s6.net.IPersistentDataModel'], ['goog.events.Listenable']);
+goog.addDependency('../../../../s6/net/PersistentDataModel.js', ['s6.net.PersistentDataModel'], ['goog.asserts', 'goog.events.EventTarget', 'goog.net.Cookies', 's6.net.Cookies', 's6.net.IPersistentDataModel']);
 goog.addDependency('../../../../s6/widgets/ArtGallery.js', ['s6.widgets.ArtGallery'], ['s6.widgets.ArtSet']);
 goog.addDependency('../../../../s6/widgets/ArtPieceController.js', ['s6.widgets.ArtPieceController'], ['goog.asserts', 's6.widgets.ArtPieceModel.EventType', 's6.widgets.IArtPieceController', 's6.widgets.IArtPieceModel', 's6.widgets.WishlistModel', 's6.widgets.WishlistStateType']);
 goog.addDependency('../../../../s6/widgets/ArtPieceModel.js', ['s6.widgets.ArtPieceModel', 's6.widgets.ArtPieceModel.EventType'], ['goog.asserts', 'goog.events.EventTarget', 'goog.object', 's6.widgets.ArtType', 's6.widgets.IArtPieceModel']);
