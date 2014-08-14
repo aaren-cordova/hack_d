@@ -25,8 +25,6 @@ goog.scope(function(){
 		goog.events.listen(artPieceModel, ArtPieceModel_EventType.FULLSCREEN_ENABLED, this.onFullscreenEnabledChanged_, false, this);
 		goog.events.listen(artPieceModel, ArtPieceModel_EventType.SHOPPING_CART_ENABLED, this.onShoppingCartEnabledChanged_, false, this);
 		goog.events.listen(artPieceModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_, false, this);
-
-		this.artPieceModel_.setFavoritedEnabled(!this.artPieceModel_.getFavoritedEnabled());
 	};
 	
 

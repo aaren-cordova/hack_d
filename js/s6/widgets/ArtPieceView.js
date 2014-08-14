@@ -285,29 +285,4 @@ goog.scope(function(){
 			);
 		}
 	};
-
-	s6.widgets.ArtPieceView.prototype.onWishlistStateChanged_ = function(event){
-		var wishlistState = this.artPieceModel_.getWishlistState();
-		switch(wishlistState){
-			case WishlistStateType.CLOSE:
-				jQuery('#Wishlist').removeClass("open");
-				jQuery('#Wishlist').removeAttr("data-state");
-				break;
-			case WishlistStateType.PENCIL:
-				jQuery('#Wishlist').addClass("open");
-				jQuery('#Wishlist').addAttr("data-state", 'pencil');
-				break;
-			case WishlistStateType.LIST:
-				jQuery('#Wishlist').addClass("open");
-				jQuery('#Wishlist').addAttr("data-state", 'list');
-				break;
-			case WishlistStateType.FULL:
-				jQuery('#Wishlist').addClass("open");
-				jQuery('#Wishlist').addAttr("data-state", 'full');
-				break;
-			default:
-				goog.asserts.fail("Unknown wishlist state: " + wishlistState);
-				return;
-		}
-	};
 });

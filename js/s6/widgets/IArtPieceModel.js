@@ -142,8 +142,4 @@ goog.scope(function(){
 	 * @return {s6.widgets.IArtPieceModel}
 	 */
 	s6.widgets.IArtPieceModel.prototype.setArtPieceID = function(id){};
-
-
-
-	
 });

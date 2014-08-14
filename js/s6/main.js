@@ -1,3 +1,8 @@
+goog.require('s6.widgets.WishlistModel');
+goog.require('s6.widgets.WishlistController');
+goog.require('s6.widgets.WishlistView');
+
+
 goog.require('s6.widgets.ArtPieceModel');
 goog.require('s6.widgets.ArtPieceController');
 goog.require('s6.widgets.ArtPieceView');
@@ -11,6 +16,9 @@ goog.scope(function(){
 	var ArtPieceModel = s6.widgets.ArtPieceModel;
 	var ArtPieceController = s6.widgets.ArtPieceController;
 	var ArtPieceView = s6.widgets.ArtPieceView;
+	var WishlistModel = s6.widgets.WishlistModel;
+	var WishlistController = s6.widgets.WishlistController;
+	var WishlistView = s6.widgets.WishlistView;
 
 	/** @constructor */
 	s6.Main = function(){
@@ -46,6 +54,16 @@ goog.scope(function(){
 			model.setArtPieceID(productIdList[i]);
 			model.setArtPieceNode(itemWrap);
 		}
+
+
+		var wishlistModel = WishlistModel.getInstance();
+		var wishlistController = WishlistController.getInstance();
+		wishlistController.setWishlistModel(wishlistModel);
+
+
+		var wishlistView = WishlistView.getInstance();
+		wishlistView.setWishlistModel(wishlistModel);
+		wishlistView.setWishlistController(wishlistController);
 	};
 
 	goog.addSingletonGetter(s6.Main);

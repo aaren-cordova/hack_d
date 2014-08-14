@@ -3,14 +3,11 @@ goog.require("goog.asserts");
 goog.require("goog.object");
 goog.require("s6.widgets.IArtPieceModel");
 goog.require("s6.widgets.ArtType");
-goog.require("s6.widgets.WishlistStateType");
 
 goog.provide("s6.widgets.ArtPieceModel");
 goog.provide("s6.widgets.ArtPieceModel.EventType");
 
 goog.scope(function(){
-	var WishlistStateType = s6.widgets.WishlistStateType;
-
 	/**
 	 * @constructor
 	 * @implements {s6.widgets.IArtPieceModel}
@@ -35,8 +32,7 @@ goog.scope(function(){
 		"ART_PIECE_NODE": "artPieceNode",
 		"PROMOTE_ENABLED": "promoteEnabled",
 		"CONTROLS_ENABLED":"controlsEnabled",
-		"ART_PIECE_ID":"artPieceId",
-		"WISHLIST_STATE": "wishlistState"
+		"ART_PIECE_ID":"artPieceId"
 	};
 
 	goog.exportSymbol("s6.widgets.ArtPieceModel.EventType", s6.widgets.ArtPieceModel.EventType);
@@ -228,13 +224,13 @@ goog.scope(function(){
 		return this.setProperty(s6.widgets.ArtPieceModel.EventType.CONTROLS_ENABLED, isEnabled);
 	};
 
-	/** @return {int} */
+	/** @return {number} */
 	s6.widgets.ArtPieceModel.prototype.getArtPieceID = function(){
 		return this.getProperty(s6.widgets.ArtPieceModel.EventType.ART_PIECE_ID, 0);
 	};
 
 	/** 
-	 * @param {int} id
+	 * @param {number} id
 	 * @return {s6.widgets.IArtPieceModel}
 	 */
 	s6.widgets.ArtPieceModel.prototype.setArtPieceID = function(id){
@@ -243,20 +239,7 @@ goog.scope(function(){
 		return this.setProperty(s6.widgets.ArtPieceModel.EventType.ART_PIECE_ID, id);
 	};
 
-	s6.widgets.ArtPieceModel.prototype.getWishlistState = function(){
-		return this.getProperty(s6.widgets.ArtPieceModel.EventType.WISHLIST_STATE, 0);
-	}
-
-	/**
-	* @private 
-	* @param {number} mode
-	*/
-	s6.widgets.ArtPieceModel.prototype.setWishlistState = function(mode){
-		goog.asserts.assertNumber(mode);
-		goog.asserts.assert(mode in WishlistStateType);
-
-		return this.setProperty(s6.widgets.ArtPieceModel.EventType.WISHLIST_STATE, mode);
-	};
+	
 
 	/** @return {!Object} */
 	s6.widgets.ArtPieceModel.prototype.toJSON = function(){
@@ -272,8 +255,7 @@ goog.scope(function(){
 			"featuredEnabled": this.getFeaturedEnabled(),
 			"promoteEnabled": this.getPromoteEnabled(),
 			"controlsEnabled": this.getControlsEnabled(),
-			"artPieceId": this.getArtPieceID(),
-			"wishlistState": this.getWishlistState()
+			"artPieceId": this.getArtPieceID()
 		};
 	};
 
@@ -293,7 +275,6 @@ goog.scope(function(){
 		this.setPromoteEnabled(json["promoteEnabled"]);
 		this.setControlsEnabled(json["controlsEnabled"]);
 		this.setArtPieceID(json["artPieceId"]);
-		this.setWishlistState(json["wishlistState"]);
 
 		return this;
 	};
@@ -389,6 +370,4 @@ goog.scope(function(){
 	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "getShoppingCartEnabled", s6.widgets.ArtPieceModel.prototype.getShoppingCartEnabled);
 	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "setShoppingCartEnabled", s6.widgets.ArtPieceModel.prototype.setShoppingCartEnabled);
 
-	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "getWishlistState", s6.widgets.ArtPieceModel.prototype.getWishlistState);
-	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "setWishlistState", s6.widgets.ArtPieceModel.prototype.setWishlistState);
 });
