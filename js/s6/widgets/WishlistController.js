@@ -92,7 +92,14 @@ goog.scope(function(){
 	};
 
 	s6.widgets.WishlistController.prototype.onToolContainerClick = function(event){
-		console.log('onToolContainerClick')
+		console.log('onToolContainerClick',event.target)
+
+		if(jQuery('#s6-widgets-wishlist-view-root .tool-container').length){
+			if(jQuery('#s6-widgets-wishlist-view-root .tool-container')[0] !== event.target )  { 
+				return;
+			}
+		}
+
 		var wishlistState = this.wishlistModel_.getWishlistState();
 		switch(wishlistState){
 			case WishlistStateType.CLOSE:
