@@ -40,7 +40,7 @@ html body{
 				[class*="-button"]{
 					.size(@ART_PIECE-TOOL_CONTAINER-BUTTON-WIDTH, @ART_PIECE-TOOL_CONTAINER-BUTTON-HEIGHT);
 					.center-vertical(@ART_PIECE-TOOL_CONTAINER-BUTTON-HEIGHT);
-					.transition("opacity @{DEFAULT_ANIMATION_TIME}");
+					.transition("opacity @{DEFAULT_ANIMATION_TIME}, background-color @{DEFAULT_ANIMATION_TIME}");
 
 					display:block;
 					position:absolute;
@@ -50,7 +50,7 @@ html body{
 						opacity: .5;
 
 						&:hover{
-							.transition("opacity 0");
+							.transition("opacity 50ms");
 							opacity: .75;
 						};
 					}
@@ -63,7 +63,6 @@ html body{
 				.promote-button{
 					display:block;
 					left:@ART_PIECE-WIDTH / 2 - (@ART_PIECE-TOOL_CONTAINER-HEIGHT / 2);
-					background-color: #FF0000;
 
 					left:10px;
 					font-family: Helvetica;
@@ -71,12 +70,26 @@ html body{
 					fonte-size:12pt;
 
 					position:absolute;
+
+					&[data-enabled="false"]{
+						background-color: #cecece;
+
+						&:hover{
+							.transition("background-color 50ms");
+							background-color: #E7679A;
+						}
+					}
+
+					&[data-enabled="true"]{
+						background-color: #ff0066;
+					}
 				}
 
 				.promoted-count{
 					top:7px;
 					left:30px;
-
+					
+					color:#cecece;
 					font-family: Helvetica;
 					font-weight: bold;
 					fonte-size:12pt;
@@ -86,16 +99,30 @@ html body{
 
 				.fullscreen-button{
 					display:none;
-					background-color: #111111;
 					left:81px;
 					position:absolute;
+
+					&[data-enabled="false"]{
+						background-color: #cecece;
+					}
+
+					&[data-enabled="true"]{
+						background-color: #FFFFFF;
+					}
 				}
 
 				.favorite-button{
 					right:10px;
 					display:block;
-					background-color: #FFFF00;
 					position:absolute;
+					
+					&[data-enabled="false"]{
+						background-color: #FFFFFF;
+					}
+
+					&[data-enabled="true"]{
+						background-color: #ffcc00;
+					}
 
 				}
 			}
