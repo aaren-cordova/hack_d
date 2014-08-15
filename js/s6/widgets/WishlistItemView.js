@@ -68,31 +68,33 @@ goog.scope(function(){
 	s6.widgets.WishlistItemView.prototype.createDom = function(){
 		var dom = this.dom_;
 		var artViewRoot = dom.createDom("li", {"data-id":"11264507", "data-url":"/product/the-whale-vah_print#1=45", 'class': 'wishlist-view-item-node'},
-			dom.createDom("form", {"id":"add_375914", "data-type":"add", "method":"post", "action":"/shop/cart"},
-				dom.createDom("input", {"type":"hidden", "name":"source", "value":"2"}),
-				dom.createDom("input", {"type":"hidden", "name":"form_id", "value":"djWJAuNKvd9A5KN"}),
-				dom.createDom("input", {"type":"hidden", "name":"post_id", "value":"375914"}),
-				dom.createDom("input", {"type":"hidden", "name":"product_id", "value":"4"}),
-				dom.createDom("input", {"type":"hidden", "name":"quantity", "value":"1"}),
-				dom.createDom("input", {"type":"hidden", "name":"form_attributes", "value":"1=45"}),
-				dom.createDom("input", {"type":"hidden", "name":"form_js", "value":"0"}),
-				dom.createDom("input", {"type":"hidden", "name":"form_preview", "value":"0027/p/12941908_7806896-prn01"}),
-				dom.createDom("input", {"type":"hidden", "name":"form_url", "value":"/product/the-whale-vah_print#1=45"}),
-				dom.createDom("input", {"type":"hidden", "name":"is_wishlist", "value":"false"}),
-				dom.createDom("input", {"type":"hidden", "name":"attr_375914size", "value":"45"}),
-				dom.createDom("input", {"type":"hidden", "name":"attr_375914custom", "value":"6x7.895"}),
-				dom.createDom("input", {"type":"hidden", "name":"attr_375914details", "value":"W6-1b"}),
-				//dom.createDom("noscript", {"&lt;input "type":"hidden", "name":"nojs", "value":"1" /&gt;</noscript}),
-				dom.createDom("img", {"src":"http://a1.s6img.com/cdn/0027/p/12941908_7806896-prn01_r.jpg"}),
-				dom.createDom("button", {"class":"move", "type":"submit", "name":"add_item", "value":"11264507"}, "Move to Cart")
-			),
-			dom.createDom("form", {"id":"remove_375914", "data-type":"remove", "method":"post", "action":"/shop/cart"},
-				dom.createDom("input", {"type":"hidden", "name":"is_wishlist", "value":"true"}),
-				dom.createDom("input", {"type":"hidden", "name":"form_url", "value":"/prints"}),
-				this.deleteButton = dom.createDom("button", {"class":"delete", "type":"submit", "name":"remove_item", "value":"11264507"}, "×")
-			),
-			dom.createDom("a", {"class":"bg", "href":"/product/the-whale-vah_print#1=45"}),
-			dom.createDom("a", {"href":"/product/the-whale-vah_print#1=45"}, 'The Whale')
+			dom.createDom("div", {"class": "art-container"},
+				dom.createDom("form", {"id":"add_375914", "data-type":"add", "method":"post", "action":"/shop/cart"},
+					dom.createDom("input", {"type":"hidden", "name":"source", "value":"2"}),
+					dom.createDom("input", {"type":"hidden", "name":"form_id", "value":"djWJAuNKvd9A5KN"}),
+					dom.createDom("input", {"type":"hidden", "name":"post_id", "value":"375914"}),
+					dom.createDom("input", {"type":"hidden", "name":"product_id", "value":"4"}),
+					dom.createDom("input", {"type":"hidden", "name":"quantity", "value":"1"}),
+					dom.createDom("input", {"type":"hidden", "name":"form_attributes", "value":"1=45"}),
+					dom.createDom("input", {"type":"hidden", "name":"form_js", "value":"0"}),
+					dom.createDom("input", {"type":"hidden", "name":"form_preview", "value":"0027/p/12941908_7806896-prn01"}),
+					dom.createDom("input", {"type":"hidden", "name":"form_url", "value":"/product/the-whale-vah_print#1=45"}),
+					dom.createDom("input", {"type":"hidden", "name":"is_wishlist", "value":"false"}),
+					dom.createDom("input", {"type":"hidden", "name":"attr_375914size", "value":"45"}),
+					dom.createDom("input", {"type":"hidden", "name":"attr_375914custom", "value":"6x7.895"}),
+					dom.createDom("input", {"type":"hidden", "name":"attr_375914details", "value":"W6-1b"}),
+					//dom.createDom("noscript", {"&lt;input "type":"hidden", "name":"nojs", "value":"1" /&gt;</noscript}),
+					dom.createDom("img", {"src":"http://a1.s6img.com/cdn/0027/p/12941908_7806896-prn01_r.jpg"}),
+					dom.createDom("button", {"class":"move", "type":"submit", "name":"add_item", "value":"11264507"}, "Move to Cart")
+				),
+				dom.createDom("form", {"id":"remove_375914", "data-type":"remove", "method":"post", "action":"/shop/cart"},
+					dom.createDom("input", {"type":"hidden", "name":"is_wishlist", "value":"true"}),
+					dom.createDom("input", {"type":"hidden", "name":"form_url", "value":"/prints"}),
+					this.deleteButton = dom.createDom("button", {"class":"delete", "type":"submit", "name":"remove_item", "value":"11264507"}, "×")
+				),
+				dom.createDom("a", {"class":"bg", "href":"/product/the-whale-vah_print#1=45"}),
+				dom.createDom("a", {"href":"/product/the-whale-vah_print#1=45"}, 'The Whale')
+			)
 		);
 
 		this.decorateInternal(artViewRoot);
@@ -111,14 +113,14 @@ goog.scope(function(){
 
 		var wishlistItemController = this.wishlistItemController_;
 		if(this.artContainer){
-			events.listen(this.artContainer, EventType.CLICK, wishlistItemController.onArtContainerClick, false, wishlistItemController);
+			events.listen(this.artContainer, EventType.MOUSEDOWN, wishlistItemController.onArtContainerClick, false, wishlistItemController);
 		}
 		if(this.toolContainer){
-			events.listen(this.toolContainer, EventType.CLICK, wishlistItemController.onToolContainerClick, false, wishlistItemController);
+			events.listen(this.toolContainer, EventType.MOUSEDOWN, wishlistItemController.onToolContainerClick, false, wishlistItemController);
 		}
 
 		if(this.deleteButton){
-			events.listen(this.deleteButton, EventType.CLICK, wishlistItemController.onDeleteButtonClick, false, wishlistItemController);
+			events.listen(this.deleteButton, EventType.MOUSEDOWN, wishlistItemController.onDeleteButtonClick, false, wishlistItemController);
 		}
 	};
 

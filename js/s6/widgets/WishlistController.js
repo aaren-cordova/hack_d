@@ -66,15 +66,58 @@ goog.scope(function(){
 		switch(wishlistState){
 			case WishlistStateType.CLOSE:
 			case WishlistStateType.PENCIL:
-				this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
+				if(this.wishlistModel_.getNumItems() > 6){
+					this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+				}
+				else{
+					this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
+				}
 				break;
 			case WishlistStateType.LIST:
-				this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+				if(this.wishlistModel_.getNumItems()){
+					if(this.wishlistModel_.getNumItems() > 6){
+						this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+					}
+				}
+				break;
+			case WishlistStateType.FULL:
+				if(this.wishlistModel_.getNumItems()){
+					this.wishlistModel_.setWishlistState(WishlistStateType.PENCIL);
+				}
 				break;
 		}
 		
 		event.preventDefault();
 		return false;
+	};
+
+	s6.widgets.WishlistController.prototype.onToolContainerClick = function(event){
+		console.log('onToolContainerClick')
+		var wishlistState = this.wishlistModel_.getWishlistState();
+		switch(wishlistState){
+			case WishlistStateType.CLOSE:
+			case WishlistStateType.PENCIL:
+				if(this.wishlistModel_.getNumItems() > 6){
+					this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+				}
+				else{
+					this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
+				}
+				break;
+			case WishlistStateType.LIST:
+				if(this.wishlistModel_.getNumItems() > 6){
+					this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+				}
+				break;
+			case WishlistStateType.FULL:
+				if(this.wishlistModel_.getNumItems() > 5){
+					this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
+				}
+				else if(!this.wishlistModel_.getNumItems()){
+					this.wishlistModel_.setWishlistState(WishlistStateType.PENCIL);
+				}
+				break;
+		}
 	};
 
 	s6.widgets.WishlistController.prototype.onCloseButtonClick = function(event){
@@ -84,21 +127,28 @@ goog.scope(function(){
 
 	s6.widgets.WishlistController.prototype.onPencilButtonClick = function(event){
 		this.wishlistModel_.setWishlistState(WishlistStateType.PENCIL);
+
+		event.stopPropagation();
+		return false;
 	};
 
 	s6.widgets.WishlistController.prototype.onListButtonClick = function(event){
 		this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
+		event.stopPropagation();
+		return false;
 	};
 
 	s6.widgets.WishlistController.prototype.onFullButtonClick = function(event){
 		this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+		event.stopPropagation();
+		return false;
 	};
 
 	s6.widgets.WishlistController.prototype.togglWishlist = function(){
 		var wishlistState = this.wishlistModel_.getWishlistState();
 		switch(wishlistState){
 			case WishlistStateType.CLOSE:
-				this.wishlistModel_.setWishlistState(WishlistStateType.LIST)
+				this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
 				break;
 			case WishlistStateType.PENCIL:
 			case WishlistStateType.LIST:

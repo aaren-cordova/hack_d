@@ -74,6 +74,11 @@ goog.scope(function(){
 				'div',
 				{'id': 's6-widgets-wishlist-view-root', 'class' : 'wishlist'},
 
+				this.wishlistContainer = dom.createDom(
+					'div',
+					{'id' : 'wishlist-container'}
+				),
+
 				this.toolContainer = dom.createDom(
 					'div',
 					{'class': 'tool-container'},
@@ -113,10 +118,6 @@ goog.scope(function(){
 							)
 						)
 					)
-				),
-				this.wishlistContainer = dom.createDom(
-					'div',
-					{'id' : 'wishlist-container'}
 				)
 			)
 		;
@@ -158,6 +159,10 @@ goog.scope(function(){
 
 		if(this.openButton){
 			goog.events.listen(this.openButton, EventType.CLICK, wishlistController.onOpenButtonClick, false, wishlistController);
+		}
+
+		if(this.toolContainer){
+			goog.events.listen(this.toolContainer, EventType.CLICK, wishlistController.onToolContainerClick, false, wishlistController);
 		}
 	};
 
@@ -220,8 +225,8 @@ goog.scope(function(){
 		if(this.itemControllers_[index]){
 			controller = this.itemControllers_[index];
 			
-			if(!goog.isDisposed(controller)){
-				goog.dispose(controller);
+			if(!controller.isDisposed()){
+				controller.dispose();
 			}
 		}
 
@@ -231,14 +236,13 @@ goog.scope(function(){
 		if(this.itemViews_[index]){
 			view = this.itemViews_[index];
 
-			if(!goog.isDisposed(view)){
-				goog.dispose(view);
+			if(!view.isDisposed()){
+				view.dispose();
 			}
 		}
 
 		view = new WishlistItemView();
 		this.itemViews_[index] = view;
-
 		controller.setArtPieceModel(model);
 
 		view.setArtPieceModel(model);

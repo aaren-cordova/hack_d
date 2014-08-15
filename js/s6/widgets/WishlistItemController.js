@@ -21,7 +21,7 @@ goog.scope(function(){
 	s6.widgets.WishlistItemController = function(){
 		goog.Disposable.call(this);
 	};
-	goog.inherits(s6.widgets.WishlistController, goog.Disposable)
+	goog.inherits(s6.widgets.WishlistItemController, goog.Disposable);
 	/**
 	 * @param {s6.widgets.IArtPieceModel} artPieceModel
 	 * @param {s6.widgets.IWishlistItemController}
@@ -50,10 +50,12 @@ goog.scope(function(){
 
 	s6.widgets.WishlistItemController.prototype.onDeleteButtonClick = function(event){
 		this.artPieceModel_.setFavoritedEnabled(false);
+
+		event.preventDefault();
+		return false;
 	};
 
 	s6.widgets.WishlistItemController.prototype.onFavoritedEnabledChanged_ = function(event){
-		alert('onFavoritedEnabledChanged_')
 		var wishlistModel = WishlistModel.getInstance();
 
 		if(!this.artPieceModel_.getFavoritedEnabled()){
