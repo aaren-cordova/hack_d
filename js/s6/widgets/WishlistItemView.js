@@ -1,4 +1,5 @@
 goog.require('s6.widgets.IArtPieceModel');
+goog.require('s6.widgets.ArtType');
 goog.require('s6.widgets.ArtPieceModel.EventType');
 goog.require('s6.widgets.WishlistStateType');
 goog.require('goog.dom.DomHelper');
@@ -9,7 +10,6 @@ goog.require('goog.dom');
 
 goog.provide('s6.widgets.WishlistItemView');
 goog.scope(function(){
-	var events = goog.events;
 	var EventType = goog.events.EventType;
 	var WishlistStateType = s6.widgets.WishlistStateType;
 
@@ -34,14 +34,14 @@ goog.scope(function(){
 	s6.widgets.WishlistItemView.prototype.setArtPieceModel = function(artPieceModel){
 		if(artPieceModel){
 			goog.events.unlisten(artPieceModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_, false);
-			goog.events.unlisten(artPieceModel, ArtPieceModel_EventType.PRODUCT_TYPE, this.onProductTypeChanged_, false, this);
+			goog.events.unlisten(artPieceModel, ArtPieceModel_EventType.PRODUCT_TYPE, this.onArtTypeChanged_, false, this);
 		}
 
 		this.artPieceModel_ = artPieceModel;
 		
 		if(artPieceModel){
 			goog.events.listen(artPieceModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_, false, this);
-			goog.events.listen(artPieceModel, ArtPieceModel_EventType.PRODUCT_TYPE, this.onProductTypeChanged_, false, this);
+			goog.events.listen(artPieceModel, ArtPieceModel_EventType.PRODUCT_TYPE, this.onArtTypeChanged_, false, this);
 		}
 
 
@@ -61,39 +61,63 @@ goog.scope(function(){
 	};
 
 	s6.widgets.WishlistItemView.prototype.invalidate = function(){
-		this.onProductTypeChanged_(null);
+		this.onArtTypeChanged_(null);
 	};
+
+	
 
 	/** @inheritDoc */
 	s6.widgets.WishlistItemView.prototype.createDom = function(){
+
+		var artPieceModel = this.artPieceModel_;
+		var artJSON = artPieceModel.getPostJSON();
 		var dom = this.dom_;
-		var artViewRoot = dom.createDom("li", {"data-id":"11264507", "data-url":"/product/the-whale-vah_print#1=45", 'class': 'wishlist-view-item-node'},
+		// TODOL get id
+		
+		goog.events
+		// TODOM
+		var size = '45';
+		var formAttributes = '1=' + size;
+		var link = artJSON["link"].replace(/[\#\?].*/, '');
+		var id = "11264507";
+
+		var templateUrl = s6.global.image_url_template;
+		console.log(templateUrl);
+		console.log(artJSON);
+
+
+		var imageUrl = templateUrl;
+		var imageUrl = imageUrl.replace('{post_image}', artJSON["post_image"]);
+		imageUrl = imageUrl.replace('{product.product_type}', artPieceModel.getArtType());
+		imageUrl = imageUrl.replace('{image_size_template}', s6.global["image_size_template"]);
+
+		var artViewRoot = dom.createDom("li", {"data-id":id, "data-url": link + "#" + formAttributes, 'class': 'wishlist-view-item-node'},
 			dom.createDom("div", {"class": "art-container"},
-				dom.createDom("form", {"id":"add_375914", "data-type":"add", "method":"post", "action":"/shop/cart"},
+				dom.createDom("form", {"id":"add_" + artJSON["post_id"], "data-type":"add", "method":"post", "action":"/shop/cart"},
 					dom.createDom("input", {"type":"hidden", "name":"source", "value":"2"}),
 					dom.createDom("input", {"type":"hidden", "name":"form_id", "value":"djWJAuNKvd9A5KN"}),
-					dom.createDom("input", {"type":"hidden", "name":"post_id", "value":"375914"}),
-					dom.createDom("input", {"type":"hidden", "name":"product_id", "value":"4"}),
+					dom.createDom("input", {"type":"hidden", "name":"post_id", "value":artJSON["post_id"]}),
+					dom.createDom("input", {"type":"hidden", "name":"product_id", "value":artJSON["product_id"]}),
 					dom.createDom("input", {"type":"hidden", "name":"quantity", "value":"1"}),
-					dom.createDom("input", {"type":"hidden", "name":"form_attributes", "value":"1=45"}),
+					dom.createDom("input", {"type":"hidden", "name":"form_attributes", "value":formAttributes}),
 					dom.createDom("input", {"type":"hidden", "name":"form_js", "value":"0"}),
-					dom.createDom("input", {"type":"hidden", "name":"form_preview", "value":"0027/p/12941908_7806896-prn01"}),
-					dom.createDom("input", {"type":"hidden", "name":"form_url", "value":"/product/the-whale-vah_print#1=45"}),
+					dom.createDom("input", {"type":"hidden", "name":"form_preview", "value": artJSON["post_image"] + "-prn01"}),
+					dom.createDom("input", {"type":"hidden", "name":"form_url", "value":link + "#" + formAttributes}),
 					dom.createDom("input", {"type":"hidden", "name":"is_wishlist", "value":"false"}),
-					dom.createDom("input", {"type":"hidden", "name":"attr_375914size", "value":"45"}),
+					dom.createDom("input", {"type":"hidden", "name":"attr_375914size", "value":size}),
 					dom.createDom("input", {"type":"hidden", "name":"attr_375914custom", "value":"6x7.895"}),
 					dom.createDom("input", {"type":"hidden", "name":"attr_375914details", "value":"W6-1b"}),
 					//dom.createDom("noscript", {"&lt;input "type":"hidden", "name":"nojs", "value":"1" /&gt;</noscript}),
-					dom.createDom("img", {"src":"http://a1.s6img.com/cdn/0027/p/12941908_7806896-prn01_r.jpg"}),
-					dom.createDom("button", {"class":"move", "type":"submit", "name":"add_item", "value":"11264507"}, "Move to Cart")
+					this.artWorkImage = dom.createDom("img", {"src":imageUrl}),
+					dom.createDom("button", {"class":"move", "type":"submit", "name":"add_item", "value":id}, "Move to Cart")
 				),
 				dom.createDom("form", {"id":"remove_375914", "data-type":"remove", "method":"post", "action":"/shop/cart"},
 					dom.createDom("input", {"type":"hidden", "name":"is_wishlist", "value":"true"}),
 					dom.createDom("input", {"type":"hidden", "name":"form_url", "value":"/prints"}),
-					this.deleteButton = dom.createDom("button", {"class":"delete", "type":"submit", "name":"remove_item", "value":"11264507"}, "×")
+					this.deleteButton = dom.createDom("button", {"class":"delete", "type":"submit", "name":"remove_item", "value":id}, "×")
 				),
-				dom.createDom("a", {"class":"bg", "href":"/product/the-whale-vah_print#1=45"}),
-				dom.createDom("a", {"href":"/product/the-whale-vah_print#1=45"}, 'The Whale')
+				dom.createDom("a", {"class":"bg", "href":link + "#" + formAttributes}),
+				dom.createDom("a", {"href":link + "#" + formAttributes}, artJSON["post_title"])
 			)
 		);
 
@@ -113,14 +137,14 @@ goog.scope(function(){
 
 		var wishlistItemController = this.wishlistItemController_;
 		if(this.artContainer){
-			events.listen(this.artContainer, EventType.MOUSEDOWN, wishlistItemController.onArtContainerClick, false, wishlistItemController);
+			goog.events.listen(this.artContainer, EventType.MOUSEDOWN, wishlistItemController.onArtContainerClick, false, wishlistItemController);
 		}
 		if(this.toolContainer){
-			events.listen(this.toolContainer, EventType.MOUSEDOWN, wishlistItemController.onToolContainerClick, false, wishlistItemController);
+			goog.events.listen(this.toolContainer, EventType.MOUSEDOWN, wishlistItemController.onToolContainerClick, false, wishlistItemController);
 		}
 
 		if(this.deleteButton){
-			events.listen(this.deleteButton, EventType.MOUSEDOWN, wishlistItemController.onDeleteButtonClick, false, wishlistItemController);
+			goog.events.listen(this.deleteButton, EventType.MOUSEDOWN, wishlistItemController.onDeleteButtonClick, false, wishlistItemController);
 		}
 	};
 
@@ -139,14 +163,14 @@ goog.scope(function(){
 		goog.dom.appendChild(imageWrap, this.toolContainer);
 	};
 
-	s6.widgets.WishlistItemView.prototype.onProductTypeChanged_ = function(event){
+	s6.widgets.WishlistItemView.prototype.onArtTypeChanged_ = function(event){
 		if(!this.getContentElement()){
 			return;
 		}
 
 		var dataAttributeName = 'data-' + goog.string.toSelectorCase(ArtPieceModel_EventType.PRODUCT_TYPE);
 		var dataAttributes = {};
-		dataAttributes[dataAttributeName] = this.artPieceModel_.getProductType();
+		dataAttributes[dataAttributeName] = this.artPieceModel_.getArtType();
 		
 		goog.dom.setProperties(
 			this.getContentElement(),

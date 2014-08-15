@@ -25,8 +25,8 @@ goog.scope(function(){
 		return this;
 	};
 
-	s6.widgets.ArtSet.prototype.setProductType = function(productType){
-		return this.foreach('setProductType', [productType]);
+	s6.widgets.ArtSet.prototype.setArtType = function(artType){
+		return this.foreach('setArtType', [artType]);
 	};
 
 	/** 
@@ -73,7 +73,7 @@ goog.scope(function(){
 		return this.foreach('setFeaturedEnable', [isEnabled]);
 	};
 
-	goog.exportProperty(s6.widgets.ArtSet.prototype, 'setProductType', s6.widgets.ArtSet.prototype.setProductType);
+	goog.exportProperty(s6.widgets.ArtSet.prototype, 'setArtType', s6.widgets.ArtSet.prototype.setArtType);
 	goog.exportProperty(s6.widgets.ArtSet.prototype, 'setHideEnabled', s6.widgets.ArtSet.prototype.setHideEnabled);
 	goog.exportProperty(s6.widgets.ArtSet.prototype, 'setPinEnabled', s6.widgets.ArtSet.prototype.setPinEnabled);
 	goog.exportProperty(s6.widgets.ArtSet.prototype, 'setFavoritedEnabled', s6.widgets.ArtSet.prototype.setFavoritedEnabled);

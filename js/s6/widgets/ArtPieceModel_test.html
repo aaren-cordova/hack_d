@@ -77,21 +77,21 @@ See the COPYING file for details.
 	}
 	
 	/*
-	function testProductTypeMutator() {
+	function testArtTypeMutator() {
 		mutatorTest('getProperty', 'setProperty', undefined, ['random_property', 'blanket', 'portrait'])
 	}
 	*/
 
-	function testProductType() {
-		initialValueTest('productType', s6.widgets.ArtType.DEFAULT_PRODUCT_TYPE, model_.getProductType());
+	function testArtType() {
+		initialValueTest('productType', s6.widgets.ArtType.DEFAULT_PRODUCT_TYPE, model_.getArtType());
 
-		mutatorTest('productType', 'getProductType', 'setProductType', [
+		mutatorTest('productType', 'getArtType', 'setArtType', [
 			s6.widgets.ArtType.ART_PRINT,
 			s6.widgets.ArtType.DUVET,
 			s6.widgets.ArtType.CUP
 		]);
 
-		propertyChangeTest('productType', 'getProductType', 'setProductType', [
+		propertyChangeTest('productType', 'getArtType', 'setArtType', [
 			[s6.widgets.ArtType.ART_PRINT, s6.widgets.ArtType.ART_PRINT],
 			[s6.widgets.ArtType.DUVET, s6.widgets.ArtType.DUVET],
 			[s6.widgets.ArtType.CUP, s6.widgets.ArtType.CUP],

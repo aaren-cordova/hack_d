@@ -4,7 +4,6 @@ goog.require("goog.json");
 goog.require("goog.object");
 goog.require("s6.widgets.IArtPieceModel");
 goog.require("s6.widgets.ArtType");
-
 goog.provide("s6.widgets.ArtPieceModel");
 goog.provide("s6.widgets.ArtPieceModel.EventType");
 
@@ -21,7 +20,7 @@ goog.scope(function(){
 
 	/** @enum {string} */
 	s6.widgets.ArtPieceModel.EventType = {
-		"PRODUCT_TYPE": "productType",
+		"PRODUCT_TYPE": "artType",
 		"HIDE_ENABLED": "hideEnabled",
 		"PIN_ENABLED": "pinEnabled",
 		"FAVORITED_ENABLED": "favoritedEnabled",
@@ -82,17 +81,17 @@ goog.scope(function(){
 	};
 
 	/** @return {string} */
-	s6.widgets.ArtPieceModel.prototype.getProductType = function(){
+	s6.widgets.ArtPieceModel.prototype.getArtType = function(){
 		return this.getProperty(s6.widgets.ArtPieceModel.EventType.PRODUCT_TYPE, "");
 	};
 
 	/** 
-	 * @param {string} productType
+	 * @param {string} artType
 	 * @return {s6.widgets.IArtPieceModel}
 	 */
-	s6.widgets.ArtPieceModel.prototype.setProductType = function(productType){
-		goog.asserts.assertString(productType);
-		return this.setProperty(s6.widgets.ArtPieceModel.EventType.PRODUCT_TYPE, productType);
+	s6.widgets.ArtPieceModel.prototype.setArtType = function(artType){
+		goog.asserts.assertString(artType);
+		return this.setProperty(s6.widgets.ArtPieceModel.EventType.PRODUCT_TYPE, artType);
 	};
 
 	/** @return {boolean} */
@@ -285,7 +284,7 @@ goog.scope(function(){
 	s6.widgets.ArtPieceModel.prototype.toJSON = function(){
 		return {
 			"__class__": "s6.widgets.ArtPieceModel",
-			"productType": this.getProductType(),
+			"artType": this.getArtType(),
 			"hideEnabled": this.getHideEnabled(),
 			"pinEnabled": this.getPinEnabled(),
 			"favoritedEnabled": this.getFavoritedEnabled(),
@@ -309,7 +308,7 @@ goog.scope(function(){
 	 * @return {!s6.widgets.IArtPieceModel}
 	 */
 	s6.widgets.ArtPieceModel.prototype.fromJSON = function(json){
-		this.setProductType(json["productType"]);
+		this.setArtType(json["artType"]);
 		this.setHideEnabled(json["hideEnabled"]);
 		this.setPinEnabled(json["pinEnabled"]);
 		this.setFavoritedEnabled(json["favoritedEnabled"]);
@@ -341,7 +340,7 @@ goog.scope(function(){
 	 * @private
 	 * @type {string} 
 	 */
-	s6.widgets.ArtPieceModel.prototype.productType = s6.widgets.ArtType.DEFAULT_PRODUCT_TYPE;
+	s6.widgets.ArtPieceModel.prototype.artType = s6.widgets.ArtType.DEFAULT_PRODUCT_TYPE;
 	/**
 	 * @private
 	 * @type {boolean} 
@@ -386,8 +385,8 @@ goog.scope(function(){
 	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "toJSON", s6.widgets.ArtPieceModel.prototype.toJSON);
 	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "fromJSON", s6.widgets.ArtPieceModel.prototype.fromJSON);
 
-	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "getProductType", s6.widgets.ArtPieceModel.prototype.getProductType);
-	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "setProductType", s6.widgets.ArtPieceModel.prototype.setProductType);
+	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "getArtType", s6.widgets.ArtPieceModel.prototype.getArtType);
+	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "setArtType", s6.widgets.ArtPieceModel.prototype.setArtType);
 
 	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "getHideEnabled", s6.widgets.ArtPieceModel.prototype.getHideEnabled);
 	goog.exportProperty(s6.widgets.ArtPieceModel.prototype, "setHideEnabled", s6.widgets.ArtPieceModel.prototype.setHideEnabled);

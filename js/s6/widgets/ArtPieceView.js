@@ -36,7 +36,7 @@ goog.scope(function(){
 		this.artPieceModel_ = artPieceModel;
 
 		events.listen(artPieceModel, ArtPieceModel_EventType.NODE, this.onNodeChanged_, false, this);
-		events.listen(artPieceModel, ArtPieceModel_EventType.PRODUCT_TYPE, this.onProductTypeChanged_, false, this);
+		events.listen(artPieceModel, ArtPieceModel_EventType.PRODUCT_TYPE, this.onArtTypeChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.HIDE_ENABLED, this.onHideEnabledChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.PIN_ENABLED, this.onPinEnabledChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_, false, this);
@@ -62,7 +62,7 @@ goog.scope(function(){
 	};
 
 	s6.widgets.ArtPieceView.prototype.invalidate = function(){
-		this.onProductTypeChanged_(null);
+		this.onArtTypeChanged_(null);
 		this.onHideEnabledChanged_(null);
 		this.onPinEnabledChanged_(null);
 		this.onFavoritedEnabledChanged_(null);
@@ -202,13 +202,14 @@ goog.scope(function(){
 		goog.dom.appendChild(imageWrap, this.toolContainer);
 	};
 
-	s6.widgets.ArtPieceView.prototype.onProductTypeChanged_ = function(event){
+	s6.widgets.ArtPieceView.prototype.onArtTypeChanged_ = function(event){
 		if(!this.getContentElement()){
 			return;
 		}
+
 		var dataAttributeName = 'data-' + goog.string.toSelectorCase(ArtPieceModel_EventType.PRODUCT_TYPE);
 		var dataAttributes = {};
-		dataAttributes[dataAttributeName] = this.artPieceModel_.getProductType();
+		dataAttributes[dataAttributeName] = this.artPieceModel_.getArtType();
 		
 		goog.dom.setProperties(
 			this.getContentElement(),

@@ -18,7 +18,7 @@ goog.scope(function(){
 		return this;
 	};
 
-	s6.widgets.ArtGallery.prototype.setProductType = s6.widgets.ArtSet.prototype.setProductType;
+	s6.widgets.ArtGallery.prototype.setArtType = s6.widgets.ArtSet.prototype.setArtType;
 
 	s6.widgets.ArtGallery.prototype.setHideEnabled = s6.widgets.ArtSet.prototype.setHideEnabled;
 
@@ -41,7 +41,7 @@ goog.scope(function(){
 	s6.widgets.ArtGallery.prototype.onDislikeButtonClick_ = s6.widgets.ArtPiece.prototype.onDislikeButtonClick_;
 	s6.widgets.ArtGallery.prototype.onFeaturedButtonClick_ = s6.widgets.ArtPiece.prototype.onFeaturedButtonClick_;
 
-	goog.exportProperty(s6.widgets.ArtGallery.prototype, 'setProductType', s6.widgets.ArtGallery.prototype.setProductType);
+	goog.exportProperty(s6.widgets.ArtGallery.prototype, 'setArtType', s6.widgets.ArtGallery.prototype.setArtType);
 	goog.exportProperty(s6.widgets.ArtGallery.prototype, 'setHideEnabled', s6.widgets.ArtGallery.prototype.setHideEnabled);
 	goog.exportProperty(s6.widgets.ArtGallery.prototype, 'setPinEnabled', s6.widgets.ArtGallery.prototype.setPinEnabled);
 	goog.exportProperty(s6.widgets.ArtGallery.prototype, 'setFavoritedEnabled', s6.widgets.ArtGallery.prototype.setFavoritedEnabled);

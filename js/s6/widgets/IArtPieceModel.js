@@ -36,13 +36,13 @@ goog.scope(function(){
 
 
 	/** @return {*} */
-	s6.widgets.IArtPieceModel.prototype.getProductType = function(){};
+	s6.widgets.IArtPieceModel.prototype.getArtType = function(){};
 
 	/** 
-	 * @param {string} productType
+	 * @param {string} artType
 	 * @return {s6.widgets.IArtPieceModel}
 	 */
-	s6.widgets.IArtPieceModel.prototype.setProductType = function(productType){};
+	s6.widgets.IArtPieceModel.prototype.setArtType = function(artType){};
 
 	/** @return {boolean} */
 	s6.widgets.IArtPieceModel.prototype.getHideEnabled = function(){};
