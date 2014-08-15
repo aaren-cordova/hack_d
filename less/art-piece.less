@@ -32,7 +32,7 @@ html body{
 
 				opacity: 0;
 				position:absolute;
-				background-color: #AAAAAA;
+				background-color: rgba(0, 0, 0, 0.5);
 				cursor:pointer;
 				left:0px;
 				top:@ART_PIECE-HEIGHT - @ART_PIECE-TOOL_CONTAINER-HEIGHT;
@@ -44,10 +44,15 @@ html body{
 
 					display:block;
 					position:absolute;
-
+					cursor:pointer;
 
 					&[data-enabled="false"]{
 						opacity: .5;
+
+						&:hover{
+							.transition("opacity 0");
+							opacity: .75;
+						};
 					}
 
 					&[data-enabled="true"]{
@@ -55,21 +60,43 @@ html body{
 					}
 				}
 
-				.favorite-button{
-					display:block;
-					left:@ART_PIECE-TOOL_CONTAINER-PADDING_LEFT;
-					background-color: #FFFF00;
-				}
-
 				.promote-button{
 					display:block;
 					left:@ART_PIECE-WIDTH / 2 - (@ART_PIECE-TOOL_CONTAINER-HEIGHT / 2);
 					background-color: #FF0000;
+
+					left:10px;
+					font-family: Helvetica;
+					font-weight: bold;
+					fonte-size:12pt;
+
+					position:absolute;
 				}
+
+				.promoted-count{
+					top:7px;
+					left:30px;
+
+					font-family: Helvetica;
+					font-weight: bold;
+					fonte-size:12pt;
+
+					position:absolute;
+				}
+
 				.fullscreen-button{
-					display:block;
-					right:@ART_PIECE-TOOL_CONTAINER-PADDING_RIGHT;
+					display:none;
 					background-color: #111111;
+					left:81px;
+					position:absolute;
+				}
+
+				.favorite-button{
+					right:10px;
+					display:block;
+					background-color: #FFFF00;
+					position:absolute;
+
 				}
 			}
 

@@ -47,6 +47,7 @@ goog.scope(function(){
 		wrappedItemNodes = jQuery('.item_wrap');
 
 		var preloadImages = [
+			/*
 			ArtType.FRAMED_ART_PRINTS,
 			ArtType.STRETCHED_CANVASES,
 			ArtType.LAPTOP_AND_IPAD_SKINS,
@@ -67,6 +68,7 @@ goog.scope(function(){
 			ArtType.MUGS,
 			ArtType.WALL_CLOCKS,
 			ArtType.RUGS
+			*/
 		];
 		
 
@@ -90,7 +92,7 @@ goog.scope(function(){
 				var artType = preloadImages[j];
 				model.setArtType(artType);
 			}
-			
+
 			model.setArtType(ArtType.FRAMED_ART_PRINTS);
 			model.setArtPieceID(postItem['post_id'] | 0);
 			model.setNumPromoted(postItem['post_total_promotions'] | 0);

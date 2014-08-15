@@ -18,17 +18,31 @@ goog.scope(function(){
 	s6.widgets.ArtPieceController = function(){
 	};
 
+
+	
 	/**
 	 * @param {s6.widgets.IArtPieceModel} artPieceModel
 	 */
 	s6.widgets.ArtPieceController.prototype.setArtPieceModel = function(artPieceModel){
 		this.artPieceModel_ = artPieceModel;
 
+		goog.events.listen(artPieceModel, ArtPieceModel_EventType.ART_TYPE, this.onArtTypeChanged_, false, this);
 		goog.events.listen(artPieceModel, ArtPieceModel_EventType.FULLSCREEN_ENABLED, this.onFullscreenEnabledChanged_, false, this);
 		goog.events.listen(artPieceModel, ArtPieceModel_EventType.SHOPPING_CART_ENABLED, this.onShoppingCartEnabledChanged_, false, this);
 		goog.events.listen(artPieceModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_, false, this);
 	};
-	
+
+	s6.widgets.ArtPieceController.prototype.onArtTypeChanged_ = function(event){
+		var artJSON = this.artPieceModel_.getPostJSON();
+		var templateUrl = s6["global"]["image_url_template"];
+		var imageURL = templateUrl;
+		imageURL = imageURL.replace('{post_image}', artJSON["post_image"]);
+		imageURL = imageURL.replace('{product.product_type}', this.artPieceModel_.getArtType());
+		imageURL = imageURL.replace('{image_size_template}', s6["global"]["image_size_template"]);
+
+		console.log('ArtPieceController', imageURL);
+		this.artPieceModel_.setImageURL(imageURL);
+	};
 
 	s6.widgets.ArtPieceController.prototype.onFullscreenEnabledChanged_ = function(event){
 	};

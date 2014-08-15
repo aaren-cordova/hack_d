@@ -34,14 +34,14 @@ goog.scope(function(){
 	s6.widgets.WishlistItemView.prototype.setArtPieceModel = function(artPieceModel){
 		if(artPieceModel){
 			goog.events.unlisten(artPieceModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_, false);
-			goog.events.unlisten(artPieceModel, ArtPieceModel_EventType.PRODUCT_TYPE, this.onArtTypeChanged_, false, this);
+			goog.events.unlisten(artPieceModel, ArtPieceModel_EventType.ART_TYPE, this.onArtTypeChanged_, false, this);
 		}
 
 		this.artPieceModel_ = artPieceModel;
 		
 		if(artPieceModel){
 			goog.events.listen(artPieceModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_, false, this);
-			goog.events.listen(artPieceModel, ArtPieceModel_EventType.PRODUCT_TYPE, this.onArtTypeChanged_, false, this);
+			goog.events.listen(artPieceModel, ArtPieceModel_EventType.ART_TYPE, this.onArtTypeChanged_, false, this);
 		}
 
 
@@ -168,7 +168,7 @@ goog.scope(function(){
 			return;
 		}
 
-		var dataAttributeName = 'data-' + goog.string.toSelectorCase(ArtPieceModel_EventType.PRODUCT_TYPE);
+		var dataAttributeName = 'data-' + goog.string.toSelectorCase(ArtPieceModel_EventType.ART_TYPE);
 		var dataAttributes = {};
 		dataAttributes[dataAttributeName] = this.artPieceModel_.getArtType();
 		

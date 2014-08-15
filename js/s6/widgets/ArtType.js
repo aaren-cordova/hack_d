@@ -27,6 +27,6 @@ goog.scope(function(){
 		"RUGS": "rgv23"
 	};
 
-	s6.widgets.ArtType.DEFAULT_PRODUCT_TYPE = s6.widgets.ArtType.FRAMED_ART_PRINTS;
+	s6.widgets.ArtType.DEFAULT_ART_TYPE = s6.widgets.ArtType.FRAMED_ART_PRINTS;
 
 });

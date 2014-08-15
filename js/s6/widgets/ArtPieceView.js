@@ -32,11 +32,10 @@ goog.scope(function(){
 	 * @return {s6.widgets.ArtPieceView}
 	 */
 	s6.widgets.ArtPieceView.prototype.setArtPieceModel = function(artPieceModel){
-		
 		this.artPieceModel_ = artPieceModel;
 
 		events.listen(artPieceModel, ArtPieceModel_EventType.NODE, this.onNodeChanged_, false, this);
-		events.listen(artPieceModel, ArtPieceModel_EventType.PRODUCT_TYPE, this.onArtTypeChanged_, false, this);
+		events.listen(artPieceModel, ArtPieceModel_EventType.ART_TYPE, this.onArtTypeChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.HIDE_ENABLED, this.onHideEnabledChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.PIN_ENABLED, this.onPinEnabledChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_, false, this);
@@ -47,6 +46,7 @@ goog.scope(function(){
 		events.listen(artPieceModel, ArtPieceModel_EventType.SHOPPING_CART_ENABLED, this.onShoppingCartEnabledChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.PROMOTE_ENABLED, this.onPromoteEnabledChanged_, false, this);
 		events.listen(artPieceModel, ArtPieceModel_EventType.NUM_PROMOTED, this.onNumPromotedChanged_, false, this);
+		events.listen(artPieceModel, ArtPieceModel_EventType.IMAGE_URL, this.onImageURLChanged_, false, this);
 
 		this.invalidate();
 		return this;
@@ -73,8 +73,11 @@ goog.scope(function(){
 		this.onShoppingCartEnabledChanged_(null);
 		this.onPromoteEnabledChanged_(null);
 		this.onNumPromotedChanged_(null);
+		this.onImageURLChanged_(null);
 
 	};
+
+
 
 	/** @inheritDoc */
 	s6.widgets.ArtPieceView.prototype.createDom = function(){
@@ -203,11 +206,12 @@ goog.scope(function(){
 	};
 
 	s6.widgets.ArtPieceView.prototype.onArtTypeChanged_ = function(event){
+
 		if(!this.getContentElement()){
 			return;
 		}
 
-		var dataAttributeName = 'data-' + goog.string.toSelectorCase(ArtPieceModel_EventType.PRODUCT_TYPE);
+		var dataAttributeName = 'data-' + goog.string.toSelectorCase(ArtPieceModel_EventType.ART_TYPE);
 		var dataAttributes = {};
 		dataAttributes[dataAttributeName] = this.artPieceModel_.getArtType();
 		
@@ -309,4 +313,16 @@ goog.scope(function(){
 			jQuery(this.promotedCount).text(this.artPieceModel_.getNumPromoted());
 		}
 	};
+
+	s6.widgets.ArtPieceView.prototype.onImageURLChanged_ = function(event){
+		var url = this.artPieceModel_.getImageURL();
+		var cache = s6.widgets.ArtPieceView.cache_;
+		if(!cache[url]){
+			var image = new Image();
+			image.src = url;
+			cache[url] = image;
+		}
+	};
+
+	s6.widgets.ArtPieceView.cache_ = {};
 });
