@@ -35,6 +35,7 @@ goog.scope(function(){
 		if(artPieceModel){
 			goog.events.unlisten(artPieceModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_, false);
 			goog.events.unlisten(artPieceModel, ArtPieceModel_EventType.ART_TYPE, this.onArtTypeChanged_, false, this);
+			goog.events.unlisten(artPieceModel, ArtPieceModel_EventType.IMAGE_URL, this.onImageURLChanged_, false, this);
 		}
 
 		this.artPieceModel_ = artPieceModel;
@@ -42,6 +43,7 @@ goog.scope(function(){
 		if(artPieceModel){
 			goog.events.listen(artPieceModel, ArtPieceModel_EventType.FAVORITED_ENABLED, this.onFavoritedEnabledChanged_, false, this);
 			goog.events.listen(artPieceModel, ArtPieceModel_EventType.ART_TYPE, this.onArtTypeChanged_, false, this);
+			goog.events.listen(artPieceModel, ArtPieceModel_EventType.IMAGE_URL, this.onImageURLChanged_, false, this);
 		}
 
 
@@ -62,6 +64,7 @@ goog.scope(function(){
 
 	s6.widgets.WishlistItemView.prototype.invalidate = function(){
 		this.onArtTypeChanged_(null);
+		this.onImageURLChanged_(null);
 	};
 
 	
@@ -82,17 +85,9 @@ goog.scope(function(){
 		var id = "11264507";
 
 		var templateUrl = s6.global.image_url_template;
-		console.log(templateUrl);
-		console.log(artJSON);
-
-
-		var imageUrl = templateUrl;
-		var imageUrl = imageUrl.replace('{post_image}', artJSON["post_image"]);
-		imageUrl = imageUrl.replace('{product.product_type}', artPieceModel.getArtType());
-		imageUrl = imageUrl.replace('{image_size_template}', s6.global["image_size_template"]);
 
 		var artViewRoot = dom.createDom("li", {"data-id":id, "data-url": link + "#" + formAttributes, 'class': 'wishlist-view-item-node'},
-			dom.createDom("div", {"class": "art-container"},
+			this.artContainer = dom.createDom("div", {"class": "art-container", 'data-state': 'loading'},
 				dom.createDom("form", {"id":"add_" + artJSON["post_id"], "data-type":"add", "method":"post", "action":"/shop/cart"},
 					dom.createDom("input", {"type":"hidden", "name":"source", "value":"2"}),
 					dom.createDom("input", {"type":"hidden", "name":"form_id", "value":"djWJAuNKvd9A5KN"}),
@@ -108,7 +103,7 @@ goog.scope(function(){
 					dom.createDom("input", {"type":"hidden", "name":"attr_375914custom", "value":"6x7.895"}),
 					dom.createDom("input", {"type":"hidden", "name":"attr_375914details", "value":"W6-1b"}),
 					//dom.createDom("noscript", {"&lt;input "type":"hidden", "name":"nojs", "value":"1" /&gt;</noscript}),
-					this.artWorkImage = dom.createDom("img", {"src":imageUrl}),
+					this.artWorkImage = dom.createDom("img"),
 					dom.createDom("button", {"class":"move", "type":"submit", "name":"add_item", "value":id}, "Move to Cart")
 				),
 				dom.createDom("form", {"id":"remove_375914", "data-type":"remove", "method":"post", "action":"/shop/cart"},
@@ -122,6 +117,30 @@ goog.scope(function(){
 		);
 
 		this.decorateInternal(artViewRoot);
+	};
+
+
+	s6.widgets.WishlistItemView.prototype.onImageURLChanged_ = function(event){
+		var artPieceModel = this.artPieceModel_;
+		var artContainer = this.artContainer;
+		
+		if(!artContainer){
+			return;
+		}
+
+		if(!this.artWorkImage){
+			jQuery(artContainer).attr('data-state', 'none');
+		}
+		else{
+			jQuery(artContainer).attr('data-state', 'loading');
+			
+			jQuery(this.artWorkImage)
+				.load(function(){
+					jQuery(artContainer).attr('data-state', 'complete');
+				})
+				.attr('src', artPieceModel.getImageURL())
+			;
+		}
 	};
 
 	/** @inheritDoc */

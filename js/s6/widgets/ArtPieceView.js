@@ -203,10 +203,11 @@ goog.scope(function(){
 
 		var imageWrap = jQuery(node).find('.image_wrap')[0];
 		goog.dom.appendChild(imageWrap, this.toolContainer);
+
+		this.invalidate();
 	};
 
 	s6.widgets.ArtPieceView.prototype.onArtTypeChanged_ = function(event){
-
 		if(!this.getContentElement()){
 			return;
 		}
@@ -315,13 +316,21 @@ goog.scope(function(){
 	};
 
 	s6.widgets.ArtPieceView.prototype.onImageURLChanged_ = function(event){
+		console.log('ArtPieceView.onImageURLChanged_')
 		var url = this.artPieceModel_.getImageURL();
 		var cache = s6.widgets.ArtPieceView.cache_;
+		
 		if(!cache[url]){
 			var image = new Image();
 			image.src = url;
 			cache[url] = image;
 		}
+
+		/*
+		if(this.artContainer){
+			jQuery(this.artContainer).find('img').attr('src', url);
+		}
+		*/
 	};
 
 	s6.widgets.ArtPieceView.cache_ = {};

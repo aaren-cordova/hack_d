@@ -82,6 +82,14 @@ goog.scope(function(){
 				this.toolContainer = dom.createDom(
 					'div',
 					{'class': 'tool-container'},
+					dom.createDom(
+						"div", 
+						{"class": "message icon-star"},
+						dom.createDom("span", undefined, "You have ("),
+						this.numItemsCounter = dom.createDom("span", {"class": "num-items"}, "0"),
+						dom.createDom("span", undefined, ") in your Wishlist")
+					),
+
 					this.buttonList = dom.createDom(
 						'ul',
 						{'class' : 'list'},
@@ -90,23 +98,32 @@ goog.scope(function(){
 							{'class': 'list-item'},
 							this.pencilButton = dom.createDom(
 								'div',
-								{'class' : 'pencil-button', 'title': 'Pencil View'}
+								{'class' : 'pencil-button', 'title': 'Pencil View'},
+								dom.createDom('div', {'class':'up-icon icon-up-open-big'}),
+								dom.createDom('div', {'class':'down-icon icon-down-open-big'})
 							)
 						),
+						/*
 						dom.createDom(
 							'li',
-							{'class': 'list-item'},
+							{'class': 'list-item', 'style': 'display:none'},
 							this.listButton = dom.createDom(
 								'div',
-								{'class' : 'list-button', 'title': 'List View'}
+								{'class' : 'list-button', 'title': 'List View'},
+								dom.createDom('div', {'class':'up-icon icon-up-open-big'}),
+								dom.createDom('div', {'class':'down-icon icon-down-open-big'})
 							)
 						),
+						*/
 						dom.createDom(
 							'li',
 							{'class': 'list-item'},
 							this.fullButton = dom.createDom(
 								'div',
-								{'class' : 'full-button', 'title': 'Full View'}
+								{'class' : 'full-button', 'title': 'Full View'},
+
+								dom.createDom('div', {'class':'up-icon  icon-up-open-big'}),
+								dom.createDom('div', {'class':'down-icon icon-down-open-big'})
 							)
 						),
 						dom.createDom(
@@ -114,9 +131,37 @@ goog.scope(function(){
 							{'class': 'list-item'},
 							this.closeButton = dom.createDom(
 								'div',
-								{'class' : 'close-button', 'title': 'Close Wishlist'}
+								{'class' : 'close-button icon-cancel', 'title': 'Close Wishlist'}
 							)
 						)
+					)
+				),
+				this.productOptions = dom.createDom('fieldset', {"class":"product_options"},
+					dom.createDom('label', {}, 'View artwork as:'),
+					dom.createDom('select', {"id":"attr_232908size", "name":"attr_232908size", "class":"required valid"},
+						dom.createDom('option', {"title": "Default", "value": "prn01"}, "Default"),
+						dom.createDom('option', {"title": "Prints", "value": "prn01"}, "Prints"),
+						dom.createDom('option', {"title": "Framed Art Prints", "value": "frm715bl01"}, "Framed Art Prints"),
+						dom.createDom('option', {"title": "Stretched Canvases", "value": "cnv01"}, "Stretched Canvases"),
+						dom.createDom('option', {"title": "Laptop and iPad Skins", "value": "sknipd2"}, "Laptop and iPad Skins"),
+						dom.createDom('option', {"title": "iPad Cases", "value": "cseipd"}, "iPad Cases"),
+						dom.createDom('option', {"title": "iPhone and iPod cases", "value": "caseiphone5"}, "iPhone and iPod cases"),
+						dom.createDom('option', {"title": "iPhone and iPod skins", "value": "iphone5a"}, "iPhone and iPod skins"),
+						dom.createDom('option', {"title": "Stationary Cards", "value": "stscrd01"}, "Stationary Cards"),
+						dom.createDom('option', {"title": "T-Shirts", "value": "tsrmw105"}, "T-Shirts"),
+						dom.createDom('option', {"title": "Tank Tops", "value": "tnkw119m"}, "Tank Tops"),
+						dom.createDom('option', {"title": "Hoodies", "value": "sswtz010"}, "Hoodies"),
+						dom.createDom('option', {"title": "Onesies", "value": "onew110"}, "Onesies"),
+						dom.createDom('option', {"title": "Kids T-Shirts", "value": "kidtw212"}, "Kids T-Shirts"),
+						dom.createDom('option', {"title": "V Neck T-shirts", "value": "vnkw122m"}, "V Neck T-shirts"),
+						dom.createDom('option', {"title": "Biker Tanks", "value": "bktw119m"}, "Biker Tanks"),
+						dom.createDom('option', {"title": "Throw Pillows", "value": "plwfr2"}, "Throw Pillows"),
+						dom.createDom('option', {"title": "Tote Bags", "value": "bagtote16"}, "Tote Bags"),
+						dom.createDom('option', {"title": "Shower Curtains", "value": "crtn"}, "Shower Curtains"),
+						dom.createDom('option', {"title": "Duvet Covers", "value": "duvetqueen"}, "Duvet Covers"),
+						dom.createDom('option', {"title": "Mugs", "value": "mugs11"}, "Mugs"),
+						dom.createDom('option', {"title": "Wall Clocks", "value": "clkfkhk"}, "Wall Clocks"),
+						dom.createDom('option', {"title": "Rugs", "value": "rgv23"}, "Rugs")
 					)
 				)
 			)
@@ -164,6 +209,10 @@ goog.scope(function(){
 		if(this.toolContainer){
 			goog.events.listen(this.toolContainer, EventType.CLICK, wishlistController.onToolContainerClick, false, wishlistController);
 		}
+
+		if(this.productOptions){
+			goog.events.listen(this.productOptions, EventType.CHANGE, wishlistController.onProductionOptionsChange, false, wishlistController);
+		}
 	};
 
 	/** @inheritDoc */
@@ -181,16 +230,14 @@ goog.scope(function(){
 		var parent = jQuery(node).parent()[0];
 		this.render(parent);
 
-
 		goog.dom.appendChild(this.wishlistContainer, node);
 		
 		jQuery(node).find('.close').hide();
+		this.invalidate();
 	};
 
-	
 	s6.widgets.WishlistView.prototype.onWishlistStateChanged_ = function(event){
 		var wishlistState = this.wishlistModel_.getWishlistState();
-		//jQuery(this.getElement()).css('height', '');
 
 		switch(wishlistState){
 			case WishlistStateType.CLOSE:
@@ -249,6 +296,8 @@ goog.scope(function(){
 		view.setWishlistItemController(controller);
 
 		view.render(jQuery('#wishlist-container .s6-widgets-wishlist-view-node .wrapper .window .container')[0]);
+
+		this.invalidate();
 	};
 
 	s6.widgets.WishlistView.prototype.onNumItemsChanged_ = function(event){
@@ -260,20 +309,20 @@ goog.scope(function(){
 			var eventType = WishlistModel_EventType.getItemIndexEvent(i);
 
 			if(!goog.events.hasListener(this.wishlistModel_, eventType, false)){
-
 				goog.events.listen(this.wishlistModel_, eventType, this.onItemAtIndexChange_, false, this);
-
 				this.onItemAtIndexChange_({type:eventType})
 			}
 		}
 
 		jQuery(node).attr('data-count', numItems);
 		
-		jQuery('#wl-count, [data-dmc="head-wishlist"] .count').each(function(){
+		jQuery('[data-dmc="head-wishlist"] .count').each(function(){
 			var text = jQuery(this).text() || '';
 			text = text.replace(/\d+/, numItems);
 			jQuery(this).text(text);
 		});
+
+		jQuery(this.numItemsCounter).text(numItems);
 	};
 
 	/**

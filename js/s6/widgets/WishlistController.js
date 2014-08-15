@@ -34,8 +34,8 @@ goog.scope(function(){
 	 */
 	s6.widgets.WishlistController.prototype.setWishlistModel = function(wishlistModel){
 		this.wishlistModel_ = wishlistModel;
-
 		goog.events.listen(wishlistModel, WishlistModel_EventType.NUM_ITEMS, this.onNumItemsChanged_, false, this);
+		goog.events.listen(wishlistModel, WishlistModel_EventType.ITEMS, this.onItemsChanged_, false, this);
 	};
 
 
@@ -144,6 +144,25 @@ goog.scope(function(){
 		return false;
 	};
 
+	s6.widgets.WishlistController.prototype.onProductionOptionsChange = function(event){
+		this.invalidate();
+	};
+
+	s6.widgets.WishlistController.prototype.invalidate = function(){
+		var artType = jQuery('.product_options').children('select').val();
+		if(artType){
+			var numItems = this.wishlistModel_.getNumItems();
+			for(var i = 0; i < numItems; ++i){
+				var artPieceModel = this.wishlistModel_.getItemAt(i);
+				artPieceModel.setArtType(artType);
+			}
+		}
+	};
+
+	s6.widgets.WishlistController.prototype.onItemsChanged_ = function(){
+		this.invalidate();
+	};
+
 	s6.widgets.WishlistController.prototype.togglWishlist = function(){
 		var wishlistState = this.wishlistModel_.getWishlistState();
 		switch(wishlistState){
@@ -162,7 +181,6 @@ goog.scope(function(){
 	};
 
 	s6.widgets.WishlistController.prototype.onNumItemsChanged_ = function(event){
-
 		if(this.wishlistModel_.getNumItems() == 0) {
 			this.wishlistModel_.setWishlistState(WishlistStateType.CLOSE);
 		}
@@ -173,7 +191,13 @@ goog.scope(function(){
 					this.wishlistModel_.setWishlistState(WishlistStateType.PENCIL)
 					break;
 				case WishlistStateType.PENCIL:
+					// do nothing
+					break;
 				case WishlistStateType.LIST:
+					if(this.wishlistModel_.getNumItems() > 6){
+						this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+					}
+					break;
 				case WishlistStateType.FULL:
 					// Do nothing
 					break;

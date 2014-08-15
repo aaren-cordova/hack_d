@@ -24,7 +24,8 @@ goog.scope(function(){
 		"DUVET_COVERS": "duvetqueen",
 		"MUGS": "mugs11",
 		"WALL_CLOCKS": "clkfkhk",
-		"RUGS": "rgv23"
+		"RUGS": "rgv23",
+		"PRINT": "prn01"
 	};
 
 	s6.widgets.ArtType.DEFAULT_ART_TYPE = s6.widgets.ArtType.FRAMED_ART_PRINTS;

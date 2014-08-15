@@ -39,6 +39,10 @@ goog.scope(function(){
 	};
 
 	s6.Main.prototype.onDocumentReady_ = function(event){
+		var templateUrl = s6["global"]["image_url_template"];
+		templateUrl = templateUrl.replace('staging.society6.com', 'dev.society6.com');
+		s6["global"]["image_url_template"] = templateUrl;
+
 		var i, itemWrap, model, controller, view, wrappedItemNodes, globalData, postDataProvider, postItem;
 
 		globalData = this.getGlobalData();
@@ -47,10 +51,11 @@ goog.scope(function(){
 		wrappedItemNodes = jQuery('.item_wrap');
 
 		var preloadImages = [
-			/*
 			ArtType.FRAMED_ART_PRINTS,
 			ArtType.STRETCHED_CANVASES,
 			ArtType.LAPTOP_AND_IPAD_SKINS,
+			ArtType.THROW_PILLOWS
+		/*
 			ArtType.IPAD_CASES,
 			ArtType.IPHONE_AND_IPOD_CASES,
 			ArtType.IPHONE_AND_IPOD_SKINS,
@@ -61,7 +66,6 @@ goog.scope(function(){
 			ArtType.KIDS_T_SHIRT,
 			ArtType.V_NECK_T_SHIRTS,
 			ArtType.BIKER_TANKS,
-			ArtType.THROW_PILLOWS,
 			ArtType.TOTE_BAGS,
 			ArtType.SHOWER_CURTAINS,
 			ArtType.DUVET_COVERS,
