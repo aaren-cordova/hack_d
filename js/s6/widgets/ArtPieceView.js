@@ -118,11 +118,11 @@ goog.scope(function(){
 					*/
 					this.favoriteButton = dom.createDom(
 						'div',
-						{'class' : 'favorite-button', 'title': 'Add to Wishlist'}
+						{'class' : 'favorite-button icon-star', 'title': 'Add to Wishlist'}
 					),
 					this.promoteButton = dom.createDom(
 						'div',
-						{'class' : 'promote-button', 'title': 'Promote this Piece'}
+						{'class' : 'promote-button icon-heart', 'title': 'Promote this Piece'}
 					),
 
 					this.promotedCount = dom.createDom(
@@ -132,7 +132,7 @@ goog.scope(function(){
 
 					this.fullscreenButton = dom.createDom(
 						'div',
-						{'class' : 'fullscreen-button', 'title': 'Preview'}
+						{'class' : 'fullscreen-button icon-zoom-in', 'title': 'Preview'}
 					)
 				)
 			)

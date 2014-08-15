@@ -9,8 +9,8 @@ html body{
 	@ART_PIECE-TOOL_CONTAINER-HEIGHT:30px;
 	@ART_PIECE-TOOL_CONTAINER-PADDING_LEFT:10px;
 	@ART_PIECE-TOOL_CONTAINER-PADDING_RIGHT:@ART_PIECE-TOOL_CONTAINER-PADDING_LEFT;
-	@ART_PIECE-TOOL_CONTAINER-BUTTON-WIDTH:16px;
-	@ART_PIECE-TOOL_CONTAINER-BUTTON-HEIGHT:16px;
+	@ART_PIECE-TOOL_CONTAINER-BUTTON-WIDTH:20px;
+	@ART_PIECE-TOOL_CONTAINER-BUTTON-HEIGHT:20px;
 
 	.art-piece{
 		.size(@ART_PIECE-WIDTH, @ART_PIECE-HEIGHT);
@@ -58,6 +58,11 @@ html body{
 					&[data-enabled="true"]{
 						opacity: 1;
 					}
+
+					&::before{
+						font-size: @ART_PIECE-TOOL_CONTAINER-BUTTON-WIDTH;
+						margin:0px;
+					}
 				}
 
 				.promote-button{
@@ -67,27 +72,26 @@ html body{
 					left:10px;
 					font-family: Helvetica;
 					font-weight: bold;
-					fonte-size:12pt;
 
 					position:absolute;
 
 					&[data-enabled="false"]{
-						background-color: #cecece;
+						color: #cecece;
 
 						&:hover{
-							.transition("background-color 50ms");
-							background-color: #E7679A;
+							.transition("color 50ms");
+							color: #E7679A;
 						}
 					}
 
 					&[data-enabled="true"]{
-						background-color: #ff0066;
+						color: #ff0066;
 					}
 				}
 
 				.promoted-count{
 					top:7px;
-					left:30px;
+					left:34px;
 					
 					color:#cecece;
 					font-family: Helvetica;
@@ -103,11 +107,11 @@ html body{
 					position:absolute;
 
 					&[data-enabled="false"]{
-						background-color: #cecece;
+						color: #cecece;
 					}
 
 					&[data-enabled="true"]{
-						background-color: #FFFFFF;
+						color: #FFFFFF;
 					}
 				}
 
@@ -117,11 +121,11 @@ html body{
 					position:absolute;
 					
 					&[data-enabled="false"]{
-						background-color: #FFFFFF;
+						color: #FFFFFF;
 					}
 
 					&[data-enabled="true"]{
-						background-color: #ffcc00;
+						color: #ffcc00;
 					}
 
 				}
