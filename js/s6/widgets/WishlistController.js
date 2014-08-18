@@ -24,10 +24,7 @@ goog.scope(function(){
 		this.persistentDataModel_ = new PersistentDataModel();
 	};
 	goog.inherits(s6.widgets.WishlistController, goog.Disposable);
-	
 	goog.addSingletonGetter(s6.widgets.WishlistController);
-
-
 
 	/**
 	 * @param {s6.widgets.IWishlistModel} wishlistModel
@@ -38,27 +35,11 @@ goog.scope(function(){
 		goog.events.listen(wishlistModel, WishlistModel_EventType.ITEMS, this.onItemsChanged_, false, this);
 	};
 
-
+	/** @inheritDoc */
 	s6.widgets.WishlistController.prototype.onNodeClick = function(event){
-		/*
-		var wishlistState = this.wishlistModel_.getWishlistState();
-		switch(wishlistState){
-			case WishlistStateType.FULL:
-				this.wishlistModel_.setWishlistState(WishlistStateType.PENCIL);
-				break;
-			case WishlistStateType.PENCIL:
-				this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
-				break;
-			case WishlistStateType.LIST:
-				this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
-				break;
-			default:
-				goog.asserts.fail("Clicked on unsupported wishlist state: " + wishlistState);
-				return;
-		}
-		*/
 	};
 
+	/** @inheritDoc */
 	s6.widgets.WishlistController.prototype.onOpenButtonClick = function(event){
 		s6.widgets.WishlistController.hardClose = false;
 
@@ -91,6 +72,7 @@ goog.scope(function(){
 		return false;
 	};
 
+	/** @inheritDoc */
 	s6.widgets.WishlistController.prototype.onToolContainerClick = function(event){
 		console.log('onToolContainerClick',event.target)
 
@@ -127,11 +109,13 @@ goog.scope(function(){
 		}
 	};
 
+	/** @inheritDoc */
 	s6.widgets.WishlistController.prototype.onCloseButtonClick = function(event){
 		s6.widgets.WishlistController.hardClose = true;
 		this.wishlistModel_.setWishlistState(WishlistStateType.CLOSE);
 	};
 
+	/** @inheritDoc */
 	s6.widgets.WishlistController.prototype.onPencilButtonClick = function(event){
 		this.wishlistModel_.setWishlistState(WishlistStateType.PENCIL);
 
@@ -139,22 +123,26 @@ goog.scope(function(){
 		return false;
 	};
 
+	/** @inheritDoc */
 	s6.widgets.WishlistController.prototype.onListButtonClick = function(event){
 		this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
 		event.stopPropagation();
 		return false;
 	};
 
+	/** @inheritDoc */
 	s6.widgets.WishlistController.prototype.onFullButtonClick = function(event){
 		this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
 		event.stopPropagation();
 		return false;
 	};
 
+	/** @inheritDoc */
 	s6.widgets.WishlistController.prototype.onProductionOptionsChange = function(event){
 		this.invalidate();
 	};
 
+	/** @public */
 	s6.widgets.WishlistController.prototype.invalidate = function(){
 		var artType = jQuery('.product_options').children('select').val();
 		if(artType){
@@ -166,10 +154,12 @@ goog.scope(function(){
 		}
 	};
 
-	s6.widgets.WishlistController.prototype.onItemsChanged_ = function(){
+	/** @private */
+	s6.widgets.WishlistController.prototype.onItemsChanged_ = function(event){
 		this.invalidate();
 	};
 
+	/** @public */
 	s6.widgets.WishlistController.prototype.togglWishlist = function(){
 		var wishlistState = this.wishlistModel_.getWishlistState();
 		switch(wishlistState){
@@ -187,6 +177,7 @@ goog.scope(function(){
 		}
 	};
 
+	/** @private */
 	s6.widgets.WishlistController.prototype.onNumItemsChanged_ = function(event){
 		if(this.wishlistModel_.getNumItems() == 0) {
 			this.wishlistModel_.setWishlistState(WishlistStateType.CLOSE);

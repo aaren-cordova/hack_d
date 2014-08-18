@@ -1,3 +1,5 @@
+/** @fileOverview All data that is used to describe a single piece of art */
+
 goog.require("goog.events.EventTarget");
 goog.require("goog.asserts");
 goog.require("goog.json");

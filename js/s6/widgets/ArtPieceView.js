@@ -1,3 +1,5 @@
+/** @fileOverview Renders the tools on top of a given piece of art after being handed the original art node from the page. */
+
 goog.require('s6.widgets.IArtPieceModel');
 goog.require('s6.widgets.ArtPieceModel.EventType');
 goog.require('s6.widgets.WishlistStateType');
@@ -61,6 +63,7 @@ goog.scope(function(){
 		return this;
 	};
 
+	/** @public */
 	s6.widgets.ArtPieceView.prototype.invalidate = function(){
 		this.onArtTypeChanged_(null);
 		this.onHideEnabledChanged_(null);
@@ -74,10 +77,7 @@ goog.scope(function(){
 		this.onPromoteEnabledChanged_(null);
 		this.onNumPromotedChanged_(null);
 		this.onImageURLChanged_(null);
-
 	};
-
-
 
 	/** @inheritDoc */
 	s6.widgets.ArtPieceView.prototype.createDom = function(){
@@ -190,6 +190,7 @@ goog.scope(function(){
 		goog.base(this, 'enterDocument');
 	};
 
+	/** @private */
 	s6.widgets.ArtPieceView.prototype.onNodeChanged_ = function(event){
 		var node = this.artPieceModel_.getNode();
 
@@ -207,6 +208,7 @@ goog.scope(function(){
 		this.invalidate();
 	};
 
+	/** @private */
 	s6.widgets.ArtPieceView.prototype.onArtTypeChanged_ = function(event){
 		if(!this.getContentElement()){
 			return;
@@ -222,6 +224,7 @@ goog.scope(function(){
 		);
 	};
 
+	/** @private */
 	s6.widgets.ArtPieceView.prototype.onHideEnabledChanged_ = function(event){
 		if(!this.getContentElement()){
 			return;
@@ -237,6 +240,7 @@ goog.scope(function(){
 		);
 	};
 
+	/** @private */
 	s6.widgets.ArtPieceView.prototype.onPinEnabledChanged_ = function(event){
 		if(this.pinButton){
 			goog.dom.setProperties(
@@ -246,6 +250,7 @@ goog.scope(function(){
 		}
 	};
 
+	/** @private */
 	s6.widgets.ArtPieceView.prototype.onFavoritedEnabledChanged_ = function(event){
 		if(this.favoriteButton){
 			goog.dom.setProperties(
@@ -255,6 +260,7 @@ goog.scope(function(){
 		}
 	};
 
+	/** @private */
 	s6.widgets.ArtPieceView.prototype.onFullscreenEnabledChanged_ = function(event){
 		if(this.fullscreenButton){
 			goog.dom.setProperties(
@@ -264,6 +270,7 @@ goog.scope(function(){
 		}
 	};
 
+	/** @private */
 	s6.widgets.ArtPieceView.prototype.onLikeEnabledChanged_ = function(event){
 		if(this.likeButton){
 			goog.dom.setProperties(
@@ -273,6 +280,7 @@ goog.scope(function(){
 		}
 	};
 
+	/** @private */
 	s6.widgets.ArtPieceView.prototype.onDislikeEnabledChanged_ = function(event){
 		if(this.dislikeButton){
 			goog.dom.setProperties(
@@ -282,6 +290,7 @@ goog.scope(function(){
 		}
 	};
 
+	/** @private */
 	s6.widgets.ArtPieceView.prototype.onFeaturedEnabledChanged_ = function(event){
 		if(this.featuredIcon){
 			goog.dom.setProperties(
@@ -291,6 +300,7 @@ goog.scope(function(){
 		}
 	};
 
+	/** @private */
 	s6.widgets.ArtPieceView.prototype.onShoppingCartEnabledChanged_ = function(event){
 		if(this.shoppingCartButton){
 			goog.dom.setProperties(
@@ -300,6 +310,7 @@ goog.scope(function(){
 		}
 	};
 
+	/** @private */
 	s6.widgets.ArtPieceView.prototype.onPromoteEnabledChanged_ = function(event){
 		if(this.promoteButton){
 			goog.dom.setProperties(
@@ -309,12 +320,14 @@ goog.scope(function(){
 		}
 	};
 
+	/** @private */
 	s6.widgets.ArtPieceView.prototype.onNumPromotedChanged_ = function(event){
 		if(this.promotedCount){
 			jQuery(this.promotedCount).text(this.artPieceModel_.getNumPromoted());
 		}
 	};
 
+	/** @private */
 	s6.widgets.ArtPieceView.prototype.onImageURLChanged_ = function(event){
 		var url = this.artPieceModel_.getImageURL();
 		var cache = s6.widgets.ArtPieceView.cache_;

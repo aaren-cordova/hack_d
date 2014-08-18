@@ -4,6 +4,7 @@ goog.provide('s6.widgets.IWishlistItemController');
 goog.scope(function(){
 	/**
 	 * @interface
+	 * @extends {goog.IDisposable}
 	 */
 	s6.widgets.IWishlistItemController = function(){};
 
@@ -15,11 +16,9 @@ goog.scope(function(){
 		this.artPieceModel_ = artPieceModel;
 	};
 
-	s6.widgets.IWishlistItemController.prototype.onArtContainerClick = function(event){
-		// Do nothing
-	};
+	/** @public */
+	s6.widgets.IWishlistItemController.prototype.onArtContainerClick = function(event){};
 
-	s6.widgets.IWishlistItemController.prototype.onToolContainerClick = function(event){
-		// Do nothing
-	};
+	/** @public */
+	s6.widgets.IWishlistItemController.prototype.onToolContainerClick = function(event){};
 });

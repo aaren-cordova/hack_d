@@ -62,6 +62,7 @@ goog.scope(function(){
 		return this;
 	};
 
+	/** @public */
 	s6.widgets.WishlistItemView.prototype.invalidate = function(){
 		this.onArtTypeChanged_(null);
 		this.onImageURLChanged_(null);
@@ -119,7 +120,7 @@ goog.scope(function(){
 		this.decorateInternal(artViewRoot);
 	};
 
-
+	/** @private */
 	s6.widgets.WishlistItemView.prototype.onImageURLChanged_ = function(event){
 		var artPieceModel = this.artPieceModel_;
 		var artContainer = this.artContainer;
@@ -167,7 +168,7 @@ goog.scope(function(){
 		}
 	};
 
-
+	/** @private */
 	s6.widgets.WishlistItemView.prototype.onNodeChanged_ = function(event){
 		var node = this.artPieceModel_.getNode();
 
@@ -182,6 +183,7 @@ goog.scope(function(){
 		goog.dom.appendChild(imageWrap, this.toolContainer);
 	};
 
+	/** @private */
 	s6.widgets.WishlistItemView.prototype.onArtTypeChanged_ = function(event){
 		if(!this.getContentElement()){
 			return;
@@ -197,6 +199,7 @@ goog.scope(function(){
 		);
 	};
 
+	/** @private */
 	s6.widgets.WishlistItemView.prototype.onFavoritedEnabledChanged_ = function(event){
 		if(!this.isDisposed()){
 			this.dispose();

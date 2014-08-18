@@ -16,12 +16,13 @@ goog.scope(function(){
 	/**
 	 * @constructor
 	 * @implements {s6.widgets.IWishlistItemController}
-	 * @implements {goog.Disposable}
+	 * @extends {goog.Disposable}
 	 */
 	s6.widgets.WishlistItemController = function(){
 		goog.Disposable.call(this);
 	};
 	goog.inherits(s6.widgets.WishlistItemController, goog.Disposable);
+
 	/**
 	 * @param {s6.widgets.IArtPieceModel} artPieceModel
 	 * @param {s6.widgets.IWishlistItemController}
@@ -40,14 +41,17 @@ goog.scope(function(){
 		return this;
 	};
 
+	/** @public */
 	s6.widgets.WishlistItemController.prototype.onArtContainerClick = function(event){
 		// Do nothing
 	};
 
+	/** @public */
 	s6.widgets.WishlistItemController.prototype.onToolContainerClick = function(event){
 		// Do nothing
 	};
 
+	/** @public */
 	s6.widgets.WishlistItemController.prototype.onDeleteButtonClick = function(event){
 		this.artPieceModel_.setFavoritedEnabled(false);
 
@@ -55,6 +59,7 @@ goog.scope(function(){
 		return false;
 	};
 
+	/** @public */
 	s6.widgets.WishlistItemController.prototype.onFavoritedEnabledChanged_ = function(event){
 		var wishlistModel = WishlistModel.getInstance();
 

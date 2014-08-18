@@ -59,6 +59,7 @@ goog.scope(function(){
 		return this;
 	};
 
+	/** @public */
 	s6.widgets.WishlistView.prototype.invalidate = function(){
 		this.onWishlistStateChanged_(null);
 		this.onNumItemsChanged_(null);
@@ -220,6 +221,7 @@ goog.scope(function(){
 		goog.base(this, 'enterDocument');
 	};
 
+	/** @private */
 	s6.widgets.WishlistView.prototype.onNodeChanged_ = function(event){
 		var node = this.wishlistModel_.getNode();
 		goog.asserts.assert(node, 'Node cannot be set to null');
@@ -236,6 +238,7 @@ goog.scope(function(){
 		this.invalidate();
 	};
 
+	/** @private */
 	s6.widgets.WishlistView.prototype.onWishlistStateChanged_ = function(event){
 		var wishlistState = this.wishlistModel_.getWishlistState();
 
@@ -258,9 +261,11 @@ goog.scope(function(){
 		}
 	};
 
+	/** @private */
 	s6.widgets.WishlistView.prototype.onItemsChanged_ = function(event){
 	};
 
+	/** @private */
 	s6.widgets.WishlistView.prototype.onItemAtIndexChange_ = function(event){
 		var type, index, model, controller, view;
 
@@ -300,6 +305,7 @@ goog.scope(function(){
 		this.invalidate();
 	};
 
+	/** @private */
 	s6.widgets.WishlistView.prototype.onNumItemsChanged_ = function(event){
 		var node = this.wishlistModel_.getNode();
 

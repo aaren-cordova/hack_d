@@ -24,11 +24,12 @@ goog.scope(function(){
 	 */
 	s6.widgets.IWishlistModel.prototype.setProperty = function(name, value){};
 
+	/** @return {number} */
 	s6.widgets.IWishlistModel.prototype.getWishlistState = function(){};
 
 	/**
 	* @param {number} mode
-	* @return {s6.widgets.IWishlistModel} [description]
+	* @return {s6.widgets.IWishlistModel}
 	*/
 	s6.widgets.IWishlistModel.prototype.setWishlistState = function(mode){};
 });

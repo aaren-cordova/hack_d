@@ -9,8 +9,6 @@ goog.scope(function(){
 	 * @return {s6.widgets.IWishlistController}
 	 */
 	s6.widgets.IWishlistController.prototype.setWishlistModel = function(artPieceModel){};
-	
-	//s6.widgets.IWishlistController.prototype.onPinButtonClick = function(event){};
 });
 
 

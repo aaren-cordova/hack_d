@@ -178,6 +178,7 @@ goog.scope(function(){
 		return removedItem[0];
 	};
 
+	/** @public */
 	s6.widgets.WishlistModel.prototype.indexOfItem = function(item){
 		return this.items_.indexOf(item);
 	};

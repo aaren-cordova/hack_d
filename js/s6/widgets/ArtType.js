@@ -1,3 +1,5 @@
+/** @fileOverview Enum of each way a single piece of art can be rendered. */
+
 goog.provide('s6.widgets.ArtType');
 
 goog.scope(function(){
@@ -27,7 +29,7 @@ goog.scope(function(){
 		"RUGS": "rgv23",
 		"PRINT": "prn01"
 	};
-
+	/** @type { }{string} */
 	s6.widgets.ArtType.DEFAULT_ART_TYPE = s6.widgets.ArtType.FRAMED_ART_PRINTS;
 
 });

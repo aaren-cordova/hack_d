@@ -35,7 +35,8 @@ module.exports = function (grunt) {
 				src: [
 					'../js/s6/*.js',
 					'../js/s6/**/*.js',
-					'!../js/s6/net/*.js'
+					'!../js/s6/net/*.js',
+					'!../js/s6/widgets/ArtSet.js'
 				],
 
 				dest: '../doc',
@@ -161,8 +162,10 @@ module.exports = function (grunt) {
 	//dev_.push('jshint');
 	dev_.push('closureDepsWriter:s6');
 	dev_.push('closureBuilder:s6');
+
 	dev_.push('less:s6');
 	dev_.push('concat:s6');
+
 	dev_.push('jsdoc:s6');
 
 	
