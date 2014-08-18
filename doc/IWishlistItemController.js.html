@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Index</title>
+    <title>JSDoc: Source: widgets/IWishlistItemController.js</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,30 +17,41 @@
 
 <div id="main">
     
-    <h1 class="page-title">Index</h1>
+    <h1 class="page-title">Source: widgets/IWishlistItemController.js</h1>
     
     
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>goog.require('s6.widgets.IArtPieceModel');
 
+goog.provide('s6.widgets.IWishlistItemController');
+goog.scope(function(){
+	/**
+	 * @interface
+	 */
+	s6.widgets.IWishlistItemController = function(){};
 
-    <h3> </h3>
+	/**
+	 * @param {s6.widgets.IArtPieceModel} artPieceModel
+	 * @param {s6.widgets.IWishlistItemController}
+	 */
+	s6.widgets.IWishlistItemController.prototype.setArtPieceModel = function(artPieceModel){
+		this.artPieceModel_ = artPieceModel;
+	};
 
+	s6.widgets.IWishlistItemController.prototype.onArtContainerClick = function(event){
+		// Do nothing
+	};
 
-
-
-
-
-
-
-
-    
-
-
-
-
-
+	s6.widgets.IWishlistItemController.prototype.onToolContainerClick = function(event){
+		// Do nothing
+	};
+});</code></pre>
+        </article>
+    </section>
 
 
 

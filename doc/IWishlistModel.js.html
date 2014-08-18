@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Index</title>
+    <title>JSDoc: Source: widgets/IWishlistModel.js</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,30 +17,50 @@
 
 <div id="main">
     
-    <h1 class="page-title">Index</h1>
+    <h1 class="page-title">Source: widgets/IWishlistModel.js</h1>
     
     
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>goog.require('goog.object');
+goog.require('goog.events.EventTarget');
 
+goog.provide('s6.widgets.IWishlistModel');
+goog.scope(function(){
 
-    <h3> </h3>
+	/**
+	 * @interface
+	 * @extends {goog.events.Listenable}
+	 */
+	s6.widgets.IWishlistModel = function(){;}
 
+	/** 
+	 * @param {string} name
+	 * @param {*} opt_value
+	 * @return {?}
+	 */
+	s6.widgets.IWishlistModel.prototype.getProperty = function(name, opt_value){};
 
+	/** 
+	 * @param {string} name
+	 * @param {*} value
+	 * @return {s6.widgets.IWishlistModel}
+	 */
+	s6.widgets.IWishlistModel.prototype.setProperty = function(name, value){};
 
+	s6.widgets.IWishlistModel.prototype.getWishlistState = function(){};
 
-
-
-
-
-
-    
-
-
-
-
-
+	/**
+	* @param {number} mode
+	* @return {s6.widgets.IWishlistModel} [description]
+	*/
+	s6.widgets.IWishlistModel.prototype.setWishlistState = function(mode){};
+});</code></pre>
+        </article>
+    </section>
 
 
 

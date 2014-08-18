@@ -31,8 +31,12 @@ module.exports = function (grunt) {
 			}
 		},
 		jsdoc: {
-			dist: {
-				src: ['../js/s6/**.js'],
+			s6: {
+				src: [
+					'../js/s6/*.js',
+					'../js/s6/**/*.js',
+					'!../js/s6/net/*.js'
+				],
 
 				dest: '../doc',
 				options: {
@@ -155,11 +159,13 @@ module.exports = function (grunt) {
 
 	var dev_ = [];
 	//dev_.push('jshint');
-	//dev_.push('closureDepsWriter:s6');
+	dev_.push('closureDepsWriter:s6');
 	dev_.push('closureBuilder:s6');
 	dev_.push('less:s6');
-	//dev_.push('concat:s6');
+	dev_.push('concat:s6');
+	dev_.push('jsdoc:s6');
 
+	
 	grunt.registerTask('dev', dev_);
 
 	grunt.registerTask('css', [

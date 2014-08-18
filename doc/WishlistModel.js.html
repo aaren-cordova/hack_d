@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: widgets/WishlistModel.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: widgets/WishlistModel.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>goog.require('goog.asserts');
+goog.require('goog.object');
+goog.require('goog.events.EventTarget');
+goog.require('s6.widgets.WishlistStateType');
+goog.require('s6.widgets.IWishlistModel');
+goog.provide('s6.widgets.WishlistModel');
+goog.provide('s6.widgets.WishlistModel.EventType');
+goog.scope(function(){
+	var WishlistStateType = s6.widgets.WishlistStateType;
+
+	/** 
+	 * @constructor
+	 * @implements{s6.widgets.IWishlistModel}
+	 * @extends {goog.events.EventTarget}
+	 */
+	s6.widgets.WishlistModel = function(){
+		goog.events.EventTarget.call(this);
+
+		this.items_ = [];
+		this.states_ = [];
+	}
+	goog.inherits(s6.widgets.WishlistModel, goog.events.EventTarget);
+	goog.addSingletonGetter(s6.widgets.WishlistModel);
+
+	/** @enum {string} */
+	s6.widgets.WishlistModel.EventType = function(){}
+	s6.widgets.WishlistModel.EventType["WISHLIST_STATE"] = "wishlistState";
+	s6.widgets.WishlistModel.EventType["NODE"] = 'node';
+	s6.widgets.WishlistModel.EventType["ITEMS"] = 'items';
+	s6.widgets.WishlistModel.EventType["NUM_ITEMS"] = 'numItems';
+
+	/**
+	* @param {number}
+	* @return {string}
+	*/
+	s6.widgets.WishlistModel.EventType.getItemIndexEvent = function(index){
+		return s6.widgets.WishlistModel.EventType.ITEMS + '_' + index
+	};
+
+	/** 
+	 * @param {string} name
+	 * @param {*} opt_value
+	 * @return {?}
+	 */
+	s6.widgets.WishlistModel.prototype.getProperty = function(name, opt_value){
+		return goog.object.get(this, name, opt_value);
+	};
+
+	/** 
+	 * @param {string} name
+	 * @param {*} value
+	 * @return {s6.widgets.IWishlistModel}
+	 */
+	s6.widgets.WishlistModel.prototype.setProperty = function(name, value){
+
+		goog.asserts.assertString(name);
+		goog.asserts.assert(goog.isDef(value));
+
+		var oldvalue = this[name];
+		if(oldvalue !== value){
+			goog.object.set(this, name, value);
+			this.dispatchEvent(name);
+		}
+
+		return this;
+	};
+
+	/** @return {number} */
+	s6.widgets.WishlistModel.prototype.getWishlistState = function(){
+		return this.getProperty(s6.widgets.WishlistModel.EventType.WISHLIST_STATE, 0);
+	};
+
+	/**
+	 * @param {number} state
+	 * @return {number}
+	 */
+	s6.widgets.WishlistModel.prototype.getIndexOfWishlistState = function(state){
+		return this.states_.indexOf(state);
+	};
+
+	/**
+	 * @param {number} state
+	 * @return {s6.widgets.IWishlistModel} [description]
+	 */
+	s6.widgets.WishlistModel.prototype.setWishlistState = function(state){
+		goog.asserts.assertNumber(state, 'state must be number');
+		goog.asserts.assert(state >= 0 && state &lt; s6.widgets.WishlistStateType.TOTAL_STATES);
+
+		this.states_.push(state);
+		return this.setProperty(s6.widgets.WishlistModel.EventType.WISHLIST_STATE, state);
+	};
+
+
+	/** @return {Node} */
+	s6.widgets.WishlistModel.prototype.getNode = function(){
+		return this.getProperty(s6.widgets.WishlistModel.EventType.NODE, null);
+	};
+
+	/** 
+	 * @param {Node} wishlistModelNode
+	 * @return {s6.widgets.IWishlistModel}
+	 */
+	s6.widgets.WishlistModel.prototype.setNode = function(wishlistModelNode){
+		goog.asserts.assert(wishlistModelNode instanceof Node);
+		return this.setProperty(s6.widgets.WishlistModel.EventType.NODE, wishlistModelNode);
+	};
+
+	/** 
+	* @return {number}
+	*/
+	s6.widgets.WishlistModel.prototype.getNumItems = function(){
+		return this.items_.length;
+	};
+
+	/** 
+	* @param {number} index
+	* @return {s6.widgets.IArtPieceModel}
+	*/
+	s6.widgets.WishlistModel.prototype.getItemAt = function(index){
+		goog.asserts.assertNumber(index);
+		goog.asserts.assert(index >= 0 && index &lt; this.getNumItems(), 'Index out of bounds');
+
+		return this.items_[index | 0];
+	};
+
+	/**
+	 * @param {!s6.widgets.IArtPieceModel} item
+	 * @return {s6.widgets.IWishlistModel}
+	 */
+	s6.widgets.WishlistModel.prototype.addItem = function(item){
+		return this.addItemAt(item, this.getNumItems());
+	};
+
+	/** 
+	 * @param {!s6.widgets.IArtPieceModel} item
+	 * @param {number} index
+	 * @return {s6.widgets.IWishlistModel}
+	 */
+	s6.widgets.WishlistModel.prototype.addItemAt = function(item, index){
+		goog.asserts.assertNumber(index);
+		goog.asserts.assert(index >= 0 && index &lt;= this.getNumItems(), 'Index (' + index + ')out of bounds.');
+
+		var oldvalue = this.items_[index];
+		if(oldvalue !== item){
+			var dispatchLenghtChangeEvent = index >= this.getNumItems();
+			goog.object.set(this.items_, index, item);
+			this.dispatchEvent(s6.widgets.WishlistModel.EventType.ITEMS);
+			this.dispatchEvent(s6.widgets.WishlistModel.EventType.ITEMS + '_' + index);
+			
+			if(dispatchLenghtChangeEvent){
+				this.dispatchEvent(s6.widgets.WishlistModel.EventType.NUM_ITEMS);
+			}
+		}
+
+		return this;
+	};
+
+	/**
+	 * @param {!s6.widgets.IArtPieceModel} item
+	 * @return {s6.widgets.IWishlistModel}
+	 */
+	s6.widgets.WishlistModel.prototype.removeItem = function(item){
+		return this.removeItemAt(this.indexOfItem(item));
+	};
+
+	/**
+	 * @param {!s6.widgets.IArtPieceModel} index
+	 * @return {number}
+	 */
+	s6.widgets.WishlistModel.prototype.removeItemAt = function(index){
+		goog.asserts.assertNumber(index);
+		goog.asserts.assert(index >= 0 && index &lt; this.getNumItems(), 'Index (' + index + ')out of bounds.');
+		
+		var removedItem = this.items_.splice(index, 1);
+		this.dispatchEvent(s6.widgets.WishlistModel.EventType.ITEMS);
+		this.dispatchEvent(s6.widgets.WishlistModel.EventType.NUM_ITEMS);
+
+		return removedItem[0];
+	};
+
+	s6.widgets.WishlistModel.prototype.indexOfItem = function(item){
+		return this.items_.indexOf(item);
+	};
+})</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="s6.Main.html">Main</a></li><li><a href="s6.widgets.ArtPieceController.html">ArtPieceController</a></li><li><a href="s6.widgets.ArtPieceModel.html">ArtPieceModel</a></li><li><a href="s6.widgets.ArtPieceView.html">ArtPieceView</a></li><li><a href="s6.widgets.ArtSet.html">ArtSet</a></li><li><a href="s6.widgets.WishlistController.html">WishlistController</a></li><li><a href="s6.widgets.WishlistItemController.html">WishlistItemController</a></li><li><a href="s6.widgets.WishlistItemView.html">WishlistItemView</a></li><li><a href="s6.widgets.WishlistModel.html">WishlistModel</a></li><li><a href="s6.widgets.WishlistView.html">WishlistView</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon Aug 18 2014 09:18:13 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>

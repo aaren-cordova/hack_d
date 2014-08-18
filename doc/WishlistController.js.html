@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: widgets/WishlistController.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: widgets/WishlistController.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>goog.require('goog.asserts');
+goog.require('goog.Disposable');
+
+goog.require('s6.net.PersistentDataModel');
+goog.require('s6.widgets.IWishlistController');
+goog.require('s6.widgets.IWishlistModel');
+goog.require('s6.widgets.WishlistModel.EventType');
+goog.require('s6.widgets.WishlistStateType');
+goog.provide('s6.widgets.WishlistController');
+
+goog.scope(function(){
+	var PersistentDataModel = s6.net.PersistentDataModel;
+	var WishlistModel_EventType = s6.widgets.WishlistModel.EventType;
+	var WishlistStateType = s6.widgets.WishlistStateType;
+
+	/**
+	 * @constructor
+	 * @implements {s6.widgets.IWishlistController}
+	 * @extends {s6.widgets.Disposable }
+	 */
+	s6.widgets.WishlistController = function(){
+		goog.Disposable.call(this);
+
+		this.persistentDataModel_ = new PersistentDataModel();
+	};
+	goog.inherits(s6.widgets.WishlistController, goog.Disposable);
+	
+	goog.addSingletonGetter(s6.widgets.WishlistController);
+
+
+
+	/**
+	 * @param {s6.widgets.IWishlistModel} wishlistModel
+	 */
+	s6.widgets.WishlistController.prototype.setWishlistModel = function(wishlistModel){
+		this.wishlistModel_ = wishlistModel;
+		goog.events.listen(wishlistModel, WishlistModel_EventType.NUM_ITEMS, this.onNumItemsChanged_, false, this);
+		goog.events.listen(wishlistModel, WishlistModel_EventType.ITEMS, this.onItemsChanged_, false, this);
+	};
+
+
+	s6.widgets.WishlistController.prototype.onNodeClick = function(event){
+		/*
+		var wishlistState = this.wishlistModel_.getWishlistState();
+		switch(wishlistState){
+			case WishlistStateType.FULL:
+				this.wishlistModel_.setWishlistState(WishlistStateType.PENCIL);
+				break;
+			case WishlistStateType.PENCIL:
+				this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
+				break;
+			case WishlistStateType.LIST:
+				this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+				break;
+			default:
+				goog.asserts.fail("Clicked on unsupported wishlist state: " + wishlistState);
+				return;
+		}
+		*/
+	};
+
+	s6.widgets.WishlistController.prototype.onOpenButtonClick = function(event){
+		s6.widgets.WishlistController.hardClose = false;
+
+		var wishlistState = this.wishlistModel_.getWishlistState();
+		switch(wishlistState){
+			case WishlistStateType.CLOSE:
+			case WishlistStateType.PENCIL:
+				if(this.wishlistModel_.getNumItems() > 6){
+					this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+				}
+				else{
+					this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
+				}
+				break;
+			case WishlistStateType.LIST:
+				if(this.wishlistModel_.getNumItems()){
+					if(this.wishlistModel_.getNumItems() > 6){
+						this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+					}
+				}
+				break;
+			case WishlistStateType.FULL:
+				if(this.wishlistModel_.getNumItems()){
+					this.wishlistModel_.setWishlistState(WishlistStateType.PENCIL);
+				}
+				break;
+		}
+		
+		event.preventDefault();
+		return false;
+	};
+
+	s6.widgets.WishlistController.prototype.onToolContainerClick = function(event){
+		console.log('onToolContainerClick',event.target)
+
+		if(jQuery('#s6-widgets-wishlist-view-root .tool-container').length){
+			if(jQuery('#s6-widgets-wishlist-view-root .tool-container')[0] !== event.target )  { 
+				return;
+			}
+		}
+
+		var wishlistState = this.wishlistModel_.getWishlistState();
+		switch(wishlistState){
+			case WishlistStateType.CLOSE:
+			case WishlistStateType.PENCIL:
+				if(this.wishlistModel_.getNumItems() > 6){
+					this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+				}
+				else{
+					this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
+				}
+				break;
+			case WishlistStateType.LIST:
+				if(this.wishlistModel_.getNumItems() > 6){
+					this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+				}
+				break;
+			case WishlistStateType.FULL:
+				if(this.wishlistModel_.getNumItems() > 5){
+					this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
+				}
+				else if(!this.wishlistModel_.getNumItems()){
+					this.wishlistModel_.setWishlistState(WishlistStateType.PENCIL);
+				}
+				break;
+		}
+	};
+
+	s6.widgets.WishlistController.prototype.onCloseButtonClick = function(event){
+		s6.widgets.WishlistController.hardClose = true;
+		this.wishlistModel_.setWishlistState(WishlistStateType.CLOSE);
+	};
+
+	s6.widgets.WishlistController.prototype.onPencilButtonClick = function(event){
+		this.wishlistModel_.setWishlistState(WishlistStateType.PENCIL);
+
+		event.stopPropagation();
+		return false;
+	};
+
+	s6.widgets.WishlistController.prototype.onListButtonClick = function(event){
+		this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
+		event.stopPropagation();
+		return false;
+	};
+
+	s6.widgets.WishlistController.prototype.onFullButtonClick = function(event){
+		this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+		event.stopPropagation();
+		return false;
+	};
+
+	s6.widgets.WishlistController.prototype.onProductionOptionsChange = function(event){
+		this.invalidate();
+	};
+
+	s6.widgets.WishlistController.prototype.invalidate = function(){
+		var artType = jQuery('.product_options').children('select').val();
+		if(artType){
+			var numItems = this.wishlistModel_.getNumItems();
+			for(var i = 0; i &lt; numItems; ++i){
+				var artPieceModel = this.wishlistModel_.getItemAt(i);
+				artPieceModel.setArtType(artType);
+			}
+		}
+	};
+
+	s6.widgets.WishlistController.prototype.onItemsChanged_ = function(){
+		this.invalidate();
+	};
+
+	s6.widgets.WishlistController.prototype.togglWishlist = function(){
+		var wishlistState = this.wishlistModel_.getWishlistState();
+		switch(wishlistState){
+			case WishlistStateType.CLOSE:
+				this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+				break;
+			case WishlistStateType.PENCIL:
+			case WishlistStateType.LIST:
+			case WishlistStateType.FULL:
+				this.wishlistModel_.setWishlistState(WishlistStateType.CLOSE);
+				break;
+			default:
+				goog.asserts.fail("Unknown wishlist state: " + wishlistState);
+				return;
+		}
+	};
+
+	s6.widgets.WishlistController.prototype.onNumItemsChanged_ = function(event){
+		if(this.wishlistModel_.getNumItems() == 0) {
+			this.wishlistModel_.setWishlistState(WishlistStateType.CLOSE);
+		}
+		else if(!s6.widgets.WishlistController.hardClose) {
+			var wishlistState = this.wishlistModel_.getWishlistState();
+			switch(wishlistState){
+				case WishlistStateType.CLOSE:
+					this.wishlistModel_.setWishlistState(WishlistStateType.PENCIL)
+					break;
+				case WishlistStateType.PENCIL:
+					// do nothing
+					break;
+				case WishlistStateType.LIST:
+					if(this.wishlistModel_.getNumItems() > 6){
+						this.wishlistModel_.setWishlistState(WishlistStateType.FULL);
+					}
+					break;
+				case WishlistStateType.FULL:
+					if(this.wishlistModel_.getNumItems() > 6){
+						// Do nothing.
+					}
+					else if(this.wishlistModel_.getNumItems() > 0){
+						this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
+					}
+					break;
+				default:
+					goog.asserts.fail("Unknown wishlist state: " + wishlistState);
+					return;
+			}
+
+		}
+	};
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="s6.Main.html">Main</a></li><li><a href="s6.widgets.ArtPieceController.html">ArtPieceController</a></li><li><a href="s6.widgets.ArtPieceModel.html">ArtPieceModel</a></li><li><a href="s6.widgets.ArtPieceView.html">ArtPieceView</a></li><li><a href="s6.widgets.ArtSet.html">ArtSet</a></li><li><a href="s6.widgets.WishlistController.html">WishlistController</a></li><li><a href="s6.widgets.WishlistItemController.html">WishlistItemController</a></li><li><a href="s6.widgets.WishlistItemView.html">WishlistItemView</a></li><li><a href="s6.widgets.WishlistModel.html">WishlistModel</a></li><li><a href="s6.widgets.WishlistView.html">WishlistView</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Mon Aug 18 2014 09:18:13 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>
