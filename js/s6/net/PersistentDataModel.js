@@ -69,7 +69,6 @@ goog.scope(function(){
 	* @return {s6.net.IPersistentDataModel}
 	*/
 	s6.net.PersistentDataModel.prototype.setProperty = function(name, value, opt_maxAge, opt_path, opt_domain){
-		console.log('setProperty')
 		goog.asserts.assertString(name);
 		goog.asserts.assert(goog.isDef(value));
 

@@ -140,7 +140,6 @@ goog.scope(function(){
 					dom.createDom('label', {}, 'View artwork as:'),
 					dom.createDom('select', {"id":"attr_232908size", "name":"attr_232908size", "class":"required valid"},
 						dom.createDom('option', {"title": "Default", "value": "prn01"}, "Default"),
-						dom.createDom('option', {"title": "Prints", "value": "prn01"}, "Prints"),
 						dom.createDom('option', {"title": "Framed Art Prints", "value": "frm715bl01"}, "Framed Art Prints"),
 						dom.createDom('option', {"title": "Stretched Canvases", "value": "cnv01"}, "Stretched Canvases"),
 						dom.createDom('option', {"title": "Laptop and iPad Skins", "value": "sknipd2"}, "Laptop and iPad Skins"),
@@ -161,7 +160,8 @@ goog.scope(function(){
 						dom.createDom('option', {"title": "Duvet Covers", "value": "duvetqueen"}, "Duvet Covers"),
 						dom.createDom('option', {"title": "Mugs", "value": "mugs11"}, "Mugs"),
 						dom.createDom('option', {"title": "Wall Clocks", "value": "clkfkhk"}, "Wall Clocks"),
-						dom.createDom('option', {"title": "Rugs", "value": "rgv23"}, "Rugs")
+						dom.createDom('option', {"title": "Rugs", "value": "rgv23"}, "Rugs"),
+						dom.createDom('option', {"title": "Prints", "value": "prn01"}, "Prints")
 					)
 				)
 			)

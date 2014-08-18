@@ -206,7 +206,12 @@ goog.scope(function(){
 					}
 					break;
 				case WishlistStateType.FULL:
-					// Do nothing
+					if(this.wishlistModel_.getNumItems() > 6){
+						// Do nothing.
+					}
+					else if(this.wishlistModel_.getNumItems() > 0){
+						this.wishlistModel_.setWishlistState(WishlistStateType.LIST);
+					}
 					break;
 				default:
 					goog.asserts.fail("Unknown wishlist state: " + wishlistState);
