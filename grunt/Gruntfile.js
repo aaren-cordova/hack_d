@@ -54,11 +54,11 @@ module.exports = function (grunt) {
 					'../js/google/closure-library/closure/goog/',
 					'../js/google/closure-library/third_party/',
 					'../js/s6/',
-					'../js/src/',
-					'../js/greensock/v12/src/exports/'
+					'../js/src/'//,
+					//'../js/greensock/v12/src/exports/'
 				],
 
-				dest: '../bin/js/dev_closureBuilder.js'
+				dest: '../bin/js/s6.min.js'
 			}
 		},
 
@@ -86,10 +86,10 @@ module.exports = function (grunt) {
 
 			s6: {
 				src: [
-					'../bin/js/dev_closureBuilder.js'
+					'../bin/js/s6.min.js'
 				],
 
-				dest: '../bin/js/dev.js'
+				dest: '../bin/js/s6.concat.js'
 			},
 
 			css:{
@@ -109,7 +109,12 @@ module.exports = function (grunt) {
 				}
 			},
 
-			files: ['../js/**/*.js', '!../js/bin/**.js', '!../js/**/alltests.js','!../js/**/deps.js'],
+			files: [
+				'../js/**/*.js', 
+				'!../js/bin/**.js',
+				'!../js/**/alltests.js',
+				'!../js/**/deps.js'
+			],
 
 			tasks: ['dev'],
 
@@ -117,7 +122,6 @@ module.exports = function (grunt) {
 				interrupt: true
 			}
 		},
-
 
 		closureLint: {
 			app:{
@@ -153,7 +157,6 @@ module.exports = function (grunt) {
 	]);
 
 	grunt.registerTask('write_deps', [
-		//'closureDepsWriter:qcurve',
 		'closureDepsWriter:s6'
 	]);
 
@@ -172,6 +175,6 @@ module.exports = function (grunt) {
 	grunt.registerTask('dev', dev_);
 
 	grunt.registerTask('css', [
-		'concat:css',
+		'concat:css'
 	]);
 };

@@ -40,10 +40,12 @@ See the COPYING file for details.
 	}
 	// Run a test for 60s and see how many counts we get
 	function mutatorTest(propertyName, getterName, setterName, mutatedValues) {
+		
 		for(var i = 0; i < mutatedValues.length; ++i){
 			var newValue = mutatedValues[i];
 			model_[setterName](newValue);
 
+			console.log('mutatorTest(' + propertyName + ') [' + i + ']=', newValue, ';');
 			assertEquals(
 				'Mutated value (' + newValue + ') correct after call (' + setterName + '):', 
 				newValue, model_[getterName]()
@@ -83,24 +85,16 @@ See the COPYING file for details.
 	*/
 
 	function testArtType() {
-		initialValueTest('productType', s6.widgets.ArtType.DEFAULT_PRODUCT_TYPE, model_.getArtType());
+		initialValueTest('artType', s6.widgets.ArtType.DEFAULT_ART_TYPE, model_.getArtType());
 
-		mutatorTest('productType', 'getArtType', 'setArtType', [
-			s6.widgets.ArtType.ART_PRINT,
-			s6.widgets.ArtType.DUVET,
-			s6.widgets.ArtType.CUP
-		]);
+		var valuesToTest = [];
+		for(var key in s6.widgets.ArtType){
+			valuesToTest.push(s6.widgets.ArtType[key]);
+		}
 
-		propertyChangeTest('productType', 'getArtType', 'setArtType', [
-			[s6.widgets.ArtType.ART_PRINT, s6.widgets.ArtType.ART_PRINT],
-			[s6.widgets.ArtType.DUVET, s6.widgets.ArtType.DUVET],
-			[s6.widgets.ArtType.CUP, s6.widgets.ArtType.CUP],
-			[s6.widgets.ArtType.ART_PRINT, s6.widgets.ArtType.DUVET],
-			[s6.widgets.ArtType.CUP, s6.widgets.ArtType.DUVET],
-			[s6.widgets.ArtType.CUP, s6.widgets.ArtType.ART_PRINT]
-		]);
+		console.log('valuesToTest', valuesToTest);
+		mutatorTest('artType', 'getArtType', 'setArtType', valuesToTest);
 	}
-
 
 	function testHideEnabled() {
 		initialValueTest('hideEnabled', false, model_.getHideEnabled());
@@ -239,6 +233,7 @@ See the COPYING file for details.
 		);
 	}
 
+	/*
 	function testTODO(){
 		assert(false, 'TODO test wishlist mode');
 		// TODO test wishlist mode
@@ -246,7 +241,7 @@ See the COPYING file for details.
 		// TODL test ArtPieceID
 		// TODO wishlist mode
 	}
-
+	*/
 	
 
 	/*
