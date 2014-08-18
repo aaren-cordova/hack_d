@@ -198,18 +198,6 @@ goog.scope(function(){
 		return this.setProperty(s6.widgets.ArtPieceModel.EventType.IMAGE_URL, url);
 	};
 
-	/** @return {string} */
-	s6.widgets.ArtPieceModel.prototype.getImageURL = function(){
-		var artJSON = this.getPostJSON();
-		var templateUrl = s6["global"]["image_url_template"];
-		var imageURL = templateUrl;
-		imageURL = imageURL.replace('{post_image}', artJSON["post_image"]);
-		imageURL = imageURL.replace('{product.product_type}', this.getArtType());
-		imageURL = imageURL.replace('{image_size_template}', s6["global"]["image_size_template"]);
-
-		return imageURL;
-	};
-
 	/** 
 	 * @param {boolean} numFeatured
 	 * @return {s6.widgets.IArtPieceModel}

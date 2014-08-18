@@ -316,7 +316,6 @@ goog.scope(function(){
 	};
 
 	s6.widgets.ArtPieceView.prototype.onImageURLChanged_ = function(event){
-		console.log('ArtPieceView.onImageURLChanged_')
 		var url = this.artPieceModel_.getImageURL();
 		var cache = s6.widgets.ArtPieceView.cache_;
 		
