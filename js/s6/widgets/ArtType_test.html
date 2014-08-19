@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<!--
+Copyright 2006 The Closure Library Authors. All Rights Reserved.
+
+Use of this source code is governed by the Apache License, Version 2.0.
+See the COPYING file for details.
+-->
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Closure Unit Tests - goog.Timer</title>
+<script src="../../google/closure-library/closure/goog/base.js"></script>
+<script src="../../s6/deps.js"></script>
+<script>
+	goog.require('s6.widgets.ArtType');
+	goog.require('goog.testing.jsunit');
+	goog.require('goog.asserts');
+	goog.require('goog.array');
+</script>
+</head>
+<body>
+<script>
+	var ArtType = s6.widgets.ArtType;
+
+	var ART_TYPE_PROPERTIES = [
+		"FRAMED_ART_PRINTS",
+		"STRETCHED_CANVASES",
+		"LAPTOP_AND_IPAD_SKINS",
+		"IPAD_CASES",
+		"IPHONE_AND_IPOD_CASES",
+		"IPHONE_AND_IPOD_SKINS",
+		"STATIONARY_CARDS",
+		"TSHIRT",
+		"TANK_TOPS",
+		"HOODIES",
+		"ONESIES",
+		"KIDS_T_SHIRT",
+		"V_NECK_T_SHIRTS",
+		"BIKER_TANKS",
+		"THROW_PILLOWS",
+		"TOTE_BAGS",
+		"SHOWER_CURTAINS",
+		"DUVET_COVERS",
+		"MUGS",
+		"WALL_CLOCKS",
+		"RUGS",
+		"PRINT",
+		"DEFAULT_ART_TYPE"
+	];
+
+	function setUp() {
+	}
+
+	function tearDown() {
+	}
+
+	function constantExist(prop, index, array){
+		assert('Property "' + prop + '" must exist on ArtType', ArtType.hasOwnProperty(prop));
+	}
+
+	function testConstantsExist(){
+		goog.array.forEach(ART_TYPE_PROPERTIES, constantExist);
+	}
+
+	function valueIsString(prop, index, array){
+		goog.asserts.assertString('Property "' + prop + '" must be string', ArtType[prop]);
+	}
+
+	function testValuesAreStrings(){
+		goog.array.forEach(ART_TYPE_PROPERTIES, valueIsString);
+	}
+
+	function propertyLength(prop, index, array){
+		assert('Property "' + prop + '" must be non empty string.', ArtType[prop].length > 0);
+	}
+
+	function testPropertyValueLengths(){
+		goog.array.forEach(ART_TYPE_PROPERTIES, propertyLength);
+	}
+
+	function testNumProperties(){
+		var numKeys = 0;
+		for(var key in ArtType){
+			if(ArtType.hasOwnProperty(key)){
+				++numKeys;
+			}
+		}
+		assert('Missing (' + Math.abs(numKeys - ART_TYPE_PROPERTIES.length) + ') properties in test', ART_TYPE_PROPERTIES.length === numKeys);
+	}
+</script>
+</body>
+</html>
