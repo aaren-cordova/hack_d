@@ -1,6 +1,7 @@
 goog.provide('s6.widgets.WishlistStateType');
 goog.scope(function(){
 	s6.widgets.WishlistStateType.TOTAL_STATES = 0;
+	s6.widgets.WishlistStateType.NONE = s6.widgets.WishlistStateType.TOTAL_STATES++;
 	s6.widgets.WishlistStateType.CLOSE = s6.widgets.WishlistStateType.TOTAL_STATES++;
 	s6.widgets.WishlistStateType.PENCIL = s6.widgets.WishlistStateType.TOTAL_STATES++;
 	s6.widgets.WishlistStateType.LIST = s6.widgets.WishlistStateType.TOTAL_STATES++;
